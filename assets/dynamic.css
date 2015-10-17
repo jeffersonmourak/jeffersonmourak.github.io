@@ -1,0 +1,10 @@
+header {
+	background-position: center ||(windowHeight) - scrollY*1.2||px;
+	line-height: ||(windowHeight) + scrollY*0.2||px;
+}
+
+header .me{
+	width: ||dss.limitDown(40)(300 - scrollY*0.8)||px;
+	height: ||dss.limitDown(40)(300 - scrollY*0.8)||px;
+	left: || dss.limitUp((windowWidth / 2) - 150)( dss.limitDown(456)(((60 - scrollY*0.8) - ((scrollY*0.8) * 100 / windowWidth)) + (windowWidth / 2))) ||px;
+}
