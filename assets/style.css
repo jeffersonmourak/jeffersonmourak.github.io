@@ -93,3 +93,7 @@ a:hover{
     color:rgba(48, 224, 103, 1);
     text-decoration: underline;
 }
+
+img{
+    max-width: 100%;
+}
