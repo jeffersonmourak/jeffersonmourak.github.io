@@ -23,7 +23,12 @@ class GooeyBar extends React.Component{
          */
         let maximumHeight = window.screen.height * 0.3;
 
-        let columns = Array.apply(null, Array(columnLength)).map(function (x, i) { return i; });
+        //let columns = Array.apply(null, Array(columnLength)).map(function (x, i) { return i; });
+
+        let columns = [];
+        for (let i = 0; i < columnLength; i++){
+            columns.push(0);
+        }
 
         return columns.map( (item, index) => {
             let min = this.defaultColumnWidth;
