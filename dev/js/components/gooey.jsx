@@ -17,22 +17,40 @@ class GooeyBar extends React.Component{
          * @type {number}
          */
         let columnLength = window.screen.width / this.defaultColumnWidth;
-        /**
-         * Get 30% of screen height for limit random sizes
-         * @type {number}
-         */
-        let maximumHeight = window.screen.height * 0.3;
 
-        //let columns = Array.apply(null, Array(columnLength)).map(function (x, i) { return i; });
 
         let columns = [];
-        for (let i = 0; i < columnLength; i++){
-            columns.push(0);
+        for (let i = 0; i < columnLength; i++) {
+          let offset = (i % 2) * 0.2;
+          let maximumHeight = window.screen.height * (0.35 - offset);
+          let current = {
+            height: this._randomNumber(this.defaultColumnWidth, maximumHeight),
+            round: {
+              left: true,
+              right: true
+            }
+          };
+          if (columns[i-1] && Math.abs((columns[i-1].height - current.height)) > 5) {
+            let previous = columns[i-1];
+            if (previous.height > current.height) {
+              current.round.left = false;
+            } else {
+              previous.round.right = false;
+            }
+          }
+          columns.push(current);
         }
 
         return columns.map( (item, index) => {
-            let min = this.defaultColumnWidth;
-            return <div key={index} className="goo-column" style={ {height: this._randomNumber(min, maximumHeight) + 'px' } } ></div>
+          let roundCorners = {
+            'round-right': item.round.right,
+            'round-left': item.round.left,
+            'easter-egg': this.props.easterEgg
+          };
+
+          return <div key={index}
+                    className={classNames('goo-column', roundCorners)}
+                    style={ {height: item.height + 'px' } } ></div>
         });
 
     }

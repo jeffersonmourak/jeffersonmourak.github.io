@@ -19,6 +19,18 @@
     display: inline-block
     vertical-align: top
     position: relative
-    border-bottom-left-radius: 20px
-    border-bottom-right-radius: 20px
+    @include animation(entrance 4s ease forwards)
+
+    &.easter-egg
+      @include animation(go-easter 1s ease forwards)
+
+    &.round-left
+      border-bottom-left-radius: 20px
+    &.round-right
+      border-bottom-right-radius: 20px
+.easter-text
+  opacity: 0
+
+  &.easter-egg
+    opacity: 1
     @include animation(entrance 4s ease forwards)

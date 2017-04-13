@@ -62,6 +62,35 @@ a {
     -ms-transform: translateY(0px);
     -o-transform: translateY(0px);
     transform: translateY(0px); } }
+@-webkit-keyframes component-exit {
+  from {
+    opacity: 1;
+    -webkit-transform: translateY(0px); }
+  to {
+    opacity: 0;
+    -webkit-transform: translateY(40px); } }
+@-moz-keyframes component-exit {
+  from {
+    opacity: 1;
+    -moz-transform: translateY(0px); }
+  to {
+    opacity: 0;
+    -moz-transform: translateY(40px); } }
+@keyframes component-exit {
+  from {
+    opacity: 1;
+    -webkit-transform: translateY(0px);
+    -moz-transform: translateY(0px);
+    -ms-transform: translateY(0px);
+    -o-transform: translateY(0px);
+    transform: translateY(0px); }
+  to {
+    opacity: 0;
+    -webkit-transform: translateY(40px);
+    -moz-transform: translateY(40px);
+    -ms-transform: translateY(40px);
+    -o-transform: translateY(40px);
+    transform: translateY(40px); } }
 @-webkit-keyframes entrance {
   from {
     height: 0; } }
@@ -661,6 +690,18 @@ a {
 @keyframes entrance-gooey {
   to {
     height: auto; } }
+@-webkit-keyframes go-easter {
+  to {
+    height: 500px;
+    background-color: #263238; } }
+@-moz-keyframes go-easter {
+  to {
+    height: 500px;
+    background-color: #263238; } }
+@keyframes go-easter {
+  to {
+    height: 500px;
+    background-color: #263238; } }
 .gooey {
   -webkit-filter: url("#goo");
   filter: url("#goo");
@@ -681,8 +722,22 @@ a {
     display: inline-block;
     vertical-align: top;
     position: relative;
-    border-bottom-left-radius: 20px;
-    border-bottom-right-radius: 20px;
+    -webkit-animation: entrance 4s ease forwards;
+    -moz-animation: entrance 4s ease forwards;
+    animation: entrance 4s ease forwards; }
+    .gooey .goo-column.easter-egg {
+      -webkit-animation: go-easter 1s ease forwards;
+      -moz-animation: go-easter 1s ease forwards;
+      animation: go-easter 1s ease forwards; }
+    .gooey .goo-column.round-left {
+      border-bottom-left-radius: 20px; }
+    .gooey .goo-column.round-right {
+      border-bottom-right-radius: 20px; }
+
+.easter-text {
+  opacity: 0; }
+  .easter-text.easter-egg {
+    opacity: 1;
     -webkit-animation: entrance 4s ease forwards;
     -moz-animation: entrance 4s ease forwards;
     animation: entrance 4s ease forwards; }
@@ -707,11 +762,20 @@ a {
   font-size: 2em;
   color: #BEE9E8;
   padding: 0;
-  overflow: hidden; }
+  overflow: hidden;
+  -webkit-transition: all 1s ease;
+  -moz-transition: all 1s ease;
+  transition: all 1s ease; }
   .ab-header.ready {
     -webkit-animation: entrance-header 2s ease forwards;
     -moz-animation: entrance-header 2s ease forwards;
     animation: entrance-header 2s ease forwards; }
+  .ab-header.easter-egg {
+    background-color: #263238;
+    height: 100vh;
+    -webkit-animation: none;
+    -moz-animation: none;
+    animation: none; }
   .ab-header span {
     opacity: 0;
     display: block;
@@ -722,6 +786,10 @@ a {
     -webkit-animation-delay: 2.4s;
     -moz-animation-delay: 2.4s;
     animation-delay: 2.4s; }
+    .ab-header span.exit {
+      -webkit-animation: component-exit 1s ease forwards;
+      -moz-animation: component-exit 1s ease forwards;
+      animation: component-exit 1s ease forwards; }
   .ab-header .userPhoto {
     opacity: 0;
     width: 150px;
@@ -734,6 +802,10 @@ a {
     -webkit-animation-delay: 2.8s;
     -moz-animation-delay: 2.8s;
     animation-delay: 2.8s; }
+    .ab-header .userPhoto.exit {
+      -webkit-animation: component-exit 1s ease forwards;
+      -moz-animation: component-exit 1s ease forwards;
+      animation: component-exit 1s ease forwards; }
   .ab-header .description {
     opacity: 0;
     margin-top: 10px;
@@ -743,6 +815,10 @@ a {
     -webkit-animation-delay: 2s;
     -moz-animation-delay: 2s;
     animation-delay: 2s; }
+    .ab-header .description.exit {
+      -webkit-animation: component-exit 1s ease forwards;
+      -moz-animation: component-exit 1s ease forwards;
+      animation: component-exit 1s ease forwards; }
     .ab-header .description a {
       padding: 10px; }
       .ab-header .description a:hover i {
@@ -762,6 +838,7 @@ a {
 body {
   background-color: #FAFAFA;
   margin: 0;
-  padding: 0; }
+  padding: 0;
+  overflow: hidden; }
 
 /*# sourceMappingURL=app.css.map */
