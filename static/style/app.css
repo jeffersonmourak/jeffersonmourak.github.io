@@ -681,15 +681,21 @@ a {
   .ab-button:hover {
     background-color: rgba(255, 255, 255, 0.2); }
 
-@-webkit-keyframes entrance-gooey {
+@-webkit-keyframes gooey {
+  from {
+    transform: translateY(0); }
   to {
-    height: auto; } }
-@-moz-keyframes entrance-gooey {
+    transform: translateY(-20px); } }
+@-moz-keyframes gooey {
+  from {
+    transform: translateY(0); }
   to {
-    height: auto; } }
-@keyframes entrance-gooey {
+    transform: translateY(-20px); } }
+@keyframes gooey {
+  from {
+    transform: translateY(0); }
   to {
-    height: auto; } }
+    transform: translateY(-20px); } }
 @-webkit-keyframes go-easter {
   to {
     height: 500px;
@@ -707,7 +713,6 @@ a {
   filter: url("#goo");
   position: relative;
   width: 100%;
-  height: 0;
   white-space: nowrap;
   overflow: hidden; }
   .gooey.ready {
@@ -722,9 +727,15 @@ a {
     display: inline-block;
     vertical-align: top;
     position: relative;
-    -webkit-animation: entrance 4s ease forwards;
-    -moz-animation: entrance 4s ease forwards;
-    animation: entrance 4s ease forwards; }
+    -webkit-transform: translateZ(0);
+    -moz-transform: translateZ(0);
+    -ms-transform: translateZ(0);
+    -o-transform: translateZ(0);
+    transform: translateZ(0); }
+    .gooey .goo-column.animate {
+      -webkit-animation: gooey 2s ease alternate infinite;
+      -moz-animation: gooey 2s ease alternate infinite;
+      animation: gooey 2s ease alternate infinite; }
     .gooey .goo-column.easter-egg {
       -webkit-animation: go-easter 1s ease forwards;
       -moz-animation: go-easter 1s ease forwards;
@@ -744,19 +755,40 @@ a {
 
 @-webkit-keyframes entrance-header {
   to {
-    height: 50vh;
+    transform: translateY(0);
     padding: 20px 0; } }
 @-moz-keyframes entrance-header {
   to {
-    height: 50vh;
+    transform: translateY(0);
     padding: 20px 0; } }
 @keyframes entrance-header {
   to {
-    height: 50vh;
+    transform: translateY(0);
     padding: 20px 0; } }
+@-webkit-keyframes Gradient {
+  0% {
+    background-position: 0% 50%; }
+  50% {
+    background-position: 100% 50%; }
+  100% {
+    background-position: 0% 50%; } }
+@-moz-keyframes Gradient {
+  0% {
+    background-position: 0% 50%; }
+  50% {
+    background-position: 100% 50%; }
+  100% {
+    background-position: 0% 50%; } }
+@keyframes Gradient {
+  0% {
+    background-position: 0% 50%; }
+  50% {
+    background-position: 100% 50%; }
+  100% {
+    background-position: 0% 50%; } }
 .ab-header {
   width: 100%;
-  height: 0;
+  height: 50vh;
   background-color: #DB5461;
   text-align: center;
   font-size: 2em;
@@ -766,10 +798,16 @@ a {
   -webkit-transition: all 1s ease;
   -moz-transition: all 1s ease;
   transition: all 1s ease; }
-  .ab-header.ready {
-    -webkit-animation: entrance-header 2s ease forwards;
-    -moz-animation: entrance-header 2s ease forwards;
-    animation: entrance-header 2s ease forwards; }
+  .ab-header.fullscreen {
+    height: 100vh;
+    padding-top: 25vh;
+    background: linear-gradient(-45deg, #EE7752, #E73C7E, #23A6D5, #23D5AB);
+    background-size: 400% 400%;
+    -webkit-animation: Gradient 15s ease infinite;
+    -moz-animation: Gradient 15s ease infinite;
+    animation: Gradient 15s ease infinite; }
+    .ab-header.fullscreen a, .ab-header.fullscreen span {
+      color: rgba(255, 255, 255, 0.7); }
   .ab-header.easter-egg {
     background-color: #263238;
     height: 100vh;
@@ -777,12 +815,8 @@ a {
     -moz-animation: none;
     animation: none; }
   .ab-header span {
-    opacity: 0;
     display: block;
     margin-top: 20px;
-    -webkit-animation: component-entrance 1s ease forwards;
-    -moz-animation: component-entrance 1s ease forwards;
-    animation: component-entrance 1s ease forwards;
     -webkit-animation-delay: 2.4s;
     -moz-animation-delay: 2.4s;
     animation-delay: 2.4s; }
@@ -791,14 +825,10 @@ a {
       -moz-animation: component-exit 1s ease forwards;
       animation: component-exit 1s ease forwards; }
   .ab-header .userPhoto {
-    opacity: 0;
     width: 150px;
     height: 150px;
     margin-top: 60px;
     border-radius: 50%;
-    -webkit-animation: component-entrance 1s ease forwards;
-    -moz-animation: component-entrance 1s ease forwards;
-    animation: component-entrance 1s ease forwards;
     -webkit-animation-delay: 2.8s;
     -moz-animation-delay: 2.8s;
     animation-delay: 2.8s; }
@@ -807,11 +837,7 @@ a {
       -moz-animation: component-exit 1s ease forwards;
       animation: component-exit 1s ease forwards; }
   .ab-header .description {
-    opacity: 0;
     margin-top: 10px;
-    -webkit-animation: component-entrance 1s ease forwards;
-    -moz-animation: component-entrance 1s ease forwards;
-    animation: component-entrance 1s ease forwards;
     -webkit-animation-delay: 2s;
     -moz-animation-delay: 2s;
     animation-delay: 2s; }
@@ -827,6 +853,11 @@ a {
         -webkit-transition: all 300ms ease;
         -moz-transition: all 300ms ease;
         transition: all 300ms ease; }
+
+.slowPc {
+  display: block;
+  text-align: center;
+  color: #000; }
 
 @media only screen and (min-device-width: 320px) and (max-device-width: 480px) and (-webkit-min-device-pixel-ratio: 2) and (orientation: portrait) {
   .ab-header .userPhoto {

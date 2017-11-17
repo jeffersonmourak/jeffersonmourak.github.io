@@ -5,6 +5,8 @@ class GooeyBar extends React.Component{
     constructor(){
         super();
         this.defaultColumnWidth = 40;
+        this.animate = navigator.userAgent.indexOf("Chrome") > -1;
+        this.isSafari = !this.animate && navigator.userAgent.indexOf("Safari") > -1;
     }
 
     _randomNumber(min, max){
@@ -42,15 +44,20 @@ class GooeyBar extends React.Component{
         }
 
         return columns.map( (item, index) => {
-          let roundCorners = {
+          let options = {
             'round-right': item.round.right,
             'round-left': item.round.left,
-            'easter-egg': this.props.easterEgg
+            'easter-egg': this.props.easterEgg,
+            'animate': this.animate,
+            'goo-column': !this.isSafari
           };
 
           return <div key={index}
-                    className={classNames('goo-column', roundCorners)}
-                    style={ {height: item.height + 'px' } } ></div>
+                    className={classNames(options)}
+                    style={ {
+                      height: `${item.height}px`,
+                       animationDelay: `${this._randomNumber(0, 1000)}ms`
+                     } } ></div>
         });
 
     }

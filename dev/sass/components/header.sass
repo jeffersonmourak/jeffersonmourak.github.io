@@ -2,7 +2,7 @@
 
 .ab-header
   width: 100%
-  height: 0
+  height: 50vh
   background-color: $medium-tourquise
   text-align: center
   font-size: 2em
@@ -10,39 +10,44 @@
   padding: 0
   overflow: hidden
   @include transition(all 1s ease)
-  &.ready
-    @include animation(entrance-header 2s ease forwards)
+
+  &.fullscreen
+    height: 100vh
+    padding-top: 25vh
+    background: linear-gradient(-45deg, #EE7752, #E73C7E, #23A6D5, #23D5AB)
+    background-size: 400% 400%
+    -webkit-animation: Gradient 15s ease infinite
+    -moz-animation: Gradient 15s ease infinite
+    animation: Gradient 15s ease infinite
+
+    a, span
+      color: rgba(255,255,255, .7)
+
   &.easter-egg
     background-color: $black-space
     height: 100vh
     @include animation(none)
 
   span
-    opacity: 0
     display: block
     margin-top: 20px
-    @include animation(component-entrance 1s ease forwards)
     @include enter-at(6)
 
     &.exit
       @include animation(component-exit 1s ease forwards)
 
   .userPhoto
-    opacity: 0
     width: 150px
     height: 150px
     margin-top: 60px
     border-radius: 50%
-    @include animation(component-entrance 1s ease forwards)
     @include enter-at(7)
 
     &.exit
       @include animation(component-exit 1s ease forwards)
 
   .description
-    opacity: 0
     margin-top: 10px
-    @include animation(component-entrance 1s ease forwards)
     @include enter-at(5)
 
     &.exit
@@ -54,6 +59,11 @@
         text-shadow: 0 0 20px #fff
       i
         @include transition(all 300ms ease)
+
+.slowPc
+  display: block
+  text-align: center
+  color: #000
 
 @media only screen and (min-device-width: 320px) and (max-device-width: 480px) and (-webkit-min-device-pixel-ratio: 2) and (orientation: portrait)
   .ab-header

@@ -3,7 +3,6 @@
   @include filter(url('#goo'))
   position: relative
   width: 100%
-  height: 0
   white-space: nowrap
   overflow: hidden
 
@@ -19,7 +18,14 @@
     display: inline-block
     vertical-align: top
     position: relative
-    @include animation(entrance 4s ease forwards)
+    -webkit-transform: translateZ(0)
+    -moz-transform: translateZ(0)
+    -ms-transform: translateZ(0)
+    -o-transform: translateZ(0)
+    transform: translateZ(0)
+
+    &.animate
+      @include animation(gooey 2s ease alternate infinite)
 
     &.easter-egg
       @include animation(go-easter 1s ease forwards)
