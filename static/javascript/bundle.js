@@ -130,6 +130,7 @@
 	  }, {
 	    key: 'activateEasterEgg',
 	    value: function activateEasterEgg() {
+	      this.isSafari = true;
 	      this.setState({ easterEgg: true });
 	    }
 	  }, {

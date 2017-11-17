@@ -42,6 +42,7 @@ class Jeffersonmourak extends React.Component {
     }
 
     activateEasterEgg() {
+      this.isSafari = true;
       this.setState({ easterEgg: true });
     }
 
