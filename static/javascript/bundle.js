@@ -69,6 +69,10 @@
 	
 	var _gooey2 = _interopRequireDefault(_gooey);
 	
+	var _runner = __webpack_require__(/*! ./components/runner.jsx */ 189);
+	
+	var _runner2 = _interopRequireDefault(_runner);
+	
 	var _lodash = __webpack_require__(/*! lodash */ 187);
 	
 	var _lodash2 = _interopRequireDefault(_lodash);
@@ -106,12 +110,13 @@
 	    function konamiCode() {
 	      var correctSequence = ["ArrowUp", "ArrowUp", "ArrowDown", "ArrowDown", "ArrowLeft", "ArrowRight", "ArrowLeft", "ArrowRight", "KeyB", "KeyA"];
 	      if (_lodash2.default.isEqual(keysSequence, correctSequence)) {
-	        this.setState({ easterEgg: true });
+	        this.activateEasterEgg();
 	      } else {
 	        keysSequence = [];
 	      }
 	    }
 	
+	    window.jeffersonmourak = _this;
 	    return _this;
 	  }
 	
@@ -123,16 +128,25 @@
 	      this.setState({ slowPc: true });
 	    }
 	  }, {
+	    key: 'activateEasterEgg',
+	    value: function activateEasterEgg() {
+	      this.setState({ easterEgg: true });
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
 	      var commonToggle = { 'exit': this.state.easterEgg };
 	      var options = {
 	        'ready': this.state.appReady,
-	        'easter-egg': this.state.easterEgg,
 	        'fullscreen': this.isSafari
 	      };
 	
 	      var gooey = !this.isSafari ? _react2.default.createElement(_gooey2.default, { easterEgg: this.state.easterEgg, ready: this.state.appReady }) : '';
+	      var easterEggPlayer = this.state.easterEgg ? _react2.default.createElement(
+	        'div',
+	        { className: (0, _classnames2.default)('easter-egg') },
+	        _react2.default.createElement(_runner2.default, null)
+	      ) : '';
 	
 	      return _react2.default.createElement(
 	        'div',
@@ -160,11 +174,7 @@
 	              _react2.default.createElement('i', { className: 'fa fa-medium', 'aria-hidden': 'true' })
 	            )
 	          ),
-	          _react2.default.createElement(
-	            'h1',
-	            { className: (0, _classnames2.default)('easter-text', { 'easter-egg': this.state.easterEgg }) },
-	            'EASTER EGG COMING SOON!'
-	          )
+	          easterEggPlayer
 	        ),
 	        gooey,
 	        _react2.default.createElement(
@@ -40211,6 +40221,62 @@
 		return module;
 	}
 
+
+/***/ }),
+/* 189 */
+/*!**************************************!*\
+  !*** ./dev/js/components/runner.jsx ***!
+  \**************************************/
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(/*! react */ 1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _classnames = __webpack_require__(/*! classnames */ 37);
+	
+	var _classnames2 = _interopRequireDefault(_classnames);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var Runner = function (_React$Component) {
+	  _inherits(Runner, _React$Component);
+	
+	  function Runner(props) {
+	    _classCallCheck(this, Runner);
+	
+	    return _possibleConstructorReturn(this, (Runner.__proto__ || Object.getPrototypeOf(Runner)).call(this, props));
+	  }
+	
+	  _createClass(Runner, [{
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'div',
+	        null,
+	        _react2.default.createElement('iframe', { width: '100%', height: '100%', src: 'https://www.youtube.com/embed/IwzUs1IMdyQ?autoplay=true&start=45&controls=0', frameBorder: '0', allowFullScreen: true })
+	      );
+	    }
+	  }]);
+	
+	  return Runner;
+	}(_react2.default.Component);
+	
+	exports.default = Runner;
 
 /***/ })
 /******/ ]);
