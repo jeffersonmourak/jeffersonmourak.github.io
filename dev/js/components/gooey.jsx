@@ -24,7 +24,7 @@ class GooeyBar extends React.Component{
         let columns = [];
         for (let i = 0; i < columnLength; i++) {
           let offset = (i % 2) * 0.2;
-          let maximumHeight = window.screen.height * (0.35 - offset);
+          let maximumHeight = window.screen.height * (0.25 - offset);
           let current = {
             height: this._randomNumber(this.defaultColumnWidth, maximumHeight),
             round: {
