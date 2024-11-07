@@ -26,7 +26,7 @@ contentDir = 'content/en-US'
 languageCode = 'en-US'
 languageDirection = 'ltr'
 title = "Jefferson Oliveira"
-copyright = "© Jefferson Oliveira - All content provided by this website are my own opinons and beliefs and are distrubuted under the <a href=\"https://creativecommons.org/licenses/by/4.0/\">Creative Commons Attribution 4.0 International License.</a>"
+copyright = "© Jefferson Oliveira<br/>All content provided by this website are my own opinons and beliefs and are distrubuted under the <br/><a href=\"https://creativecommons.org/licenses/by/4.0/\">Creative Commons Attribution 4.0 International License.</a>"
 [languages.en.params]
 subtitle = "Hey there! I'm Jefferson Oliveira, a software engineer from Brazil."
 owner = "Jefferson Oliveira"
@@ -84,7 +84,7 @@ contentDir = 'content/pt-BR'
 languageCode = 'pt-BR'
 languageDirection = 'ltr'
 title = "Jefferson Oliveira"
-copyright = "© Jefferson Oliveira - Todo conteúdo distribuido por este website são refletem minhas próprias opiniões e estão sob a licença <br/><a href=\"https://creativecommons.org/licenses/by/4.0/\">Creative Commons Attribution 4.0 International License.</a>"
+copyright = "© Jefferson Oliveira<br/>Todo conteúdo distribuido por este website refletem minhas próprias opiniões e estão sob a licença <br/><a href=\"https://creativecommons.org/licenses/by/4.0/\">Creative Commons Attribution 4.0 International License.</a>"
 [languages.pt-BR.params]
 subtitle = "Olá! Eu sou Jefferson Oliveira, um engenheiro de software curioso e apaixonado por tecnologia."
 owner = "Jefferson Oliveira"
