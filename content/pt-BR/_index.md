@@ -1,9 +1,6 @@
-
-+++
-title = "Index"
-date = "2019-01-25"
-author = "Jefferson Oliveira"
-+++
+---
+title: "Jefferson Oliveira"
+---
 
 <div class="profile-container">
   <img class="profile-picture" alt="Jefferson Oliveira profile picture" src="https://avatars.githubusercontent.com/u/5585596?v=3">
@@ -24,4 +21,4 @@ Se você quiser saber mais sobre mim, ou só bater um papo, me chama nos links a
 - [GitHub](https://github.com/jeffersonmourak)
 - [E-mail](mailto:jeffersonmourak@gmail.com)
 - [Voting Poker](https://voting.poker)
-- [Blog](/pt-br/posts/)
+- [Blog](/blog/)

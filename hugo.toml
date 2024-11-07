@@ -1,0 +1,139 @@
+baseURL = 'http://127.0.0.1:8080'
+languageCode = 'en-US'
+title = 'Jefferson Oliveira'
+theme = "terminal"
+disableKinds = ['taxonomy', 'term']
+
+[markup]
+[markup.goldmark]
+[markup.goldmark.renderer]
+unsafe = true
+
+[params]
+showLanguageSelector = true
+fullWidthTheme = false
+centerTheme = true
+
+[pagination]
+pageSize = 10
+disableAliases = false
+path = "page"
+
+[languages]
+[languages.en]
+languageName = "English"
+contentDir = 'content/en-US'
+languageCode = 'en-US'
+languageDirection = 'ltr'
+title = "Jefferson Oliveira"
+copyright = "© Jefferson Oliveira - All content provided by this website are my own opinons and beliefs and are distrubuted under the <a href=\"https://creativecommons.org/licenses/by/4.0/\">Creative Commons Attribution 4.0 International License.</a>"
+[languages.en.params]
+subtitle = "Hey there! I'm Jefferson Oliveira, a software engineer from Brazil."
+owner = "Jefferson Oliveira"
+keywords = "Jefferson Oliveira, software engineer, developer, brazil"
+copyright = "Jefferson Oliveira | CC BY 4.0"
+menuMore = "Show more"
+readMore = "Read more"
+readOtherPosts = "Read other posts"
+newerPosts = "Newer posts"
+olderPosts = "Older posts"
+missingContentMessage = "Page not found..."
+missingBackButtonLabel = "Back to home page"
+minuteReadingTime = "min read"
+words = "words"
+
+[languages.en.params.logo]
+logoText = "Jefferson Oliveira"
+logoHomeLink = "/"
+
+[languages.en.menu]
+[[languages.en.menu.main]]
+identifier = "linkedin"
+name = "LinkedIn"
+url = "https://www.linkedin.com/in/jeffersonmourak/"
+weight = 1
+[[languages.en.menu.main]]
+identifier = "github"
+name = "Github"
+url = "https://github.com/jeffersonmourak"
+weight = 2
+[[languages.en.menu.main]]
+identifier = "email"
+name = "Email"
+url = "mailto:jeffersonmourak@gmail.com"
+weight = 3
+[[languages.en.menu.main]]
+identifier = "instagram"
+name = "Instagram"
+url = "https://instagram.com/jeffersonmourak"
+weight = 4
+[[languages.en.menu.main]]
+identifier = "blog"
+name = "Blog"
+url = "blog"
+weight = 5
+[[languages.en.menu.main]]
+identifier = "voting_poker"
+name = "Voting Poker"
+url = "https://voting.poker"
+weight = 6
+
+[languages.pt-BR]
+languageName = "Portugês (Brasileiro)"
+contentDir = 'content/pt-BR'
+languageCode = 'pt-BR'
+languageDirection = 'ltr'
+title = "Jefferson Oliveira"
+copyright = "© Jefferson Oliveira - Todo conteúdo distribuido por este website são refletem minhas próprias opiniões e estão sob a licença <br/><a href=\"https://creativecommons.org/licenses/by/4.0/\">Creative Commons Attribution 4.0 International License.</a>"
+[languages.pt-BR.params]
+subtitle = "Olá! Eu sou Jefferson Oliveira, um engenheiro de software curioso e apaixonado por tecnologia."
+owner = "Jefferson Oliveira"
+keywords = "Jefferson Oliveira, engenheiro de software, desenvolvedor, brasil"
+copyright = "Jefferson Oliveira | CC BY 4.0"
+menuMore = "Ver mais"
+readMore = "Ler mais"
+readOtherPosts = "Ler outros artigos"
+newerPosts = "Artigos recentes"
+olderPosts = "Artigos antigos"
+missingContentMessage = "Página não encontrada..."
+missingBackButtonLabel = "Voltar para a página inicial"
+minuteReadingTime = "min de leitura"
+words = "palavras"
+newTab = true
+
+[languages.pt-BR.params.logo]
+logoText = "Jefferson Oliveira"
+logoHomeLink = "/pt-BR"
+
+[languages.pt-BR.menu]
+[[languages.pt-BR.menu.main]]
+identifier = "linkedin"
+name = "LinkedIn"
+url = "https://www.linkedin.com/in/jeffersonmourak/"
+weight = 1
+newTab = true
+[[languages.pt-BR.menu.main]]
+identifier = "github"
+name = "Github"
+url = "https://github.com/jeffersonmourak"
+weight = 2
+[[languages.pt-BR.menu.main]]
+identifier = "email"
+name = "Email"
+url = "mailto:jeffersonmourak@gmail.com"
+weight = 3
+[[languages.pt-BR.menu.main]]
+identifier = "instagram"
+name = "Instagram"
+url = "https://instagram.com/jeffersonmourak"
+weight = 4
+[[languages.pt-BR.menu.main]]
+identifier = "blog"
+name = "Blog"
+url = "/blog/"
+weight = 5
+[[languages.pt-BR.menu.main]]
+identifier = "voting_poker"
+name = "Voting Poker"
+url = "https://voting.poker"
+weight = 6

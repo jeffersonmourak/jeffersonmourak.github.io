@@ -1,5 +1,0 @@
-baseURL = 'http://127.0.0.1:8080'
-languageCode = 'en-US'
-title = 'Jefferson Oliveira'
-theme = "terminal"
-defaultContentLanguage = "en-US"
