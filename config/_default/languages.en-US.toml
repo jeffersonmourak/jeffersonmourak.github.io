@@ -1,0 +1,55 @@
+
+languageName = "English"
+title = "Jefferson Oliveira"
+copyright = "© Jefferson Oliveira - All content provided by this website are my own opinons and beliefs and are distrubuted under the <a href=\"https://creativecommons.org/licenses/by/4.0/\">Creative Commons Attribution 4.0 International License.</a>"
+
+[params]
+subtitle = "Hey there! I'm Jefferson Oliveira, a software engineer from Brazil."
+owner = "Jefferson Oliveira"
+keywords = "Jefferson Oliveira, software engineer, developer, brazil"
+copyright = "Jefferson Oliveira | CC BY 4.0"
+menuMore = "Show more"
+readMore = "Read more"
+readOtherPosts = "Read other posts"
+newerPosts = "Newer posts"
+olderPosts = "Older posts"
+missingContentMessage = "Page not found..."
+missingBackButtonLabel = "Back to home page"
+minuteReadingTime = "min read"
+words = "words"
+
+[params.logo]
+logoText = "Jefferson Oliveira"
+logoHomeLink = "/"
+
+[menu]
+[[menu.main]]
+identifier = "linkedin"
+name = "LinkedIn"
+url = "https://www.linkedin.com/in/jeffersonmourak/"
+weight = 1
+[[menu.main]]
+identifier = "github"
+name = "Github"
+url = "https://github.com/jeffersonmourak"
+weight = 2
+[[menu.main]]
+identifier = "email"
+name = "Email"
+url = "mailto:jeffersonmourak@gmail.com"
+weight = 3
+[[menu.main]]
+identifier = "instagram"
+name = "Instagram"
+url = "https://instagram.com/jeffersonmourak"
+weight = 4
+[[menu.main]]
+identifier = "posts"
+name = "Blog"
+url = "/pt-br/posts"
+weight = 5
+[[menu.main]]
+identifier = "voting_poker"
+name = "Voting Poker"
+url = "https://voting.poker"
+weight = 6
