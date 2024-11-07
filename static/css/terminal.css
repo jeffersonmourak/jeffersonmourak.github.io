@@ -392,6 +392,12 @@ hr {
   line-height: var(--line-height);
 }
 
+.post:not(.on-list) .post-title {
+  --font-size: 2.5rem;
+  --line-height: 3.54rem;
+  line-height: var(--line-height);
+}
+
 .profile-container {
   display: flex;
   justify-content: center;
