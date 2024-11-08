@@ -1,0 +1,27 @@
+{
+  "name": "jeffersonmourak.github.io",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jeffersonmourak/jeffersonmourak.github.io.git"
+  },
+  "author": "",
+  "license": "CC-BY-4.0",
+  "bugs": {
+    "url": "https://github.com/jeffersonmourak/jeffersonmourak.github.io/issues"
+  },
+  "homepage": "https://github.com/jeffersonmourak/jeffersonmourak.github.io#readme",
+  "description": "",
+  "devDependencies": {
+    "@babel/cli": "^7.25.9",
+    "@babel/core": "^7.26.0",
+    "@babel/preset-typescript": "^7.26.0"
+  },
+  "dependencies": {
+    "highlight.run": "^9.5.2"
+  }
+}

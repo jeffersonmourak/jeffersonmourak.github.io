@@ -5,23 +5,11 @@
     <title>{{ if .IsHome }}{{ $.Site.Title }}{{ else }}{{ .Title }} :: {{ $.Site.Title }}{{ end }}</title>
   {{ end }}
   {{ partial "head.html" . }}
-  <script src="https://unpkg.com/highlight.run"></script>
-  <script>
-    H.init('0dq3no4e', {
-        environment: 'production',
-        version: 'commit:abcdefg12345',
-        networkRecording: {
-            enabled: true,
-            recordHeadersAndBody: true,
-            urlBlocklist: [
-      // insert full or partial urls that you don't want to record here
-      // Out of the box, Highlight will not record these URLs (they can be safely removed):
-      "https://www.googleapis.com/identitytoolkit",
-      "https://securetoken.googleapis.com",
-            ],
-        },
-    });
-</script>
+  
+  {{ $highlight := resources.Get "ts/highlight.ts" | babel | js.Build }}
+  {{ $bundle := slice $highlight | resources.Concat "highlight.js" | resources.Minify }}
+
+  <script type="text/javascript" src="{{ $bundle.RelPermalink }}"></script>
 </head>
 <body>
 {{ $container := cond ($.Site.Params.FullWidthTheme | default false) "container full" (cond ($.Site.Params.CenterTheme | default false) "container center" "container") }}
