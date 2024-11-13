@@ -8,7 +8,10 @@
   
   {{ $highlight := resources.Get "ts/highlight.ts" | babel | js.Build }}
   {{ $bundle := slice $highlight | resources.Concat "highlight.js" | resources.Minify }}
+  {{ $shortcodes := resources.Get "ts/shortcodes/index.ts" | babel | js.Build }}
+  {{ $shortcodesBundle := slice $shortcodes | resources.Concat "shortcodes.js" | resources.Minify }}
 
+  <script type="text/javascript" src="{{ $shortcodesBundle.RelPermalink }}"></script>
   <script type="text/javascript" src="{{ $bundle.RelPermalink }}"></script>
 </head>
 <body>

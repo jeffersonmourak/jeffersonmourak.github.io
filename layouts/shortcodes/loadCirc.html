@@ -1,0 +1,5 @@
+{{ if .IsNamedParams }}
+<iframe src="/embedded/shortcode.html?type=loadCirc&entry={{$.Site.BaseURL}}{{$.Page.Path}}/{{ .Get " src" }}" frameBorder="0" width="640" height="480"></iframe>
+{{ else }}
+<iframe src="/embedded/shortcode.html?type=loadCirc&entry={{$.Site.BaseURL}}{{$.Page.Path}}/{{ .Get 0 }}" frameBorder="0" width="640" height="480"></iframe>
+{{ end }}
