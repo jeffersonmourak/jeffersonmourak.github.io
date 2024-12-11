@@ -52,7 +52,9 @@
     </tool>
     <tool lib="1" name="OR Gate"/>
     <tool lib="1" name="XOR Gate"/>
-    <tool lib="1" name="NAND Gate"/>
+    <tool lib="1" name="NAND Gate">
+      <a name="size" val="30"/>
+    </tool>
     <tool lib="1" name="NOR Gate"/>
     <sep/>
     <tool lib="4" name="D Flip-Flop"/>
@@ -62,26 +64,19 @@
     <a name="circuit" val="main"/>
     <a name="circuitnamedboxfixedsize" val="true"/>
     <a name="simulationFrequency" val="1.0"/>
-    <comp lib="0" loc="(20,10)" name="Pin"/>
-    <comp lib="0" loc="(30,130)" name="Pin"/>
-    <comp lib="0" loc="(30,20)" name="Pin"/>
-    <comp lib="0" loc="(30,90)" name="Pin"/>
-    <comp lib="1" loc="(160,70)" name="NAND Gate">
-      <a name="size" val="30"/>
+    <comp lib="0" loc="(20,20)" name="Pin">
+      <a name="facing" val="south"/>
     </comp>
-    <comp lib="5" loc="(100,10)" name="LED"/>
-    <comp lib="5" loc="(110,110)" name="LED"/>
-    <wire from="(20,10)" to="(40,10)"/>
-    <wire from="(30,130)" to="(50,130)"/>
-    <wire from="(30,90)" to="(50,90)"/>
-    <wire from="(40,10)" to="(40,80)"/>
-    <wire from="(40,10)" to="(60,10)"/>
-    <wire from="(40,80)" to="(110,80)"/>
-    <wire from="(50,110)" to="(110,110)"/>
-    <wire from="(50,110)" to="(50,130)"/>
-    <wire from="(50,90)" to="(50,110)"/>
-    <wire from="(60,10)" to="(100,10)"/>
-    <wire from="(60,10)" to="(60,60)"/>
-    <wire from="(60,60)" to="(120,60)"/>
+    <comp lib="0" loc="(60,20)" name="Pin">
+      <a name="facing" val="south"/>
+    </comp>
+    <comp lib="5" loc="(40,40)" name="LED">
+      <a name="facing" val="north"/>
+    </comp>
+    <wire from="(20,20)" to="(20,30)"/>
+    <wire from="(20,30)" to="(40,30)"/>
+    <wire from="(40,30)" to="(40,40)"/>
+    <wire from="(40,30)" to="(60,30)"/>
+    <wire from="(60,20)" to="(60,30)"/>
   </circuit>
 </project>
