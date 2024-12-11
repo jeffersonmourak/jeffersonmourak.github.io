@@ -4,8 +4,22 @@ title = 'Jefferson Oliveira'
 theme = "terminal"
 disableKinds = ['taxonomy', 'term']
 
+[outputs]
+home = ['html']
+section = ['html', 'rss']
+taxonomy = ['html']
+term = ['html']
+
 [security.exec]
-    allow = ['^(dart-)?sass(-embedded)?$', '^go$', '^git$', '^npx$', '^postcss$', '^tailwindcss$', '^babel$']
+allow = [
+    '^(dart-)?sass(-embedded)?$',
+    '^go$',
+    '^git$',
+    '^npx$',
+    '^postcss$',
+    '^tailwindcss$',
+    '^babel$',
+]
 
 [markup]
 [markup.goldmark]

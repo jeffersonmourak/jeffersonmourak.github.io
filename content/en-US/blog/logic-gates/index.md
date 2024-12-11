@@ -23,7 +23,7 @@ Quando sinais são combinados e/ou comparados nós chamamos de operação lógic
 Um dia você contrata uma empresa de elétrica para instalar dois interruptores em um corredor da sua casa, e por um erro de desenho acabou que foi instalado da seguinte forma.
 O fio passa pelo primeiro interruptor (vamos chamar de interruptor A) e o fio vai direto para o segundo interruptor (B para os íntimos) e em seguida sai para a lâmpada.
 
-![][CPUImageFrame1]
+{{< loadCirc "example0.circ" 530 410 6 >}}
 
 Se você notar bem, só vai ter como eu ligar a lâmpada se os dois interruptores estiverem ligados ao mesmo tempo, no momento que qualquer um desligar, a luz apagará também. Pois é, essa atrocidade da elétrica residencial pode ser explicada na matemática a partir de um de seus ramos chamado de álgebra booleana e nela, podemos demonstrar isso com uma tabela
 
@@ -52,7 +52,7 @@ A resposta está na pergunta, vamos precisar de uma outra porta lógica chamada 
 
 mas antes de chegar nela, vamos ver um outra porta que inicialmente não parece muito importante mas iremos precisar dela, é a Negação ou NOT, e é a mais simples de todas.
 
-![][CPUImageFrame5]
+{{< loadCirc "sample.circ" 650 290 6 >}}
 
 E se escrevermos ela numa tabela verdade teremos isso aqui.
 
@@ -60,13 +60,21 @@ E se escrevermos ela numa tabela verdade teremos isso aqui.
 | :-----: | :-----: | :-----: |
 |  | 1 | 0 |
 
-Então, vamos fazer uma pausa e revisar o que a gente já sabe, Primeiro é o nome de algumas operações e como representar elas numa tabela, pra simplificar vamos transformar eles em símbolos, toda vez que nos referirmos ao AND esse será isso ![][Group41] e o NOT ![][Group51]
+Então, vamos fazer uma pausa e revisar o que a gente já sabe, Primeiro é o nome de algumas operações e como representar elas numa tabela, pra simplificar vamos transformar eles em símbolos, toda vez que nos referirmos ao AND esse será isso
+
+{{< loadCirc "and.circ" 200 175 3 >}}
+
+e o NOT
+
+{{< loadCirc "not.circ" 110 110 3 >}}
 
 Com essas duas operações lógicas já podemos combinar os seus resultados e criar uma terceira porta lógica chamada NAND, ou Not AND
 
-também iremos representado dessa forma ![][Group8]
+também iremos representado dessa forma
 
-![][Frame5]
+{{< loadCirc "nand.circ" 200 175 3 >}}
+
+{{< loadCirc "example1.circ" 650 290 3 >}}
 
 A tabela-verdade dela é idêntica ao do AND porém com os resultados invertidos.
 
@@ -77,7 +85,7 @@ A tabela-verdade dela é idêntica ao do AND porém com os resultados invertidos
 
 Se usarmos a mesma lógica de combinar essas portas, podemos fazer o seguinte. Usando uma porta NAND, e invertendo a entrada de cada interruptor com um NOT você terá algo assim.
 
-![][Frame52]
+{{< loadCirc "example2.circ" 650 290 3 >}}
 
 Agora vamos analisar um pouco esse diagrama acima, podemos ver que quando os dois estiverem desligados, ambos serão invertidos pelo NOT e o NAND irá cair na condição ¬∧(1, 1) = 0 ou seja, quando ambos estiverem desligados a lambada apagará, porém o que acontece quando ¬∧(1, 0) ou ¬∧(0, 1)? Vamos então descrever a tabela-verdade dessa imagem.
 
@@ -97,22 +105,15 @@ Referências
 * [Making logic gates from transistors (YouTube)](https://www.youtube.com/watch?v=sTu3LwpF6XI)
 * [HOW TRANSISTORS RUN CODE? (YouTube)](https://www.youtube.com/watch?v=HjneAhCy2N4)
 
-[CPUImageFrame1]: CPUImageFrame1.png
 
-[CPUImageFrame5]: CPUImageFrame5.png
 <!-- width=443px height=148px -->
 
-[Group41]: Group41.png
 <!-- width=30px height=25px -->
 
-[Group51]: Group51.png
 <!-- width=31px height=25px -->
 
-[Group8]: Group8.png
 <!-- width=38px height=25px -->
 
-[Frame5]: Frame5.png
 <!-- width=555px height=192px -->
 
-[Frame52]: Frame52.png
 <!-- width=552px height=191px -->

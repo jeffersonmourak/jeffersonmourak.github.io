@@ -410,3 +410,30 @@ hr {
   height: 250px;
   border-radius: 50%;
 }
+
+.shortcode-widget {
+  position: relative;
+  overflow: hidden;
+}
+
+.shortcode-widget .interactive-label {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: var(--accent);
+  color: var(--background);
+  padding: 5px 10px;
+  border-radius: var(--radius);
+  transition: top 0.3s ease;
+}
+
+.shortcode-widget:hover .interactive-label {
+  top: 0;
+}
+
+.shortcode-iframe {
+  position: relative;
+  border: 8px solid var(--accent);
+  border-radius: var(--radius);
+  padding: 8px;
+}

@@ -1,0 +1,16 @@
+<div class="shortcode-widget">
+  {{ if .IsNamedParams }}
+  <iframe class="shortcode-iframe" src="/embedded/shortcode.html?type=loadCirc&width={{ if .Get " width" }}{{
+    .Get " width" }}{{else}}640{{end}}&height={{if .Get " height" }}{{ .Get " height" }}{{else}}480{{end}}{{if
+    .Get " scale" }}&scale={{.Get "scale" }}{{end}}&entry={{$.Site.BaseURL}}{{$.Page.Path}}/{{ .Get " src" }}"
+    frameBorder="0" width="{{ if .Get " width" }}{{ .Get " width" }}{{else}}640{{end}}" height="{{if .Get " height" }}{{
+    .Get " height" }}{{else}}480{{end}}"></iframe>
+  {{ else }}
+  <iframe class="shortcode-iframe" src="/embedded/shortcode.html?type=loadCirc{{if .Get 3}}&width={{ if .Get 1 }}{{
+  .Get 1 }}{{else}}640{{end}}&height={{if .Get 2 }}{{ .Get 2 }}{{else}}480{{end}}&scale={{.Get 3
+  }}{{end}}&entry={{$.Site.BaseURL}}{{$.Page.Path}}/{{ .Get 0 }}" frameBorder="0"
+    width="{{ if .Get 1 }} {{.Get 1}} {{else}}640{{end}}"
+    height="{{ if .Get 2 }}{{ .Get 2 }}{{else}}480{{end}}"></iframe>
+  {{ end }}
+  <div class="interactive-label">Interactive</div>
+</div>
