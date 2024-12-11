@@ -436,4 +436,7 @@ hr {
   border: 8px solid var(--accent);
   border-radius: var(--radius);
   padding: 8px;
+  width: var(--width);
+  max-width: 100%;
+  aspect-ratio: var(--ratio);
 }

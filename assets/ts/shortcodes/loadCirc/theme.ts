@@ -24,17 +24,23 @@ export const colors = {
   blue: "#007bff",
   purple: "#6f42c1",
   pink: "#e83e8c",
+  //white
   base00: "#ffffff",
+
   base05: "#f8f9fa",
   base10: "#f1f3f5",
-  base20: "#e9ecef",
+  // green shades
+  base20: "#165a26",
   base25: "#dee2e6",
   base30: "#ced4da",
-  base35: "#adb5bd",
+  // orange shades
+  base35: "#634e0d",
+  // blue shades
   base40: "#24b4ff",
   base50: "#bee3ff",
   base60: "#0b99ff",
   base70: "#0059b9",
+  // black
   base100: "#000000",
 } satisfies Record<ThemeColor, string>;
 
@@ -77,6 +83,7 @@ const PinSkin = ({
   theme,
   state,
   pointerLocation,
+  portsSignals,
   scaleFactor = 1,
 }: DrawArguments<PinState>) => {
   ctx.beginPath();
@@ -85,11 +92,22 @@ const PinSkin = ({
   const [ogX, ogY] = loc;
   const [width, height] = dim;
 
-  ctx.fillStyle = state.output
-    ? "blue"
-    : pointerLocation !== null
-    ? theme.colors.yellow
-    : "green";
+  const isOn = portsSignals[0] === 1;
+
+  ctx.lineWidth = 1 * scaleFactor;
+
+  if (state.output) {
+    ctx.fillStyle = isOn ? theme.colors.base60 : theme.colors.base50;
+    ctx.strokeStyle = isOn ? theme.colors.base70 : theme.colors.base40;
+  } else {
+    if (pointerLocation !== null) {
+      ctx.fillStyle = theme.colors.yellow;
+      ctx.strokeStyle = theme.colors.yellow;
+    } else {
+      ctx.strokeStyle = isOn ? theme.colors.base35 : theme.colors.base20;
+      ctx.fillStyle = isOn ? theme.colors.orange : theme.colors.green;
+    }
+  }
 
   ctx.roundRect(
     resolveCn(ogX, scaleFactor),
@@ -99,7 +117,31 @@ const PinSkin = ({
     2 * scaleFactor
   );
   ctx.fill();
-  ctx.closePath();
+  ctx.stroke();
+
+  ctx.beginPath();
+
+  ctx.fillStyle = theme.colors.base00;
+  ctx.strokeStyle = theme.colors.base70;
+  ctx.lineWidth = 0.5 * scaleFactor;
+  ctx.textAlign = "center";
+  ctx.fill();
+  ctx.font = `${6 * scaleFactor}px monospace`;
+  ctx.strokeText(
+    isOn ? "1" : "0",
+    resolveCn(ogX, scaleFactor) + resolveCn(width, scaleFactor) / 2,
+    resolveCn(ogY, scaleFactor) +
+      resolveCn(height, scaleFactor) / 2 +
+      scaleFactor * 2
+  );
+
+  ctx.fillText(
+    isOn ? "1" : "0",
+    resolveCn(ogX, scaleFactor) + resolveCn(width, scaleFactor) / 2,
+    resolveCn(ogY, scaleFactor) +
+      resolveCn(height, scaleFactor) / 2 +
+      scaleFactor * 2
+  );
 };
 
 function drawPolygon(
@@ -283,15 +325,6 @@ const NandSkin = ({
     0,
     2 * Math.PI
   );
-
-  // drawPolygon(
-  //   ctx,
-  //   resolveCn(ogX, scaleFactor) + (5 * scaleFactor) / 2,
-  //   resolveCn(ogY, scaleFactor) + resolveCn(height, scaleFactor) / 2,
-  //   3,
-  //   5 * scaleFactor,
-  //   Math.PI * 2
-  // );
 
   ctx.closePath();
 

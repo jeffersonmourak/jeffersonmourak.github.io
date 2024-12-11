@@ -4,6 +4,10 @@ title = 'Jefferson Oliveira'
 theme = "terminal"
 disableKinds = ['taxonomy', 'term']
 
+[build]
+  noJSConfigInAssets = true
+#   useResourceCacheWhen = 'fallback'
+
 [outputs]
 home = ['html']
 section = ['html', 'rss']

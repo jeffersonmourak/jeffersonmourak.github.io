@@ -53,6 +53,13 @@ async function mountFromCircRenderer({
       height,
     });
 
+    canvasElement.classList.add("circ-renderer-canvas");
+
+    canvasElement.setAttribute(
+      "style",
+      `--width: ${width}px; --ratio: ${width}/${height}`
+    );
+
     document.body.appendChild(canvasElement);
   } catch (e) {
     console.log(e);
