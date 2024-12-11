@@ -1,20 +1,24 @@
-+++
-title = "Portas lógicas"
-date = "2024-11-07T08:27:04-03:00"
-author = "Jefferson Oliveira"
-cover = ""
-tags = ["PT-BR", "CPU", "Logic Gates"]
-keywords = ["CPU", "Logic Gates", "Portas lógicas", "Computação"]
-description = "As portas lógicas são a base da computação, com elas podemos fazer operações binárias que calculam desde a soma de dois números até a execução de um programa."
-showFullContent = false
-readingTime = true
-hideComments = true
-draft = false
-+++
+---
+title: "Portas lógicas"
+date: "2024-11-07T08:27:04-03:00"
+author: "Jefferson Oliveira"
+cover: ""
+tags: ["PT-BR", "CPU", "Logic Gates"]
+keywords: ["CPU", "Logic Gates", "Portas lógicas", "Computação"]
+description: "As portas lógicas são a base da computação, com elas podemos fazer operações binárias que calculam desde a soma de dois números até a execução um programa."
+showFullContent: false
+readingTime: true
+hideComments: true
+draft: false
+---
+> Revisado [11/12/2024]
+>
+> Oi pessoal, então tive que fazer umas mudanças aqui no post pra adicionar alguns widgets
+> interativos, e aproveitei para dar um pouco mais de contexto ao conteúdo.
 
-O primeiro conceito que temos que aprender é o de portas lógicas, elas são a base de toda computação, com elas nós podemos fazer certas operações que recebe como entrada um ou mais valores e terá outro valor como resultado.
+Olá, esse daqui é o primeiro artigo de uma série sobre os fundamentos da computação, a ideia é demonstrar de forma simples e prática, como que esse dispositivo transforma zeros e uns em praticamente qualquer coisa, como que CPUs funcionam e outros assunstos interessantes. Então para começar  primeiro conceito que temos que aprender é o de portas lógicas, elas são a base de toda computação, com elas nós podemos fazer certas operações que recebe como entrada um ou mais valores e terá outro valor como resultado.
 
-Mas o que são esses valores? O número 42? O nome da minha mãe?, esses “valores” são energia, mais especificamente a presença e ausência dela. Como todos sabem computadores trabalham com números binários, ou seja essas maquinas só entendem 0 e 1 ou “Tem energia” e “Não tem energia”, no entanto, não iremos chamar esses zeros e uns de energia, para o computador eles são sinais.
+Mas o que são esses valores? O número 42? O nome da minha mãe?, esses “valores” são energia, mais especificamente a presença e ausência dela. Como foi falado na introdução computadores funcionam utilizando dígitos binários, ou seja essas maquinas só entendem 0 e 1 ou “Tem energia” e  “Não tem energia”, no entanto, não iremos chamar esses zeros e uns de energia, para o computador eles são sinais.
 
 Quando sinais são combinados e/ou comparados nós chamamos de operação lógica, por exemplo.
 
@@ -23,7 +27,7 @@ Quando sinais são combinados e/ou comparados nós chamamos de operação lógic
 Um dia você contrata uma empresa de elétrica para instalar dois interruptores em um corredor da sua casa, e por um erro de desenho acabou que foi instalado da seguinte forma.
 O fio passa pelo primeiro interruptor (vamos chamar de interruptor A) e o fio vai direto para o segundo interruptor (B para os íntimos) e em seguida sai para a lâmpada.
 
-{{< loadCirc "example0.circ" 530 410 6 >}}
+![](./CPUImageFrame1.png)
 
 Se você notar bem, só vai ter como eu ligar a lâmpada se os dois interruptores estiverem ligados ao mesmo tempo, no momento que qualquer um desligar, a luz apagará também. Pois é, essa atrocidade da elétrica residencial pode ser explicada na matemática a partir de um de seus ramos chamado de álgebra booleana e nela, podemos demonstrar isso com uma tabela
 
@@ -104,16 +108,3 @@ Referências
 * [Exploring How Computers Work (YouTube)](https://www.youtube.com/watch?v=QZwneRb-zqA)
 * [Making logic gates from transistors (YouTube)](https://www.youtube.com/watch?v=sTu3LwpF6XI)
 * [HOW TRANSISTORS RUN CODE? (YouTube)](https://www.youtube.com/watch?v=HjneAhCy2N4)
-
-
-<!-- width=443px height=148px -->
-
-<!-- width=30px height=25px -->
-
-<!-- width=31px height=25px -->
-
-<!-- width=38px height=25px -->
-
-<!-- width=555px height=192px -->
-
-<!-- width=552px height=191px -->
