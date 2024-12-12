@@ -15,3 +15,5 @@ draft = true
 This is a draft post, it will not be published.
 
 {{< loadCirc "test.circ" 640 480 3 >}}
+
+{{< binaryCounter >}}

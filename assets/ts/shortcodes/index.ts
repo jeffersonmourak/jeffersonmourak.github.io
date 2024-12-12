@@ -1,5 +1,9 @@
+import initializeBinaryCounter from "./binaryCounter/index";
 import initializeLoadCirc from "./loadCirc/index";
 
 (() => {
-  initializeLoadCirc();
+  window.onload = () => {
+    initializeBinaryCounter();
+    initializeLoadCirc();
+  };
 })();

@@ -151,10 +151,127 @@
       overflow: hidden;
     }
 
+    sup {
+      vertical-align: super;
+      font-size: smaller;
+    }
+
     .circ-renderer-canvas {
       width: var(--width);
       max-width: 100%;
       aspect-ratio: var(--ratio);
+    }
+
+    .cell-widget {
+      position: relative;
+      width: var(--size);
+      height: var(--size);
+    }
+
+    .cells-wrapper {
+      display: grid;
+      flex-wrap: wrap;
+      width: 100%;
+      gap: 20px;
+      grid-template-columns: repeat(var(--cell-count), var(--size)) var(--size) var(--size);
+      grid-template-rows: [equations] 1fr;
+    }
+
+    .cells-separator {
+      font-size: 5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+    }
+
+    .cells-separator.equation {
+      font-size: initial;
+    }
+
+    .cell-equation {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      color: #fff;
+    }
+
+    .cell {
+      --turn-offset: -10px;
+
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: var(--size);
+      height: var(--size);
+      margin: calc(var(--size) * -0.5);
+      float: left;
+      perspective: 500px;
+    }
+
+    .content {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      /*   box-shadow: 0 0 15px rgba(0, 0, 0, 0.1); */
+
+      transform-origin: 0px var(--turn-offset) 0px;
+      transform-style: preserve-3d;
+    }
+
+    .cell.active .current.digit {
+      transition: transform var(--animation-time);
+      transform: rotateX(350deg);
+    }
+
+    .cell.active .current.digit.back.face {
+      transition: transform var(--animation-time);
+      transform: rotateY(180deg) rotateX(-350deg);
+    }
+
+    .cell.active .next.digit {
+      transition: transform calc(var(--animation-time) / 3);
+      transform: rotateX(0deg);
+    }
+
+    .cell.active .next.digit.back.face {
+      transition: transform var(--animation-time);
+      transform: rotateY(180deg) rotateX(0deg);
+    }
+
+    .digit {
+      position: absolute;
+      height: 100%;
+      width: 100%;
+      background: white;
+      line-height: var(--size);
+      color: #03446a;
+      text-align: center;
+      font-size: 60px;
+      border-radius: 5px;
+      backface-visibility: hidden;
+      /*   transform: rotateX(0deg); */
+      transform-origin: 0px -10px 0px;
+    }
+
+    .digit.next {
+      transform: rotateX(-20deg);
+    }
+
+    .face {
+      position: absolute;
+      height: 100%;
+      width: 100%;
+    }
+
+    .face.front {
+      translate: 0px 0px 1px;
+    }
+
+    .face.back {
+      transform: rotateY(180deg);
+      translate: var(--size) 0px -1px;
     }
   </style>
 </head>

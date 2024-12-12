@@ -1,0 +1,17 @@
+{{ if .IsNamedParams }}
+<div class="binary-counter-widget">
+  <iframe class="shortcode-iframe" src="/embedded/shortcode.html?type=binaryCounter&width={{ if .Get " width" }}{{
+    .Get " width" }}{{else}}640{{end}}&height={{if .Get " height" }}{{ .Get " height" }}{{else}}480{{end}}{{if
+    .Get " scale" }}&scale={{.Get "scale" }}{{end}}" frameBorder="0" width="{{ if .Get " width" }}{{ .Get " width"
+    }}{{else}}640{{end}}" height="{{if .Get " height" }}{{ .Get " height" }}{{else}}480{{end}}"></iframe>
+  <div class="interactive-label">Interactive</div>
+</div>
+{{ else }}
+<div class="shortcode-widget"
+  style="--ratio: {{ if .Get 0 }}{{.Get 0}}{{else}}640{{end}}/{{ if .Get 1 }}{{ .Get 1 }}{{else}}480{{end}}; --width: {{ if .Get 0 }}{{.Get 0}}px{{else}}640px{{end}}; --height: {{ if .Get 2 }}{{ .Get 2 }}px{{else}}480px{{end}}">
+  <iframe class="shortcode-iframe" src="/embedded/shortcode.html?type=binaryCounter{{if .Get 2}}&width={{ if .Get 1 }}{{
+  .Get 0 }}{{else}}640{{end}}&height={{if .Get 2 }}{{ .Get 2 }}{{else}}480{{end}}&scale={{ .Get 2 }}{{end}}"
+    frameBorder="0"></iframe>
+  {{ end }}
+  <div class="interactive-label">Interactive</div>
+</div>
