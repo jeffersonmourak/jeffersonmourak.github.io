@@ -132,5 +132,8 @@ export function presentCells(
     increment() {
       decimalCounter.increment();
     },
+    decrement() {
+      decimalCounter.decrement();
+    },
   };
 }

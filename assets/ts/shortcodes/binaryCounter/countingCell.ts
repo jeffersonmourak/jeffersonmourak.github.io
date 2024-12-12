@@ -4,6 +4,7 @@ export type CountingCell = {
   cell: HTMLDivElement;
   value: number;
   increment: () => void;
+  decrement: () => void;
   clear: () => void;
   set: (value: number) => void;
   safeAttachAt(parent: HTMLElement): void;
@@ -227,6 +228,23 @@ function countingCell({
     animateChange();
   }
 
+  function decrement() {
+    if (instance.blocked) {
+      return;
+    }
+    instance.blocked = true;
+
+    const newValue = (instance.value - 1 + limit) % limit;
+
+    if (newValue < instance.value) {
+      // onCarry();
+    }
+
+    setCounterValue(newValue);
+
+    animateChange();
+  }
+
   function set(value: number) {
     if (instance.blocked) {
       return;
@@ -265,6 +283,7 @@ function countingCell({
     ...instance,
     cell: cellWidget,
     increment,
+    decrement,
     clear,
     set,
     safeAttachAt,

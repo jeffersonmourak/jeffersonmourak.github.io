@@ -28,7 +28,7 @@ async function renderWidget({
 }): Promise<void> {
   let base = 2;
   let cellCount = 3;
-  const animationDuration = 300;
+  const animationDuration = 500;
 
   const presenter = document.createElement("div");
 
@@ -68,21 +68,33 @@ async function renderWidget({
     presenter.appendChild(counterPresenter.dom);
   };
 
-  const activateButton = document.createElement("button");
-  activateButton.textContent = "Activate";
+  const incrementButton = document.createElement("button");
+  incrementButton.textContent = "increment";
 
-  activateButton.style.position = "absolute";
-  activateButton.style.bottom = "0";
-  activateButton.style.left = "0";
+  incrementButton.style.position = "absolute";
+  incrementButton.style.bottom = "0";
+  incrementButton.style.right = "0";
 
-  activateButton.onclick = () => {
+  const decrementButton = document.createElement("button");
+  decrementButton.textContent = "decrement";
+
+  decrementButton.style.position = "absolute";
+  decrementButton.style.bottom = "0";
+  decrementButton.style.left = "0";
+
+  incrementButton.onclick = () => {
     counterPresenter.increment();
+  };
+
+  decrementButton.onclick = () => {
+    counterPresenter.decrement();
   };
 
   presenter.appendChild(counterPresenter.dom);
 
   document.body.appendChild(presenter);
-  document.body.appendChild(activateButton);
+  document.body.appendChild(incrementButton);
+  document.body.appendChild(decrementButton);
   document.body.appendChild(baseSlider);
   document.body.appendChild(cellsSlider);
 
