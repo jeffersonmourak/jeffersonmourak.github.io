@@ -166,6 +166,8 @@
       position: relative;
       width: var(--size);
       height: var(--size);
+      overflow: hidden;
+      border-radius: 8px;
     }
 
     .cells-wrapper {
@@ -197,81 +199,260 @@
       color: #fff;
     }
 
-    .cell {
-      --turn-offset: -10px;
-
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: var(--size);
-      height: var(--size);
-      margin: calc(var(--size) * -0.5);
-      float: left;
-      perspective: 500px;
+    .display.active .flip {
+      transition: transform var(--animation-time);
+      transform: rotateX(-180deg);
     }
 
-    .content {
+    .display.active .controls {
+      pointer-events: none;
+      opacity: 0;
+      cursor: pointer;
+    }
+
+    .display.active .partial {
+      transition: background var(--animation-time);
+      background: hsl(var(--hue), 39%, 20%);
+    }
+
+    .display.active .partial .top {
+      transition: background var(--animation-time);
+      background: hsl(var(--hue), 39%, 71%);
+    }
+
+    .display {
+      --hue: 266;
+      --sat: 39%;
+      --light: 71%;
+
+      -webkit-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+
+      position: relative;
+      width: var(--size);
+      height: var(--size);
+      perspective: 500px;
+      transform-style: preserve-3d;
+      background: hsl(var(--hue), var(--sat), var(--light));
+    }
+
+    .display .partial {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      translate: 0px 0px 0px;
+      background: hsl(var(--hue), var(--sat), var(--light));
+    }
+
+    .display .partial .top {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: hsl(var(--hue), var(--sat), calc(var(--light) - 20%));
+      clip-path: content-box rect(0% auto calc(50% + 1px) auto);
+    }
+
+    .display .flip {
       position: absolute;
       width: 100%;
       height: 100%;
-      /*   box-shadow: 0 0 15px rgba(0, 0, 0, 0.1); */
-
-      transform-origin: 0px var(--turn-offset) 0px;
+      background: hsl(var(--hue), var(--sat), var(--light));
+      rotate: x 1deg;
       transform-style: preserve-3d;
     }
 
-    .cell.active .current.digit {
-      transition: transform var(--animation-time);
-      transform: rotateX(350deg);
-    }
-
-    .cell.active .current.digit.back.face {
-      transition: transform var(--animation-time);
-      transform: rotateY(180deg) rotateX(-350deg);
-    }
-
-    .cell.active .next.digit {
-      transition: transform calc(var(--animation-time) / 3);
-      transform: rotateX(0deg);
-    }
-
-    .cell.active .next.digit.back.face {
-      transition: transform var(--animation-time);
-      transform: rotateY(180deg) rotateX(0deg);
-    }
-
-    .digit {
+    .display .flip .value {
       position: absolute;
-      height: 100%;
       width: 100%;
-      background: white;
-      line-height: var(--size);
-      color: #03446a;
-      text-align: center;
-      font-size: 60px;
-      border-radius: 5px;
-      backface-visibility: hidden;
-      /*   transform: rotateX(0deg); */
-      transform-origin: 0px -10px 0px;
-    }
-
-    .digit.next {
-      transform: rotateX(-20deg);
-    }
-
-    .face {
-      position: absolute;
       height: 100%;
-      width: 100%;
-    }
-
-    .face.front {
       translate: 0px 0px 1px;
+      backface-visibility: hidden;
+      transform-style: preserve-3d;
+      background: hsl(var(--hue), var(--sat), var(--light));
     }
 
-    .face.back {
-      transform: rotateY(180deg);
-      translate: var(--size) 0px -1px;
+    .display .flip .target {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      transform: rotateZ(180deg) rotateY(180deg);
+      translate: 0px 0px -1px;
+      backface-visibility: hidden;
+      transform-style: preserve-3d;
+    }
+
+    .value,
+    .target,
+    .partial {
+      font-size: 6rem;
+      text-align: center;
+      line-height: var(--size);
+    }
+
+    .resolution-line .value,
+    .resolution-line .target,
+    .resolution-line .partial {
+      font-size: 1.5rem;
+      text-align: center;
+      line-height: var(--size);
+    }
+
+    .resolution-line .digit-widget {
+      position: relative;
+      width: var(--size);
+      height: var(--size);
+    }
+
+    .resolution-line .digit-widget::after {
+      --hue: 266deg;
+      --sat: 70%;
+      --light: 4%;
+      color: hsl(var(--hue), var(--sat), 80%);
+
+      content: " ";
+      position: absolute;
+      width: 20px;
+      height: 100%;
+
+      z-index: 1;
+      top: 0;
+      right: -15px;
+
+      font-size: 1.5rem;
+      text-align: center;
+      line-height: var(--size);
+    }
+
+    .resolution-line .digit-widget:after {
+      content: "+";
+    }
+
+    .resolution-line .digit-widget.last-cell:after {
+      content: "=";
+    }
+
+    .display .controls {
+      position: absolute;
+      translate: 0px 0px 2px;
+      width: 100%;
+      height: 100%;
+    }
+
+    .display .controls .digit-control {
+      position: absolute;
+      width: 100%;
+      height: 50%;
+      background: hsla(var(--hue), 50%, 80%, 0%);
+      text-align: center;
+      font-size: 2rem;
+      cursor: pointer;
+      color: hsla(var(--hue), 50%, 20%, 0%);
+      border: none;
+
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .display .controls .digit-control:hover {
+      background: hsla(var(--hue), 50%, 80%, 90%);
+      color: hsla(var(--hue), 50%, 20%, 100%);
+    }
+
+    .display .controls .digit-control.increment {
+      top: 0;
+    }
+
+    .display .controls .digit-control.decrement {
+      bottom: 0;
+    }
+
+    .calculator-wrapper,
+    .counter-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+
+      font-family: "Fira Code", Monaco, Consolas, "Ubuntu Mono", monospace;
+      font-size: 1rem;
+      font-weight: 400;
+    }
+
+    .calculator-wrapper .cells-wrapper,
+    .counter-wrapper .cells-wrapper {
+      display: grid;
+      flex-wrap: wrap;
+      width: 100%;
+      gap: 10px;
+      grid-template-columns: repeat(var(--cell-count), var(--size)) var(--size);
+      grid-template-rows: 1fr;
+      justify-content: end;
+    }
+
+    .carry-line .display {
+      --hue: 266deg;
+      --sat: 70%;
+      --light: 4%;
+      color: hsl(var(--hue), var(--sat), 80%);
+    }
+
+    .carry-line .display.active .partial {
+      transition: background var(--animation-time);
+      background: hsl(var(--hue), var(--sat), var(--light));
+    }
+
+    .carry-line .display.active .partial .top {
+      transition: background var(--animation-time);
+      background: hsl(var(--hue), var(--sat), var(--light));
+    }
+
+    .operation-indicator {
+      --hue: 266deg;
+      --sat: 70%;
+      --light: 4%;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+
+      color: hsl(var(--hue), var(--sat), 80%);
+    }
+
+    .results-separator {
+      --hue: 266deg;
+      --sat: 70%;
+      --light: 4%;
+
+      width: 100%;
+      height: 2px;
+      background: hsl(var(--hue), var(--sat), 80%);
+    }
+
+    .autoplay-button {
+      --hue: 266deg;
+      --sat: 70%;
+      --light: 4%;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      background-color: transparent;
+      border: none;
+      cursor: pointer;
+
+      color: hsl(var(--hue), var(--sat), 80%);
+      border-radius: 8px;
+      transition: background-color 0.2s;
+    }
+
+    .autoplay-button:hover {
+      color: hsl(var(--hue), var(--sat), 75%);
+      background-color: hsl(var(--hue), var(--sat), 45%);
     }
   </style>
 </head>

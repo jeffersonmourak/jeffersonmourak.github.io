@@ -5,12 +5,30 @@ import countingCell, {
   HexDigitMask,
 } from "../countingCell";
 
-export function presentCells(
-  base: number,
-  cellCount: number,
-  animationDuration: number,
-  cellSize = 100
-) {
+export type PresentOptions = {
+  base: number;
+  cellCount: number;
+  animationDuration: number;
+  cellSize?: number;
+
+  hideEquation?: boolean;
+  hideDecimal?: boolean;
+
+  noControls?: boolean;
+
+  onChange?: (value: number) => void;
+};
+
+export function presentCells({
+  base,
+  cellCount,
+  animationDuration,
+  cellSize = 100,
+  hideEquation = false,
+  hideDecimal = false,
+  onChange = () => {},
+  noControls,
+}: PresentOptions) {
   const cellOptions: CountingCellOptions = {
     limit: base,
     duration: animationDuration,
@@ -33,6 +51,7 @@ export function presentCells(
     limit: base ** cellCount,
     duration: cellOptions.duration,
     size: cellSize,
+    noControls,
     onChange: (value) => {
       const [values] = fromDecimal(base, value, cellCount);
 
@@ -40,11 +59,14 @@ export function presentCells(
         if (cellValues[i] !== values[i]) {
           cellValues[i] = values[i];
           cells[i].set(values[i]);
-          equationValues[i].innerText = values[i].toString();
+          if (equationValues[i]) {
+            equationValues[i].innerText = values[i].toString();
+          }
         }
       }
 
       decimalCellValue.innerText = value.toString();
+      onChange(value);
     },
   });
 
@@ -64,6 +86,7 @@ export function presentCells(
   for (let i = 0; i < cellCount; i++) {
     const cell = countingCell({
       ...cellOptions,
+      noControls,
       onCarry: () => {
         if (i === 0) {
           return;
@@ -74,7 +97,9 @@ export function presentCells(
         cellValues[i] = value;
 
         decimalCounter.set(toDecimal(base, cellValues));
-        equationValues[i].innerText = value.toString();
+        if (equationValues[i]) {
+          equationValues[i].innerText = value.toString();
+        }
       },
     });
 
@@ -85,47 +110,51 @@ export function presentCells(
     cell.safeAttachAt(cellsWrapper);
   });
 
-  cellsWrapper.appendChild(separator);
-  cellsWrapper.appendChild(decimalCounter.cell);
+  if (hideDecimal === false) {
+    cellsWrapper.appendChild(separator);
+    cellsWrapper.appendChild(decimalCounter.cell);
+  }
 
-  cells.forEach((cell, i) => {
-    const basePowerLocation = cellCount - i - 1;
-    const cellEquation = document.createElement("div");
-    cellEquation.classList.add("cell-equation");
+  if (hideEquation === false) {
+    cells.forEach((cell, i) => {
+      const basePowerLocation = cellCount - i - 1;
+      const cellEquation = document.createElement("div");
+      cellEquation.classList.add("cell-equation");
 
-    const baseValue = document.createElement("div");
-    baseValue.classList.add("cell-base-value");
-    baseValue.innerHTML = `<span>&nbsp;x&nbsp;</span><span>${base}<sup>${basePowerLocation}</sup></span>`;
+      const baseValue = document.createElement("div");
+      baseValue.classList.add("cell-base-value");
+      baseValue.innerHTML = `<span>&nbsp;x&nbsp;</span><span>${base}<sup>${basePowerLocation}</sup></span>`;
 
-    const cellValue = document.createElement("div");
-    cellValue.classList.add("cell-value");
+      const cellValue = document.createElement("div");
+      cellValue.classList.add("cell-value");
 
-    cellValue.innerText = cellValues[i].toString();
+      cellValue.innerText = cellValues[i].toString();
 
-    equationValues.push(cellValue);
+      equationValues.push(cellValue);
 
-    cellEquation.appendChild(cellValue);
-    cellEquation.appendChild(baseValue);
-    cellsWrapper.appendChild(cellEquation);
+      cellEquation.appendChild(cellValue);
+      cellEquation.appendChild(baseValue);
 
-    if (basePowerLocation !== 0) {
-      const separator = document.createElement("div");
-      separator.classList.add("equation");
-      separator.classList.add("cells-separator");
-      separator.innerText = "+";
+      cellsWrapper.appendChild(cellEquation);
 
-      cellEquation.appendChild(separator);
-    }
-  });
+      if (basePowerLocation !== 0) {
+        const separator = document.createElement("div");
+        separator.classList.add("equation");
+        separator.classList.add("cells-separator");
+        separator.innerText = "+";
 
-  const separator2 = document.createElement("div");
-  separator2.classList.add("equation");
-  separator2.classList.add("cells-separator");
-  separator2.innerText = "=";
+        cellEquation.appendChild(separator);
+      }
+    });
 
-  cellsWrapper.appendChild(separator2);
+    const separator2 = document.createElement("div");
+    separator2.classList.add("equation");
+    separator2.classList.add("cells-separator");
+    separator2.innerText = "=";
 
-  cellsWrapper.appendChild(decimalCellEquation);
+    cellsWrapper.appendChild(separator2);
+    cellsWrapper.appendChild(decimalCellEquation);
+  }
 
   return {
     dom: cellsWrapper,
@@ -134,6 +163,19 @@ export function presentCells(
     },
     decrement() {
       decimalCounter.decrement();
+    },
+    set(value: number) {
+      if (hideDecimal === false) {
+        decimalCounter.set(value);
+      }
+
+      const [array] = fromDecimal(base, value, cellCount);
+
+      for (let i = 0; i < cellCount; i++) {
+        cells[i].set(array[i]);
+      }
+
+      return;
     },
   };
 }

@@ -2,15 +2,17 @@
 <div class="binary-counter-widget">
   <iframe class="shortcode-iframe" src="/embedded/shortcode.html?type=binaryCounter&width={{ if .Get " width" }}{{
     .Get " width" }}{{else}}640{{end}}&height={{if .Get " height" }}{{ .Get " height" }}{{else}}480{{end}}{{if
-    .Get " scale" }}&scale={{.Get "scale" }}{{end}}" frameBorder="0" width="{{ if .Get " width" }}{{ .Get " width"
-    }}{{else}}640{{end}}" height="{{if .Get " height" }}{{ .Get " height" }}{{else}}480{{end}}"></iframe>
+    .Get " base" }}&base={{.Get "base" }}{{end}}{{if .Get " spots" }}&spots={{.Get "spots" }}{{end}}{{if .Get " mode"
+    }}&mode={{.Get "mode" }}{{end}}" frameBorder="0" width="{{ if .Get " width" }}{{ .Get " width" }}{{else}}640{{end}}"
+    height="{{if .Get " height" }}{{ .Get " height" }}{{else}}480{{end}}"></iframe>
   <div class="interactive-label">Interactive</div>
 </div>
 {{ else }}
 <div class="shortcode-widget"
-  style="--ratio: {{ if .Get 0 }}{{.Get 0}}{{else}}640{{end}}/{{ if .Get 1 }}{{ .Get 1 }}{{else}}480{{end}}; --width: {{ if .Get 0 }}{{.Get 0}}px{{else}}640px{{end}}; --height: {{ if .Get 2 }}{{ .Get 2 }}px{{else}}480px{{end}}">
-  <iframe class="shortcode-iframe" src="/embedded/shortcode.html?type=binaryCounter{{if .Get 2}}&width={{ if .Get 1 }}{{
-  .Get 0 }}{{else}}640{{end}}&height={{if .Get 2 }}{{ .Get 2 }}{{else}}480{{end}}&scale={{ .Get 2 }}{{end}}"
+  style="--ratio: {{ if .Get 3 }}{{.Get 3}}{{else}}640{{end}}/{{ if .Get 4 }}{{ .Get 4 }}{{else}}480{{end}}; --width: {{ if .Get 3 }}{{.Get 3}}px{{else}}640px{{end}}; --height: {{ if .Get 4 }}{{ .Get 4 }}px{{else}}480px{{end}}">
+  <iframe class="shortcode-iframe"
+    src="/embedded/shortcode.html?type=binaryCounter{{if .Get 2}}&width={{ if .Get 3 }}{{
+  .Get 3 }}{{else}}640{{end}}&height={{if .Get 4 }}{{ .Get 4 }}{{else}}480{{end}}&base={{ .Get 1 }}&spots={{ .Get 2 }}&mode={{ .Get 0 }}{{end}}"
     frameBorder="0"></iframe>
   {{ end }}
   <div class="interactive-label">Interactive</div>

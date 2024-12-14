@@ -1,16 +1,24 @@
 import { initializeShortcode } from "shortcodes/initializeShortcode";
-import { presentCells } from "./presenters/cells";
+
+import type { PresentOptions } from "./presenters/cells";
+
+import { calculatorPresenter } from "./presenters/calculator";
+import { counterPresenter } from "./presenters/counter";
 
 function getParams(params: URLSearchParams): {
-  scale: number;
+  base: number;
+  spots: number;
   width: number;
   height: number;
+  mode: string;
 } {
-  const scale = Number(params.get("scale"));
+  const base = Number(params.get("base"));
+  const spots = Number(params.get("spots"));
   const width = Number(params.get("width"));
   const height = Number(params.get("height"));
+  const mode = params.get("mode");
 
-  return { scale, width, height };
+  return { base, spots, width, height, mode };
 }
 
 function onError(error: Error) {
@@ -18,85 +26,135 @@ function onError(error: Error) {
 }
 
 async function renderWidget({
-  scale,
+  base,
   width,
   height,
+  spots,
+  mode,
 }: {
-  scale: number;
+  base: number;
   width: number;
   height: number;
+  spots: number;
+  mode: string;
 }): Promise<void> {
-  let base = 2;
-  let cellCount = 3;
-  const animationDuration = 500;
+  const animationDuration = 600;
 
   const presenter = document.createElement("div");
 
-  const baseSlider = document.createElement("input");
-  baseSlider.type = "range";
-  baseSlider.min = "2";
-  baseSlider.max = "16";
-  baseSlider.step = "1";
-  baseSlider.value = `${base}`;
+  // const baseSlider = document.createElement("input");
+  // baseSlider.type = "range";
+  // baseSlider.min = "2";
+  // baseSlider.max = "16";
+  // baseSlider.step = "1";
+  // baseSlider.value = `${base}`;
 
-  const cellsSlider = document.createElement("input");
-  cellsSlider.type = "range";
-  cellsSlider.min = "1";
-  cellsSlider.max = "4";
-  cellsSlider.step = "1";
-  cellsSlider.value = `${cellCount}`;
+  // const cellsSlider = document.createElement("input");
+  // cellsSlider.type = "range";
+  // cellsSlider.min = "1";
+  // cellsSlider.max = "4";
+  // cellsSlider.step = "1";
+  // cellsSlider.value = `${spots}`;
 
-  let counterPresenter = presentCells(base, cellCount, animationDuration);
-
-  baseSlider.oninput = () => {
-    while (presenter.firstChild) {
-      presenter.removeChild(presenter.firstChild);
-    }
-
-    base = Number(baseSlider.value);
-    counterPresenter = presentCells(base, cellCount, animationDuration);
-    presenter.appendChild(counterPresenter.dom);
+  const sharedOptions: PresentOptions = {
+    base,
+    cellCount: spots,
+    animationDuration,
+    hideEquation: true,
   };
 
-  cellsSlider.oninput = () => {
-    while (presenter.firstChild) {
-      presenter.removeChild(presenter.firstChild);
-    }
+  // let carryCounterPresenter = presentCells(carryOptions);
+  // let topCounterPresenter = presentCells(topOptions);
+  // let bottomCounterPresenter = presentCells(bottomOptions);
+  // let resultCounterPresenter = presentCells(resultOptions);
 
-    cellCount = Number(cellsSlider.value);
-    counterPresenter = presentCells(base, cellCount, animationDuration);
-    presenter.appendChild(counterPresenter.dom);
-  };
+  // baseSlider.oninput = () => {
+  //   while (presenter.firstChild) {
+  //     presenter.removeChild(presenter.firstChild);
+  //   }
 
-  const incrementButton = document.createElement("button");
-  incrementButton.textContent = "increment";
+  //   base = Number(baseSlider.value);
+  //   carryCounterPresenter = presentCells({ ...carryOptions, base });
+  //   topCounterPresenter = presentCells({ ...topOptions, base });
+  //   bottomCounterPresenter = presentCells({ ...bottomOptions, base });
+  //   resultCounterPresenter = presentCells({ ...resultOptions, base });
+  //   presenter.appendChild(carryCounterPresenter.dom);
+  //   presenter.appendChild(topCounterPresenter.dom);
+  //   presenter.appendChild(bottomCounterPresenter.dom);
+  //   presenter.appendChild(resultCounterPresenter.dom);
+  // };
 
-  incrementButton.style.position = "absolute";
-  incrementButton.style.bottom = "0";
-  incrementButton.style.right = "0";
+  // cellsSlider.oninput = () => {
+  //   while (presenter.firstChild) {
+  //     presenter.removeChild(presenter.firstChild);
+  //   }
 
-  const decrementButton = document.createElement("button");
-  decrementButton.textContent = "decrement";
+  //   spots = Number(cellsSlider.value);
+  //   carryCounterPresenter = presentCells({ ...carryOptions, cellCount: spots });
+  //   topCounterPresenter = presentCells({ ...topOptions, cellCount: spots });
+  //   bottomCounterPresenter = presentCells({ ...bottomOptions, cellCount: spots });
+  //   resultCounterPresenter = presentCells({ ...resultOptions, cellCount: spots });
+  //   presenter.appendChild(carryCounterPresenter.dom);
+  //   presenter.appendChild(topCounterPresenter.dom);
+  //   presenter.appendChild(bottomCounterPresenter.dom);
+  //   presenter.appendChild(resultCounterPresenter.dom);
+  // };
 
-  decrementButton.style.position = "absolute";
-  decrementButton.style.bottom = "0";
-  decrementButton.style.left = "0";
+  // const incrementButton = document.createElement("button");
+  // incrementButton.textContent = "increment";
 
-  incrementButton.onclick = () => {
-    counterPresenter.increment();
-  };
+  // incrementButton.style.position = "absolute";
+  // incrementButton.style.bottom = "0";
+  // incrementButton.style.right = "0";
 
-  decrementButton.onclick = () => {
-    counterPresenter.decrement();
-  };
+  // const decrementButton = document.createElement("button");
+  // decrementButton.textContent = "decrement";
 
-  presenter.appendChild(counterPresenter.dom);
+  // decrementButton.style.position = "absolute";
+  // decrementButton.style.bottom = "0";
+  // decrementButton.style.left = "0";
+
+  // incrementButton.onclick = () => {
+  //   bottomCounterPresenter.increment();
+  // };
+
+  // decrementButton.onclick = () => {
+  //   bottomCounterPresenter.decrement();
+  // };
+
+  // presenter.appendChild(carryCounterPresenter.dom);
+  // presenter.appendChild(topCounterPresenter.dom);
+  // presenter.appendChild(bottomCounterPresenter.dom);
+  // presenter.appendChild(resultCounterPresenter.dom);
+
+  switch (mode) {
+    case "calculator":
+      presenter.appendChild(
+        calculatorPresenter({
+          base,
+          cellCount: spots,
+          animationDuration,
+        }).dom
+      );
+      break;
+    case "counter":
+      presenter.appendChild(
+        counterPresenter({
+          base,
+          cellCount: spots,
+          animationDuration,
+        }).dom
+      );
+      break;
+    default:
+      break;
+  }
 
   document.body.appendChild(presenter);
-  document.body.appendChild(incrementButton);
-  document.body.appendChild(decrementButton);
-  document.body.appendChild(baseSlider);
-  document.body.appendChild(cellsSlider);
+  // document.body.appendChild(incrementButton);
+  // document.body.appendChild(decrementButton);
+  // document.body.appendChild(baseSlider);
+  // document.body.appendChild(cellsSlider);
 
   return;
 }

@@ -1,4 +1,5 @@
 import { throttle } from "lodash";
+import { presentFlipDisplay } from "./presenters/flipDisplay";
 
 export type CountingCell = {
   cell: HTMLDivElement;
@@ -14,9 +15,11 @@ export type CountingCellOptions = {
   limit?: number;
   duration?: number;
   size?: number;
-  onCarry?: () => void;
+  onCarry?: (direction: number) => void;
   digitMask?: ((index: number) => string) | string[];
   onChange?: (value: number) => void;
+  noControls?: boolean;
+  noChangeOnCarry?: boolean;
 };
 
 export const HexDigitMask = [
@@ -54,6 +57,8 @@ function countingCell({
   onCarry = () => {},
   digitMask = (i) => `${i}`,
   onChange = () => {},
+  noControls = false,
+  noChangeOnCarry = false,
 }: CountingCellOptions): CountingCell {
   const instance = {
     blocked: false,
@@ -70,6 +75,15 @@ function countingCell({
   };
 
   //#region rendering
+  const digitWidget = presentFlipDisplay({
+    maskDigit,
+    onIncrement: increment,
+    onDecrement: decrement,
+    controlsEnabled: !noControls,
+  });
+
+  digitWidget.set(instance.value, (instance.value + 1) % limit);
+
   const cellWidget = document.createElement("div");
   cellWidget.classList.add("cell-widget");
   cellWidget.setAttribute(
@@ -77,43 +91,12 @@ function countingCell({
     `--animation-time: ${duration}ms; --size: ${size}px;`
   );
 
-  const cell = document.createElement("div");
-  cell.classList.add("cell");
+  setCounterValue(instance.value, undefined, true);
 
-  const content = document.createElement("div");
-  content.classList.add("content");
-
-  const currentDigitFront = document.createElement("div");
-  currentDigitFront.classList.add("current");
-  currentDigitFront.classList.add("digit");
-  currentDigitFront.classList.add("front");
-  currentDigitFront.classList.add("face");
-
-  const currentDigitBack = document.createElement("div");
-  currentDigitBack.classList.add("current");
-  currentDigitBack.classList.add("digit");
-  currentDigitBack.classList.add("back");
-  currentDigitBack.classList.add("face");
-
-  const nextDigitFront = document.createElement("div");
-  nextDigitFront.classList.add("next");
-  nextDigitFront.classList.add("digit");
-  nextDigitFront.classList.add("front");
-  nextDigitFront.classList.add("face");
-
-  content.appendChild(currentDigitFront);
-  content.appendChild(currentDigitBack);
-  content.appendChild(nextDigitFront);
-
-  setCounterValue(instance.value, true);
-
-  // currentDigitFront.textContent = `${maskDigit(instance.value)}`;
-  // nextDigitFront.textContent = `${maskDigit(instance.value + 1)}`;
-
-  cell.appendChild(content);
-  cellWidget.appendChild(cell);
+  cellWidget.appendChild(digitWidget.dom);
   //#endregion
 
+// #region possible deprecated code
   const throttledWheelChange = throttle(() => {
     const delta = instance.wheelDelta;
     instance.wheelDelta = 0;
@@ -126,7 +109,8 @@ function countingCell({
 
     const newValue = (instance.value + limit + increment) % limit;
 
-    setCounterValue(newValue);
+    digitWidget.set(instance.value, newValue);
+    setCounterValue(newValue, undefined);
 
     animateChange();
   }, duration + 3);
@@ -147,14 +131,15 @@ function countingCell({
     instance.captureArrows = false;
   };
 
-  cellWidget.addEventListener("wheel", wheelEventHandler, { passive: false });
-  cellWidget.addEventListener("mouseenter", mouseEnterHandler, {
-    passive: false,
-  });
-  cellWidget.addEventListener("mouseleave", mouseLeaveHandler, {
-    passive: false,
-  });
-
+  // if (!noControls) {
+  //   cellWidget.addEventListener("wheel", wheelEventHandler, { passive: false });
+  //   cellWidget.addEventListener("mouseenter", mouseEnterHandler, {
+  //     passive: false,
+  //   });
+  //   cellWidget.addEventListener("mouseleave", mouseLeaveHandler, {
+  //     passive: false,
+  //   });
+  // }
   // window.addEventListener(
   //   "keydown",
   //   (e) => {
@@ -176,39 +161,50 @@ function countingCell({
   //   },
   //   { passive: false }
   // );
+  // #endregion
 
   function animateChange(onComplete?: () => void) {
-    cell.classList.add("active");
+    digitWidget.dom.classList.add("active");
 
     const animationTimeout = setTimeout(() => {
       onComplete?.();
 
-      currentDigitFront.textContent = `${maskDigit(instance.value)}`;
+      digitWidget.set(instance.value, instance.value);
 
-      cell.classList.remove("active");
+      digitWidget.dom.classList.remove("active");
 
       instance.blocked = false;
       clearTimeout(animationTimeout);
     }, duration + 2);
   }
 
-  function setCounterValue(newValue: number, noEmits = false) {
+  function setCounterValue(
+    newValue: number,
+    carryDirection: number | undefined,
+    noEmits = false
+  ) {
     const previousValue = instance.value;
     const normalizedValue = (newValue + limit) % limit;
 
     instance.value = normalizedValue;
 
-    currentDigitFront.textContent = `${maskDigit(previousValue)}`;
-    nextDigitFront.textContent = `${maskDigit(instance.value)}`;
+    const direction =
+      carryDirection ?? Math.sign(previousValue - normalizedValue);
 
-    // if (newValue !== normalizedValue) {
-    //   console.log("Carry");
-    //   // onCarry();
-    // }
+    const isCarry =
+      limit === 2
+        ? normalizedValue === 0
+        : Math.abs(previousValue - normalizedValue) === limit - 1;
 
-    if (noEmits === false) {
-      onChange(newValue);
+    if (isCarry) {
+      onCarry(direction);
     }
+
+    if (noEmits || (noChangeOnCarry && isCarry)) {
+      return;
+    }
+
+    onChange(newValue);
   }
 
   function increment() {
@@ -219,11 +215,8 @@ function countingCell({
 
     const newValue = (instance.value + 1) % limit;
 
-    if (newValue < instance.value) {
-      // onCarry();
-    }
-
-    setCounterValue(newValue);
+    digitWidget.set(instance.value, newValue);
+    setCounterValue(newValue, 1);
 
     animateChange();
   }
@@ -236,44 +229,35 @@ function countingCell({
 
     const newValue = (instance.value - 1 + limit) % limit;
 
-    if (newValue < instance.value) {
-      // onCarry();
-    }
-
-    setCounterValue(newValue);
-
+    digitWidget.set(instance.value, newValue);
+    setCounterValue(newValue, -1);
     animateChange();
   }
 
   function set(value: number) {
-    if (instance.blocked) {
+    if (instance.blocked || value === instance.value) {
       return;
     }
     instance.blocked = true;
 
     const normalizedValue = (value + limit) % limit;
 
-    if (normalizedValue !== value) {
-      // onCarry();
-    }
-
-    setCounterValue(value, true);
+    digitWidget.set(instance.value, normalizedValue);
+    setCounterValue(value, undefined, true);
 
     animateChange();
   }
 
   function clear() {
     instance.value = 0;
-    currentDigitFront.textContent = `${maskDigit(instance.value)}`;
-    nextDigitFront.textContent = `${maskDigit((instance.value + 1) % limit)}`;
+    digitWidget.set(instance.value, (instance.value + 1) % limit);
   }
 
   function safeAttachAt(parent: HTMLElement) {
     parent.appendChild(cellWidget);
 
     attachDestructionObserver(cellWidget, () => {
-      cellWidget.removeEventListener("wheel", wheelEventHandler);
-      console.log('destructed!')
+      // cellWidget.removeEventListener("wheel", wheelEventHandler);
       // cellWidget.removeEventListener("mouseenter", mouseEnterHandler);
       // cellWidget.removeEventListener("mouseleave", mouseLeaveHandler);
     });
