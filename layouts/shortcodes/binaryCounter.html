@@ -1,0 +1,19 @@
+{{ if .IsNamedParams }}
+<div class="binary-counter-widget shortcode-widget">
+  <iframe class="shortcode-iframe" src="/embedded/shortcode.html?type=binaryCounter&width={{ if .Get " width" }}{{
+    .Get " width" }}{{else}}640{{end}}&height={{if .Get " height" }}{{ .Get " height" }}{{else}}480{{end}}{{if
+    .Get " base" }}&base={{.Get "base" }}{{end}}{{if .Get " spots" }}&spots={{.Get "spots" }}{{end}}{{if .Get " mode"
+    }}&mode={{.Get "mode" }}{{end}}" frameBorder="0" width="{{ if .Get " width" }}{{ .Get " width" }}{{else}}640{{end}}"
+    height="{{if .Get " height" }}{{ .Get " height" }}{{else}}480{{end}}"></iframe>
+  <div class="interactive-label">Interactive</div>
+</div>
+{{ else }}
+<div class="binary-counter-widget shortcode-widget"
+  style="--ratio: {{ if .Get 3 }}{{.Get 3}}{{else}}640{{end}}/{{ if .Get 4 }}{{ .Get 4 }}{{else}}480{{end}}; --width: {{ if .Get 3 }}{{.Get 3}}px{{else}}640px{{end}}; --height: {{ if .Get 4 }}{{ .Get 4 }}px{{else}}480px{{end}}">
+  <iframe class="shortcode-iframe"
+    src="/embedded/shortcode.html?type=binaryCounter{{if .Get 2}}&width={{ if .Get 3 }}{{
+  .Get 3 }}{{else}}640{{end}}&height={{if .Get 4 }}{{ .Get 4 }}{{else}}480{{end}}&base={{ .Get 1 }}&spots={{ .Get 2 }}&mode={{ .Get 0 }}{{end}}"
+    frameBorder="0"></iframe>
+  {{ end }}
+  <div class="interactive-label">Interactive</div>
+</div>

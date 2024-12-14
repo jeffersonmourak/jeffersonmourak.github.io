@@ -393,6 +393,161 @@ const WireSkin = ({
   ctx.closePath();
 };
 
+const OrSkin = ({
+  bounds,
+  ctx,
+  theme,
+  scaleFactor = 1,
+  state,
+}: DrawArguments<AndState>) => {
+  const [loc, dim] = bounds;
+
+  const [ogX, ogY] = loc;
+  const [width, height] = dim;
+
+  ctx.beginPath();
+  ctx.rect(
+    resolveCn(ogX, scaleFactor),
+    resolveCn(ogY, scaleFactor) + scaleFactor,
+    resolveCn(width, scaleFactor) - (state.size / 2) * scaleFactor,
+    resolveCn(height, scaleFactor) - scaleFactor * 2
+  );
+  ctx.arc(
+    resolveCn(ogX, scaleFactor) +
+      resolveCn(width, scaleFactor) -
+      (state.size / 2) * scaleFactor,
+    resolveCn(ogY, scaleFactor) + resolveCn(height, scaleFactor) / 2,
+    (state.size / 3 + 4) * scaleFactor,
+    0,
+    2 * Math.PI
+  );
+
+  drawPolygon(
+    ctx,
+    resolveCn(ogX, scaleFactor) +
+      resolveCn(width, scaleFactor) -
+      (state.size / 2) * scaleFactor,
+    resolveCn(ogY, scaleFactor) + resolveCn(height, scaleFactor) / 2,
+    3,
+    resolveCn(height, scaleFactor) / 2,
+    Math.PI * 2
+  );
+
+  ctx.closePath();
+  ctx.fillStyle = theme.colors.backgroundPrimaryAlt;
+  ctx.strokeStyle = theme.colors.primary1;
+  ctx.lineWidth = 2 * scaleFactor;
+  ctx.stroke();
+  ctx.fill();
+
+  ctx.beginPath();
+  ctx.font = `${6 * scaleFactor}px monospace`;
+
+  ctx.fillStyle = theme.colors.base00;
+  ctx.strokeStyle = theme.colors.base70;
+  ctx.lineWidth = 0.5 * scaleFactor;
+  ctx.textAlign = "center";
+  ctx.fill();
+
+  ctx.strokeText(
+    "OR",
+    resolveCn(ogX, scaleFactor) + resolveCn(width, scaleFactor) / 2,
+    resolveCn(ogY, scaleFactor) +
+      resolveCn(height, scaleFactor) / 2 +
+      scaleFactor * 2
+  );
+
+  ctx.fillText(
+    "OR",
+    resolveCn(ogX, scaleFactor) + resolveCn(width, scaleFactor) / 2,
+    resolveCn(ogY, scaleFactor) +
+      resolveCn(height, scaleFactor) / 2 +
+      scaleFactor * 2
+  );
+};
+
+const XorSkin = ({
+  bounds,
+  ctx,
+  theme,
+  scaleFactor = 1,
+  state,
+}: DrawArguments<AndState>) => {
+  const [loc, dim] = bounds;
+
+  const [ogX, ogY] = loc;
+  const [width, height] = dim;
+
+  ctx.beginPath();
+
+  ctx.rect(
+    resolveCn(ogX, scaleFactor) - 10 * scaleFactor,
+    resolveCn(ogY, scaleFactor) + scaleFactor,
+    scaleFactor * 3,
+    resolveCn(height, scaleFactor) - scaleFactor * 2
+  );
+
+  ctx.rect(
+    resolveCn(ogX, scaleFactor),
+    resolveCn(ogY, scaleFactor) + scaleFactor,
+    resolveCn(width, scaleFactor) - (state.size / 2) * scaleFactor,
+    resolveCn(height, scaleFactor) - scaleFactor * 2
+  );
+
+  ctx.arc(
+    resolveCn(ogX, scaleFactor) +
+      resolveCn(width, scaleFactor) -
+      (state.size / 2) * scaleFactor,
+    resolveCn(ogY, scaleFactor) + resolveCn(height, scaleFactor) / 2,
+    (state.size / 3 + 4) * scaleFactor,
+    0,
+    2 * Math.PI
+  );
+
+  drawPolygon(
+    ctx,
+    resolveCn(ogX, scaleFactor) +
+      resolveCn(width, scaleFactor) -
+      (state.size / 2) * scaleFactor,
+    resolveCn(ogY, scaleFactor) + resolveCn(height, scaleFactor) / 2,
+    3,
+    resolveCn(height, scaleFactor) / 2,
+    Math.PI * 2
+  );
+
+  ctx.closePath();
+  ctx.fillStyle = theme.colors.backgroundPrimaryAlt;
+  ctx.strokeStyle = theme.colors.primary1;
+  ctx.lineWidth = 2 * scaleFactor;
+  ctx.stroke();
+  ctx.fill();
+
+  ctx.beginPath();
+  ctx.font = `${6 * scaleFactor}px monospace`;
+
+  ctx.fillStyle = theme.colors.base00;
+  ctx.strokeStyle = theme.colors.base70;
+  ctx.lineWidth = 0.5 * scaleFactor;
+  ctx.textAlign = "center";
+  ctx.fill();
+
+  ctx.strokeText(
+    "XOR",
+    resolveCn(ogX, scaleFactor) + resolveCn(width, scaleFactor) / 2,
+    resolveCn(ogY, scaleFactor) +
+      resolveCn(height, scaleFactor) / 2 +
+      scaleFactor * 2
+  );
+
+  ctx.fillText(
+    "XOR",
+    resolveCn(ogX, scaleFactor) + resolveCn(width, scaleFactor) / 2,
+    resolveCn(ogY, scaleFactor) +
+      resolveCn(height, scaleFactor) / 2 +
+      scaleFactor * 2
+  );
+};
+
 export const theme: CircTheme = {
   colors,
   library: {
@@ -402,5 +557,7 @@ export const theme: CircTheme = {
     wire: WireSkin,
     AND: AndSkin,
     NAND: NandSkin,
+    OR: OrSkin,
+    XOR: XorSkin,
   },
 } as const;

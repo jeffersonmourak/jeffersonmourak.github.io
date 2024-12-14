@@ -151,10 +151,322 @@
       overflow: hidden;
     }
 
+    sup {
+      vertical-align: super;
+      font-size: smaller;
+    }
+
     .circ-renderer-canvas {
       width: var(--width);
       max-width: 100%;
       aspect-ratio: var(--ratio);
+    }
+
+    .cell-widget {
+      position: relative;
+      overflow: hidden;
+      border-radius: 8px;
+    }
+
+    .cells-wrapper {
+      display: grid;
+      flex-wrap: wrap;
+      width: 100%;
+      gap: 20px;
+      grid-template-columns: repeat(var(--cell-count), minmax(calc(var(--size) / 3), var(--size))) minmax(calc(var(--size) / 3), var(--size)) minmax(calc(var(--size) / 3), var(--size));
+      grid-template-rows: [equations] 1fr;
+    }
+
+    .cells-separator {
+      font-size: 5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+    }
+
+    .cells-separator.equation {
+      font-size: initial;
+    }
+
+    .cell-equation {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      color: #fff;
+    }
+
+    .display.active .flip {
+      transition: transform var(--animation-time);
+      transform: rotateX(-180deg);
+    }
+
+    .display.active .controls {
+      pointer-events: none;
+      opacity: 0;
+      cursor: pointer;
+    }
+
+    .display.active .partial {
+      transition: background var(--animation-time);
+      background: hsl(var(--hue), 39%, 20%);
+    }
+
+    .display.active .partial .top {
+      transition: background var(--animation-time);
+      background: hsl(var(--hue), 39%, 71%);
+    }
+
+    .display {
+      --hue: 266;
+      --sat: 39%;
+      --light: 71%;
+
+      -webkit-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+
+      display: grid;
+      grid-template-columns: minmax(calc(var(--size) / 3), var(--size));
+      grid-template-rows: minmax(calc(var(--size) / 3), var(--size));
+      aspect-ratio: 1/1;
+
+      position: relative;
+      perspective: 500px;
+      transform-style: preserve-3d;
+      background: hsl(var(--hue), var(--sat), var(--light));
+    }
+
+    .display .partial {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      translate: 0px 0px 0px;
+      background: hsl(var(--hue), var(--sat), var(--light));
+    }
+
+    .display .partial .top {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: hsl(var(--hue), var(--sat), calc(var(--light) - 20%));
+      clip-path: content-box rect(0% auto calc(50% + 1px) auto);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .display .flip {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: hsl(var(--hue), var(--sat), var(--light));
+      rotate: x 1deg;
+      transform-style: preserve-3d;
+    }
+
+    .display .flip .value {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      translate: 0px 0px 1px;
+      backface-visibility: hidden;
+      transform-style: preserve-3d;
+      background: hsl(var(--hue), var(--sat), var(--light));
+    }
+
+    .display .flip .target {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      transform: rotateZ(180deg) rotateY(180deg);
+      translate: 0px 0px -1px;
+      backface-visibility: hidden;
+      transform-style: preserve-3d;
+    }
+
+    .value,
+    .target,
+    .partial {
+      font-size: 15vw;
+      text-align: center;
+      line-height: var(--size);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .resolution-line .value,
+    .resolution-line .target,
+    .resolution-line .partial {
+      font-size: 1.5rem;
+      text-align: center;
+      line-height: var(--size);
+    }
+
+    .resolution-line .digit-widget {
+      position: relative;
+      width: var(--size);
+      height: var(--size);
+    }
+
+    .resolution-line .digit-widget::after {
+      --hue: 266deg;
+      --sat: 70%;
+      --light: 4%;
+      color: hsl(var(--hue), var(--sat), 80%);
+
+      content: " ";
+      position: absolute;
+      width: 20px;
+      height: 100%;
+
+      z-index: 1;
+      top: 0;
+      right: -15px;
+
+      font-size: 4vw;
+      text-align: center;
+      line-height: var(--size);
+    }
+
+    .resolution-line .digit-widget:after {
+      content: "+";
+    }
+
+    .resolution-line .digit-widget.last-cell:after {
+      content: "=";
+    }
+
+    .display .controls {
+      position: absolute;
+      translate: 0px 0px 2px;
+      width: 100%;
+      height: 100%;
+    }
+
+    .display .controls .digit-control {
+      position: absolute;
+      width: 100%;
+      height: 50%;
+      background: hsla(var(--hue), 50%, 80%, 0%);
+      text-align: center;
+      font-size: 2rem;
+      cursor: pointer;
+      color: hsla(var(--hue), 50%, 20%, 0%);
+      border: none;
+
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .display .controls .digit-control:hover {
+      background: hsla(var(--hue), 50%, 80%, 90%);
+      color: hsla(var(--hue), 50%, 20%, 100%);
+    }
+
+    .display .controls .digit-control.increment {
+      top: 0;
+    }
+
+    .display .controls .digit-control.decrement {
+      bottom: 0;
+    }
+
+    .calculator-wrapper,
+    .counter-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      width: 100%;
+      max-width: var(--width);
+      height: 100%;
+      max-height: calc(var(--height) - 48px);
+      aspect-ratio: var(--ratio);
+      align-items: center;
+      justify-content: center;
+
+      font-family: "Fira Code", Monaco, Consolas, "Ubuntu Mono", monospace;
+      font-size: 1rem;
+      font-weight: 400;
+    }
+
+    .calculator-wrapper .cells-wrapper,
+    .counter-wrapper .cells-wrapper {
+      display: grid;
+      flex-wrap: wrap;
+      width: 100%;
+      gap: 10px;
+      grid-template-columns: repeat(var(--cell-count), minmax(calc(var(--size) / 3), var(--size))) minmax(calc(var(--size) / 3), var(--size));
+      grid-template-rows: 1fr;
+      justify-content: end;
+    }
+
+    .carry-line .display {
+      --hue: 266deg;
+      --sat: 70%;
+      --light: 4%;
+      color: hsl(var(--hue), var(--sat), 80%);
+    }
+
+    .carry-line .display.active .partial {
+      transition: background var(--animation-time);
+      background: hsl(var(--hue), var(--sat), var(--light));
+    }
+
+    .carry-line .display.active .partial .top {
+      transition: background var(--animation-time);
+      background: hsl(var(--hue), var(--sat), var(--light));
+    }
+
+    .operation-indicator {
+      --hue: 266deg;
+      --sat: 70%;
+      --light: 4%;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+
+      color: hsl(var(--hue), var(--sat), 80%);
+    }
+
+    .results-separator {
+      --hue: 266deg;
+      --sat: 70%;
+      --light: 4%;
+
+      width: 100%;
+      height: 2px;
+      background: hsl(var(--hue), var(--sat), 80%);
+    }
+
+    .autoplay-button {
+      --hue: 266deg;
+      --sat: 70%;
+      --light: 4%;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      background-color: transparent;
+      border: none;
+      cursor: pointer;
+
+      color: hsl(var(--hue), var(--sat), 80%);
+      border-radius: 8px;
+      transition: background-color 0.2s;
+    }
+
+    .autoplay-button:hover {
+      color: hsl(var(--hue), var(--sat), 75%);
+      background-color: hsl(var(--hue), var(--sat), 45%);
     }
   </style>
 </head>
