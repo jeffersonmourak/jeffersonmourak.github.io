@@ -44,15 +44,17 @@
       <a name="output" val="true"/>
     </tool>
     <sep/>
-    <tool lib="1" name="NOT Gate">
-      <a name="size" val="20"/>
-    </tool>
+    <tool lib="1" name="NOT Gate"/>
     <tool lib="1" name="AND Gate">
       <a name="size" val="30"/>
     </tool>
-    <tool lib="1" name="OR Gate"/>
+    <tool lib="1" name="OR Gate">
+      <a name="size" val="30"/>
+    </tool>
     <tool lib="1" name="XOR Gate"/>
-    <tool lib="1" name="NAND Gate"/>
+    <tool lib="1" name="NAND Gate">
+      <a name="size" val="30"/>
+    </tool>
     <tool lib="1" name="NOR Gate"/>
     <sep/>
     <tool lib="4" name="D Flip-Flop"/>
@@ -63,25 +65,32 @@
     <a name="circuitnamedboxfixedsize" val="true"/>
     <a name="simulationFrequency" val="1.0"/>
     <comp lib="0" loc="(20,10)" name="Pin"/>
-    <comp lib="0" loc="(30,130)" name="Pin"/>
-    <comp lib="0" loc="(30,20)" name="Pin"/>
-    <comp lib="0" loc="(30,90)" name="Pin"/>
-    <comp lib="1" loc="(160,70)" name="NAND Gate">
+    <comp lib="0" loc="(20,80)" name="Pin"/>
+    <comp lib="1" loc="(140,40)" name="AND Gate">
       <a name="size" val="30"/>
     </comp>
-    <comp lib="5" loc="(100,10)" name="LED"/>
-    <comp lib="5" loc="(110,110)" name="LED"/>
+    <comp lib="1" loc="(80,20)" name="OR Gate">
+      <a name="size" val="30"/>
+    </comp>
+    <comp lib="1" loc="(90,70)" name="NAND Gate">
+      <a name="size" val="30"/>
+    </comp>
+    <comp lib="5" loc="(170,40)" name="LED"/>
+    <wire from="(100,20)" to="(100,30)"/>
+    <wire from="(100,30)" to="(110,30)"/>
+    <wire from="(100,50)" to="(100,70)"/>
+    <wire from="(100,50)" to="(110,50)"/>
+    <wire from="(140,40)" to="(170,40)"/>
     <wire from="(20,10)" to="(40,10)"/>
-    <wire from="(30,130)" to="(50,130)"/>
-    <wire from="(30,90)" to="(50,90)"/>
+    <wire from="(20,80)" to="(30,80)"/>
+    <wire from="(30,30)" to="(30,60)"/>
+    <wire from="(30,30)" to="(50,30)"/>
+    <wire from="(30,60)" to="(30,80)"/>
+    <wire from="(30,60)" to="(50,60)"/>
     <wire from="(40,10)" to="(40,80)"/>
-    <wire from="(40,10)" to="(60,10)"/>
-    <wire from="(40,80)" to="(110,80)"/>
-    <wire from="(50,110)" to="(110,110)"/>
-    <wire from="(50,110)" to="(50,130)"/>
-    <wire from="(50,90)" to="(50,110)"/>
-    <wire from="(60,10)" to="(100,10)"/>
-    <wire from="(60,10)" to="(60,60)"/>
-    <wire from="(60,60)" to="(120,60)"/>
+    <wire from="(40,10)" to="(50,10)"/>
+    <wire from="(40,80)" to="(50,80)"/>
+    <wire from="(80,20)" to="(100,20)"/>
+    <wire from="(90,70)" to="(100,70)"/>
   </circuit>
 </project>

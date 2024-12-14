@@ -211,7 +211,7 @@ export function calculatorPresenter({
 
 	const resultLine = makeLine({
 		base,
-		cellCount: cellCount + 1,
+		cellCount: cellCount,
 		animationDuration,
 		noControls: true,
 		cellSize,

@@ -164,8 +164,6 @@
 
     .cell-widget {
       position: relative;
-      width: var(--size);
-      height: var(--size);
       overflow: hidden;
       border-radius: 8px;
     }
@@ -175,7 +173,7 @@
       flex-wrap: wrap;
       width: 100%;
       gap: 20px;
-      grid-template-columns: repeat(var(--cell-count), var(--size)) var(--size) var(--size);
+      grid-template-columns: repeat(var(--cell-count), minmax(calc(var(--size) / 3), var(--size))) minmax(calc(var(--size) / 3), var(--size)) minmax(calc(var(--size) / 3), var(--size));
       grid-template-rows: [equations] 1fr;
     }
 
@@ -229,9 +227,12 @@
       -ms-user-select: none;
       user-select: none;
 
+      display: grid;
+      grid-template-columns: minmax(calc(var(--size) / 3), var(--size));
+      grid-template-rows: minmax(calc(var(--size) / 3), var(--size));
+      aspect-ratio: 1/1;
+
       position: relative;
-      width: var(--size);
-      height: var(--size);
       perspective: 500px;
       transform-style: preserve-3d;
       background: hsl(var(--hue), var(--sat), var(--light));
@@ -255,6 +256,9 @@
       height: 100%;
       background: hsl(var(--hue), var(--sat), calc(var(--light) - 20%));
       clip-path: content-box rect(0% auto calc(50% + 1px) auto);
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
 
     .display .flip {
@@ -289,9 +293,12 @@
     .value,
     .target,
     .partial {
-      font-size: 6rem;
+      font-size: 15vw;
       text-align: center;
       line-height: var(--size);
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
 
     .resolution-line .value,
@@ -323,7 +330,7 @@
       top: 0;
       right: -15px;
 
-      font-size: 1.5rem;
+      font-size: 4vw;
       text-align: center;
       line-height: var(--size);
     }
@@ -375,6 +382,13 @@
       display: flex;
       flex-direction: column;
       gap: 10px;
+      width: 100%;
+      max-width: var(--width);
+      height: 100%;
+      max-height: calc(var(--height) - 48px);
+      aspect-ratio: var(--ratio);
+      align-items: center;
+      justify-content: center;
 
       font-family: "Fira Code", Monaco, Consolas, "Ubuntu Mono", monospace;
       font-size: 1rem;
@@ -387,7 +401,7 @@
       flex-wrap: wrap;
       width: 100%;
       gap: 10px;
-      grid-template-columns: repeat(var(--cell-count), var(--size)) var(--size);
+      grid-template-columns: repeat(var(--cell-count), minmax(calc(var(--size) / 3), var(--size))) minmax(calc(var(--size) / 3), var(--size));
       grid-template-rows: 1fr;
       justify-content: end;
     }

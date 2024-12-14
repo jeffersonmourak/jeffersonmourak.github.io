@@ -440,3 +440,13 @@ hr {
   max-width: 100%;
   aspect-ratio: var(--ratio);
 }
+
+@media (min-width: 768px) {
+  .binary-counter-widget {
+    border-top: 8px solid var(--accent);
+  }
+  .binary-counter-widget .shortcode-iframe {
+    height: calc(var(--width) - calc(var(--height) / 3));
+    translate: 0 calc(var(--height) / -6) 0;
+  }
+}

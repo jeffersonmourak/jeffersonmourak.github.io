@@ -1,3 +1,4 @@
+import { debounce } from "lodash";
 import { fromDecimal, stepAt } from "../calculations";
 import { HexDigitMask } from "../countingCell";
 import { type FlipDisplay, presentFlipDisplay } from "./flipDisplay";
@@ -136,8 +137,11 @@ export function counterPresenter({
   const counterWapper = document.createElement("div");
   counterWapper.classList.add("counter-wrapper");
 
-  const decimalCellCount = ~~(base ** cellCount / 10) + 1;
-  const maxDecimalValue = base ** cellCount;
+  const maxCells = ~~(document.body.clientWidth / cellSize) - 1;
+  const visibleCellCount = Math.min(maxCells, cellCount);
+
+  const decimalCellCount = ~~(base ** visibleCellCount / 10) + 1;
+  const maxDecimalValue = base ** visibleCellCount;
 
   const resultDigit = presentFlipDisplay({
     controlsEnabled: false,
@@ -155,7 +159,6 @@ export function counterPresenter({
     "style",
     `--animation-time: ${animationDuration}ms; --size: ${cellSize}px;`
   );
-
 
   resultWidget.appendChild(resultDigit.dom);
 
@@ -180,8 +183,8 @@ export function counterPresenter({
   });
 
   const binaryLine = makeLine({
-    base: 2,
-    cellCount,
+    base,
+    cellCount: visibleCellCount,
     animationDuration,
     noControls,
     cellSize,
@@ -200,8 +203,8 @@ export function counterPresenter({
   });
 
   const resolutionLine = makeLine({
-    base: 2,
-    cellCount,
+    base,
+    cellCount: visibleCellCount,
     animationDuration,
     noControls: true,
     cellSize,
@@ -260,6 +263,21 @@ export function counterPresenter({
   counterWapper.appendChild(resolutionLine.dom);
 
   performAutoplay();
+
+  const checkResize = debounce(() => {
+    const maxCells = ~~(document.body.clientWidth / cellSize) - 1;
+    const resizedCellCount = Math.min(maxCells, cellCount);
+
+    if (resizedCellCount !== visibleCellCount) {
+      location.reload();
+    }
+  }, 600, { leading: false, trailing: true });
+
+  window.addEventListener("resize", checkResize);
+
+  window.addEventListener("beforeunload", () => {
+    window.removeEventListener("resize", checkResize);
+  });
 
   return {
     dom: counterWapper,
