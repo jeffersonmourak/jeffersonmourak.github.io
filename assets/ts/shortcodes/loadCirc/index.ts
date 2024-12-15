@@ -2,7 +2,7 @@ import { initializeShortcode } from "../initializeShortcode";
 
 import { CircRenderer } from "circ-renderer";
 
-import { theme } from "./theme";
+import { prepareTheme } from "./theme";
 
 export interface RenderContext {
   size: number;
@@ -45,6 +45,8 @@ async function mountFromCircRenderer({
   try {
     const response = await fetch(input);
     const fileContent = await response.text();
+
+    const theme = await prepareTheme();
 
     const canvasElement = CircRenderer(fileContent, {
       theme: theme,
