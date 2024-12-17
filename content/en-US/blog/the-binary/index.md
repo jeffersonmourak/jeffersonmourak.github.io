@@ -132,7 +132,7 @@ Lembrando do [artigo anterior](https://jeffersonmourak.com/blog/logic-gates/), v
 </div>
 
 Para isso, podemos combinar o resultado das portas que já vimos anteriormente em um só circuito chamado "OU Exclusivo" ou "XOR".
-{{< loadCirc "XOR.circ" 800 400 4 >}}
+{{< loadCirc "XOR.circ" 800 455 4 >}}
 
 Agora, vamos olhar também para a tabela do resto da nossa soma e se percebe que é uma cópia exata da porta AND.
 
@@ -181,12 +181,12 @@ Agora, vamos olhar também para a tabela do resto da nossa soma e se percebe que
 
 E assim como o Capitão Planeta, "Pela união dos seus poderes", nós vamos conseguir fazer a operação de soma de dois dígitos em binário, e esse componente é chamado de "Somador" ou "Adder".
 
-{{< loadCirc "ADDER.circ" 800 500 3.5 >}}
+{{< loadCirc "ADDER.circ" 840 505 3.5 >}}
 
 Com essa combinação de portas lógicas, um computador já consegue fazer as incríveis somas de: `0 + 0`, `1 + 0`, `0 + 1`, `1 + 1`, mas, além disso, ele consegue também dizer quanto que houve de resto da soma. E quando combinados vários ADDERs, a gente consegue fazer uma soma de números mais complexos como o 42, mas essa nós vamos ver no próximo artigo.
 
 Por hoje é só isso, pessoal.
-<div style="width:100%;height:0;padding-bottom:56%;position:relative;"><iframe src="https://giphy.com/embed/xUPOqo6E1XvWXwlCyQ" width="100%" height="100%" style="position:absolute" frameBorder="0" class="giphy-embed" allowFullScreen></iframe></div><p><a href="https://giphy.com/gifs/spacejam-space-jam-movie-xUPOqo6E1XvWXwlCyQ">via GIPHY</a></p>
+<div style="width:100%;height:0;padding-bottom:56%;position:relative;"><iframe src="https://giphy.com/embed/xUPOqo6E1XvWXwlCyQ" width="100%" height="100%" style="position:absolute" frameBorder="0" class="giphy-embed" allowFullScreen></iframe></div>
 
 Referências
 

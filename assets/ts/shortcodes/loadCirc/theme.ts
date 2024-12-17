@@ -1,29 +1,19 @@
-import {
-  type AndState,
-  type CircTheme,
-  type DrawArguments,
-  type LEDState,
-  type PinState,
-  type ThemeColor,
-  type WireState,
-  resolveCn,
+import type {
+  AndState,
+  CircTheme,
+  DrawArguments,
+  LEDState,
+  NandState,
+  NotState,
+  OrState,
+  PinState,
+  ThemeColor,
+  WireState,
+  XorState,
 } from "circ-renderer";
 import { loadAsset } from "./assets";
 
 export type ComponentFace = "north" | "south" | "east" | "west";
-
-export const toFaceIndex = (face: ComponentFace) => {
-  switch (face) {
-    case "north":
-      return 0;
-    case "east":
-      return 1;
-    case "south":
-      return 2;
-    case "west":
-      return 3;
-  }
-};
 
 export const colors = {
   primary: "#b097d1",
@@ -62,55 +52,40 @@ export const colors = {
 
 const LEDSkin = ({
   ctx,
-  state,
-  scaleFactor = 1,
-  bounds,
+  dimensions,
   theme,
   portsSignals,
 }: DrawArguments<LEDState>) => {
   ctx.beginPath();
-  const [loc, dim] = bounds;
-
-  const [x, y] = loc;
-  const [width, height] = dim;
+  const [width, height] = dimensions;
 
   const isOn = portsSignals[0] === 1;
 
   ctx.fillStyle = isOn ? theme.colors.base60 : theme.colors.base50;
 
   ctx.strokeStyle = isOn ? theme.colors.base70 : theme.colors.base40;
-  ctx.lineWidth = 1 * scaleFactor;
+  ctx.lineWidth = 1;
 
-  ctx.arc(
-    resolveCn(x, scaleFactor) + resolveCn(width, scaleFactor) / 2,
-    resolveCn(y, scaleFactor) + resolveCn(height, scaleFactor) / 2,
-    5 * scaleFactor,
-    0,
-    2 * Math.PI
-  );
+  ctx.arc(width / 2, height / 2, 5, 0, 2 * Math.PI);
   ctx.fill();
   ctx.stroke();
   ctx.closePath();
 };
 
 const PinSkin = ({
-  bounds,
+  dimensions,
   ctx,
   theme,
   state,
   pointerLocation,
   portsSignals,
-  scaleFactor = 1,
 }: DrawArguments<PinState>) => {
   ctx.beginPath();
-  const [loc, dim] = bounds;
-
-  const [ogX, ogY] = loc;
-  const [width, height] = dim;
+  const [width, height] = dimensions;
 
   const isOn = portsSignals[0] === 1;
 
-  ctx.lineWidth = 1 * scaleFactor;
+  ctx.lineWidth = 1;
 
   if (state.output) {
     ctx.fillStyle = isOn ? theme.colors.base60 : theme.colors.base50;
@@ -125,13 +100,7 @@ const PinSkin = ({
     }
   }
 
-  ctx.roundRect(
-    resolveCn(ogX, scaleFactor),
-    resolveCn(ogY, scaleFactor),
-    resolveCn(width, scaleFactor),
-    resolveCn(height, scaleFactor),
-    2 * scaleFactor
-  );
+  ctx.roundRect(0, 0, width, height, 2);
   ctx.fill();
   ctx.stroke();
 
@@ -139,204 +108,92 @@ const PinSkin = ({
 
   ctx.fillStyle = theme.colors.base00;
   ctx.strokeStyle = theme.colors.base70;
-  ctx.lineWidth = 0.5 * scaleFactor;
+  ctx.lineWidth = 0.5;
   ctx.textAlign = "center";
   ctx.fill();
-  ctx.font = `${6 * scaleFactor}px monospace`;
-  ctx.strokeText(
-    isOn ? "1" : "0",
-    resolveCn(ogX, scaleFactor) + resolveCn(width, scaleFactor) / 2,
-    resolveCn(ogY, scaleFactor) +
-      resolveCn(height, scaleFactor) / 2 +
-      scaleFactor * 2
-  );
-
-  ctx.fillText(
-    isOn ? "1" : "0",
-    resolveCn(ogX, scaleFactor) + resolveCn(width, scaleFactor) / 2,
-    resolveCn(ogY, scaleFactor) +
-      resolveCn(height, scaleFactor) / 2 +
-      scaleFactor * 2
-  );
+  ctx.font = `${6}px monospace`;
+  ctx.strokeText(isOn ? "1" : "0", width / 2, height / 2 + 2);
+  ctx.fillText(isOn ? "1" : "0", width / 2, height / 2 + 2);
 };
 
-function drawPolygon(
-  ctx: CanvasRenderingContext2D,
-  x: number,
-  y: number,
-  sides: number,
-  radius: number,
-  rotation: number
-) {
-  for (let i = 0; i < sides; i++) {
-    const angle = (i / sides) * 2 * Math.PI + rotation;
-    const x_i = x + radius * Math.cos(angle) + (i === 0 ? 20 : 0);
-    const y_i = y + radius * Math.sin(angle);
-
-    if (i === 0) {
-      ctx.moveTo(x_i, y_i);
-    } else {
-      ctx.lineTo(x_i, y_i);
-    }
-  }
-}
-
 const NotSkin = ({
-  bounds,
+  dimensions,
   ctx,
   theme,
-  scaleFactor = 1,
-  faceAngles,
-  face,
   assets,
-}: DrawArguments<PinState>) => {
-  ctx.save();
-  const [loc, dim] = bounds;
+}: DrawArguments<NotState>) => {
+  const [width, height] = dimensions;
 
-  const [ogX, ogY] = loc;
-  const [width, height] = dim;
-
-  const angle = faceAngles[toFaceIndex(face)] + 90;
-
-  const rad = (angle * Math.PI) / 180;
-
-  ctx.translate(
-    resolveCn(ogX, scaleFactor) + resolveCn(width, scaleFactor) / 2,
-    resolveCn(ogY, scaleFactor) + resolveCn(height, scaleFactor) / 2
-  );
-
-  ctx.rotate(rad);
-
-  const w = resolveCn(width, scaleFactor);
-  const h = resolveCn(height, scaleFactor);
-
-  const s = (scaleFactor * 10);
-
-  ctx.drawImage(assets.NOT, -s, -s, w, h + s);
-
-  ctx.rotate(-rad);
+  ctx.drawImage(assets.NOT, 0, -height / 2, width, height * 2);
 
   ctx.beginPath();
-  ctx.font = `${6 * scaleFactor}px monospace`;
+  ctx.font = `${6}px monospace`;
 
   ctx.fillStyle = theme.colors.base00;
   ctx.strokeStyle = theme.colors.base70;
-  ctx.lineWidth = 0.5 * scaleFactor;
+  ctx.lineWidth = 0.5;
   ctx.textAlign = "center";
   ctx.fill();
 
-  ctx.strokeText("NOT", 0, -6 * scaleFactor);
+  ctx.save();
+  ctx.translate(width / 2, height);
+  ctx.rotate(-Math.PI / 2);
 
-  ctx.fillText("NOT", 0, -6 * scaleFactor);
+  ctx.strokeText("NOT", 5, -5);
 
+  ctx.fillText("NOT", 5, -5);
   ctx.restore();
 };
 
 const AndSkin = ({
-  bounds,
+  dimensions,
   ctx,
   theme,
-  scaleFactor = 1,
-  state,
-  faceAngles,
-  face,
   assets,
 }: DrawArguments<AndState>) => {
-  ctx.save();
-  const [loc, dim] = bounds;
+  const [width, height] = dimensions;
 
-  const [ogX, ogY] = loc;
-  const [width, height] = dim;
-
-  const angle = faceAngles[toFaceIndex(face)] + 90;
-
-  const rad = (angle * Math.PI) / 180;
-
-  ctx.translate(
-    resolveCn(ogX, scaleFactor) + resolveCn(width, scaleFactor) / 2,
-    resolveCn(ogY, scaleFactor) + resolveCn(height, scaleFactor) / 2
-  );
-
-  ctx.rotate(rad);
-
-  const w = resolveCn(width, scaleFactor);
-  const h = resolveCn(height, scaleFactor);
-
-  ctx.drawImage(assets.AND, w / -2, h / -2, w, h);
-
-  ctx.rotate(-rad);
+  ctx.drawImage(assets.AND, 0, 0, width, height);
 
   ctx.beginPath();
-  ctx.font = `${6 * scaleFactor}px monospace`;
+  ctx.font = `${6}px monospace`;
 
   ctx.fillStyle = theme.colors.base00;
   ctx.strokeStyle = theme.colors.base70;
-  ctx.lineWidth = 0.5 * scaleFactor;
+  ctx.lineWidth = 0.5;
   ctx.textAlign = "center";
   ctx.fill();
 
-  ctx.strokeText("AND", 0, 2 * scaleFactor);
-
-  ctx.fillText("AND", 0, 2 * scaleFactor);
-
-  ctx.restore();
+  ctx.strokeText("AND", width / 2, height / 2 + 3);
+  ctx.fillText("AND", width / 2, height / 2 + 3);
 };
 
 const NandSkin = ({
-  bounds,
+  dimensions,
   ctx,
   theme,
-  scaleFactor = 1,
-  state,
-  faceAngles,
-  face,
   assets,
 }: DrawArguments<AndState>) => {
-  ctx.save();
-  const [loc, dim] = bounds;
+  const [width, height] = dimensions;
 
-  const [ogX, ogY] = loc;
-  const [width, height] = dim;
-
-  const angle = faceAngles[toFaceIndex(face)] + 90;
-
-  const rad = (angle * Math.PI) / 180;
-
-  ctx.translate(
-    resolveCn(ogX, scaleFactor) + resolveCn(width, scaleFactor) / 2,
-    resolveCn(ogY, scaleFactor) + resolveCn(height, scaleFactor) / 2
-  );
-
-  ctx.rotate(rad);
-
-  const w = resolveCn(width, scaleFactor);
-  const h = resolveCn(height, scaleFactor);
-
-  ctx.drawImage(assets.NAND, w / -2, h / -2, w, h + 30);
-
-  ctx.rotate(-rad);
+  ctx.drawImage(assets.NAND, 0, 2.5, width, height + 5);
 
   ctx.beginPath();
-  ctx.font = `${6 * scaleFactor}px monospace`;
+  ctx.font = `${6}px monospace`;
 
   ctx.fillStyle = theme.colors.base00;
   ctx.strokeStyle = theme.colors.base70;
-  ctx.lineWidth = 0.5 * scaleFactor;
+  ctx.lineWidth = 0.5;
   ctx.textAlign = "center";
   ctx.fill();
-
-  ctx.strokeText("NAND", -9 * scaleFactor, 2 * scaleFactor);
-
-  ctx.fillText("NAND", -9 * scaleFactor, 2 * scaleFactor);
-
-  ctx.restore();
+  ctx.strokeText("NAND", width / 2, height - 2);
+  ctx.fillText("NAND", width / 2, height - 2);
 };
 
 const WireSkin = ({
   ctx,
   theme,
   state,
-  scaleFactor = 1,
   portsSignals: [signal],
 }: DrawArguments<WireState>) => {
   const [x1, y1] = state.from;
@@ -345,9 +202,9 @@ const WireSkin = ({
   const isOn = signal === 1;
 
   ctx.beginPath();
-  ctx.moveTo(resolveCn(x1, scaleFactor), resolveCn(y1, scaleFactor));
-  ctx.lineTo(resolveCn(x2, scaleFactor), resolveCn(y2, scaleFactor));
-  ctx.lineWidth = ~~(scaleFactor * 2.5);
+  ctx.moveTo(x1, y1);
+  ctx.lineTo(x2, y2);
+  ctx.lineWidth = 2;
   ctx.lineCap = "round";
   ctx.strokeStyle = isOn ? theme.colors.green : theme.colors.base25;
   ctx.stroke();
@@ -355,103 +212,49 @@ const WireSkin = ({
 };
 
 const OrSkin = ({
-  bounds,
+  dimensions,
   ctx,
   theme,
-  scaleFactor = 1,
-  state,
-  faceAngles,
-  face,
   assets,
 }: DrawArguments<AndState>) => {
-  ctx.save();
-  const [loc, dim] = bounds;
+  const [width, height] = dimensions;
 
-  const [ogX, ogY] = loc;
-  const [width, height] = dim;
-
-  const angle = faceAngles[toFaceIndex(face)] + 90;
-
-  const rad = (angle * Math.PI) / 180;
-
-  ctx.translate(
-    resolveCn(ogX, scaleFactor) + resolveCn(width, scaleFactor) / 2,
-    resolveCn(ogY, scaleFactor) + resolveCn(height, scaleFactor) / 2
-  );
-
-  ctx.rotate(rad);
-
-  const w = resolveCn(width, scaleFactor);
-  const h = resolveCn(height, scaleFactor);
-
-  ctx.drawImage(assets.OR, w / -2, h / -2, w, h);
-
-  ctx.rotate(-rad);
+  ctx.drawImage(assets.OR, 0, 0, width, height);
 
   ctx.beginPath();
-  ctx.font = `${6 * scaleFactor}px monospace`;
+  ctx.font = `${6}px monospace`;
 
   ctx.fillStyle = theme.colors.base00;
   ctx.strokeStyle = theme.colors.base70;
-  ctx.lineWidth = 0.5 * scaleFactor;
+  ctx.lineWidth = 0.5;
   ctx.textAlign = "center";
   ctx.fill();
 
-  ctx.strokeText("OR", -2 * scaleFactor, 2 * scaleFactor);
-
-  ctx.fillText("OR", -2 * scaleFactor, 2 * scaleFactor);
-
-  ctx.restore();
+  ctx.strokeText("OR", width / 2, height / 2 + 3);
+  ctx.fillText("OR", width / 2, height / 2 + 3);
 };
 
 const XorSkin = ({
-  bounds,
+  dimensions,
   ctx,
   theme,
-  scaleFactor = 1,
-  state,
   assets,
-  face,
-  faceAngles,
 }: DrawArguments<AndState>) => {
-  ctx.save();
-  const [loc, dim] = bounds;
+  const [width, height] = dimensions;
 
-  const [ogX, ogY] = loc;
-  const [width, height] = dim;
-
-  const angle = faceAngles[toFaceIndex(face)] + 90;
-
-  const rad = (angle * Math.PI) / 180;
-
-  ctx.translate(
-    resolveCn(ogX, scaleFactor) + resolveCn(width, scaleFactor) / 2,
-    resolveCn(ogY, scaleFactor) + resolveCn(height, scaleFactor) / 2
-  );
-
-  ctx.rotate(rad);
-
-  const w = resolveCn(width, scaleFactor);
-  const h = resolveCn(height, scaleFactor);
-
-  ctx.drawImage(assets.XOR, w / -2, h / -2, w, h + 40);
-
-  ctx.rotate(-rad);
+  ctx.drawImage(assets.XOR, 0, 0, width, height + 10);
 
   ctx.beginPath();
-  ctx.font = `${6 * scaleFactor}px monospace`;
+  ctx.font = `${6}px monospace`;
 
   ctx.fillStyle = theme.colors.base00;
   ctx.strokeStyle = theme.colors.base70;
-  ctx.lineWidth = 0.5 * scaleFactor;
+  ctx.lineWidth = 0.5;
   ctx.textAlign = "center";
   ctx.fill();
 
-  ctx.strokeText("XOR", -2 * scaleFactor, 2 * scaleFactor);
-
-  ctx.fillText("XOR", -2 * scaleFactor, 2 * scaleFactor);
-
-  ctx.restore();
+  ctx.strokeText("XOR", width / 2, height / 2 + 3);
+  ctx.fillText("XOR", width / 2, height / 2 + 3);
 };
 
 export const prepareTheme = async (): Promise<CircTheme> => {
@@ -460,23 +263,22 @@ export const prepareTheme = async (): Promise<CircTheme> => {
   return {
     colors,
     library: {
-      LED: (drawArgs) => LEDSkin({ ...drawArgs, assets }),
-      NOT: (drawArgs) => NotSkin({ ...drawArgs, assets }),
-      pin: (drawArgs) => PinSkin({ ...drawArgs, assets }),
-      wire: (drawArgs) => WireSkin({ ...drawArgs, assets }),
-      AND: (drawArgs) => AndSkin({ ...drawArgs, assets }),
-      NAND: (drawArgs) => NandSkin({ ...drawArgs, assets }),
-      OR: (drawArgs) => OrSkin({ ...drawArgs, assets }),
-      XOR: (drawArgs) => XorSkin({ ...drawArgs, assets }),
+      LED: (drawArgs) =>
+        LEDSkin({ ...(drawArgs as DrawArguments<LEDState>), assets }),
+      NOT: (drawArgs) =>
+        NotSkin({ ...(drawArgs as DrawArguments<NotState>), assets }),
+      pin: (drawArgs) =>
+        PinSkin({ ...(drawArgs as DrawArguments<PinState>), assets }),
+      wire: (drawArgs) =>
+        WireSkin({ ...(drawArgs as DrawArguments<WireState>), assets }),
+      AND: (drawArgs) =>
+        AndSkin({ ...(drawArgs as DrawArguments<AndState>), assets }),
+      NAND: (drawArgs) =>
+        NandSkin({ ...(drawArgs as DrawArguments<NandState>), assets }),
+      OR: (drawArgs) =>
+        OrSkin({ ...(drawArgs as DrawArguments<OrState>), assets }),
+      XOR: (drawArgs) =>
+        XorSkin({ ...(drawArgs as DrawArguments<XorState>), assets }),
     },
   };
 };
-
-function loadImage(src: string): Promise<HTMLImageElement> {
-  return new Promise((resolve, reject) => {
-    const img = new Image();
-    img.onload = () => resolve(img);
-    img.onerror = reject;
-    img.src = src;
-  });
-}

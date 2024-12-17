@@ -8,5 +8,8 @@
       "DOM"
     ],
     "baseUrl": "./assets/ts",
-  }
+  },
+  "exclude": [
+    "node_modules"
+  ]
 }

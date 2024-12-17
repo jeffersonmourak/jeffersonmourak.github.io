@@ -58,12 +58,12 @@
     <a name="circuit" val="main"/>
     <a name="circuitnamedboxfixedsize" val="true"/>
     <a name="simulationFrequency" val="1.0"/>
-    <comp lib="0" loc="(30,20)" name="Pin"/>
-    <comp lib="1" loc="(60,20)" name="NOT Gate">
+    <comp lib="0" loc="(50,20)" name="Pin"/>
+    <comp lib="1" loc="(80,20)" name="NOT Gate">
       <a name="size" val="20"/>
     </comp>
-    <comp lib="5" loc="(70,20)" name="LED"/>
-    <wire from="(30,20)" to="(40,20)"/>
-    <wire from="(60,20)" to="(70,20)"/>
+    <comp lib="5" loc="(90,20)" name="LED"/>
+    <wire from="(50,20)" to="(60,20)"/>
+    <wire from="(80,20)" to="(90,20)"/>
   </circuit>
 </project>

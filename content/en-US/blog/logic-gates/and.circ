@@ -58,7 +58,7 @@
     <a name="circuit" val="main"/>
     <a name="circuitnamedboxfixedsize" val="true"/>
     <a name="simulationFrequency" val="1.0"/>
-    <comp lib="1" loc="(40,20)" name="AND Gate">
+    <comp lib="1" loc="(50,20)" name="AND Gate">
       <a name="size" val="30"/>
     </comp>
   </circuit>

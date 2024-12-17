@@ -54,7 +54,7 @@ A resposta está na própria pergunta! 😉 Vamos precisar de uma outra porta l�
 | 1 | 1 | 1 |
 
 Mas antes de falar da OR, vamos dar uma olhada na porta NOT (ou Negação). Ela é bem simples, mas vai ser importante mais pra frente.
-{{< loadCirc "sample.circ" 650 290 6 >}}
+{{< loadCirc "sample.circ" 720 270 6 >}}
 
 E se escrevermos ela numa tabela verdade teremos isso aqui:
 
@@ -68,13 +68,13 @@ Então, vamos fazer uma pausa e revisar o que a gente já sabe. Primeiro, as ope
 
 e o NOT:
 
-{{< loadCirc "not.circ" 110 110 4 >}}
+{{< loadCirc "not.circ" 160 160 4 >}}
 
 Com essas duas operações lógicas (AND e NOT), já podemos combinar seus resultados e criar uma terceira porta lógica: a NAND (ou Not AND).
 
 Ela pode ser representada assim:
 
-{{< loadCirc "nand.circ" 200 175 4 >}}
+{{< loadCirc "nand.circ" 240 170 4 >}}
 
 {{< loadCirc "example1.circ" 650 290 3 >}}
 
@@ -96,7 +96,7 @@ Analisando o diagrama acima, vemos que, quando os dois interruptores estiverem d
 | 0 | 0 | 1 |
 | 1 | 1 | 1 |
 
-<iframe src="https://giphy.com/embed/n9h61thJkq6Xe" width="300px" style="" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/vintage-cartoon-tweety-bird-n9h61thJkq6Xe"></a></p>
+<div style="width:100%;height:0;padding-bottom:75%;position:relative;"><iframe src="https://giphy.com/embed/n9h61thJkq6Xe" width="100%" height="100%" style="position:absolute" frameBorder="0" class="giphy-embed" allowFullScreen></iframe></div>
 
 Mas espera um pouco, eu tenho a impressão de que eu já vi essa tabela antes? Sim! Essa é a porta lógica OR que estávamos procurando. Uma viagem e tanto, não é? Agora que já sabemos como consertar a fiação da lâmpada, podemos dar uma paradinha aqui. Este é apenas o primeiro artigo de uma série sobre computadores. Mais para frente, vamos abordar outras portas lógicas e outros conceitos da computação.
 
