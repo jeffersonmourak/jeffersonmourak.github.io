@@ -27,6 +27,7 @@
     "circ-renderer": "^1.1.0",
     "highlight.run": "^9.5.2",
     "lodash": "^4.17.21",
+    "tslib": "^2.8.1",
     "uuid": "^11.0.3"
   }
 }
