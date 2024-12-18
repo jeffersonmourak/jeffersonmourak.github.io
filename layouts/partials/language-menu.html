@@ -1,0 +1,20 @@
+<ul class="menu menu--desktop menu--language-selector">
+  {{ $lang := or .Params.contentLanguage "en" }}
+  {{ range $.Site.Home.AllTranslations }}
+
+  {{ $isContentLanguage := eq $lang .Language.LanguageCode }}
+
+  {{ if $isContentLanguage }}
+  <li class="menu__trigger">{{ .Language.LanguageName }}&nbsp;▾</li>
+  {{end}}
+
+  <!-- <li><a href="{{ .Permalink }}">{{ .Language.LanguageCode }}</a></li> -->
+  {{ end }}
+  <li>
+    <ul class="menu__dropdown">
+      {{ range $.Site.Home.AllTranslations }}
+      <li><a href="{{ .Permalink }}">{{ .Language.LanguageName }}</a></li>
+      {{ end }}
+    </ul>
+  </li>
+</ul>

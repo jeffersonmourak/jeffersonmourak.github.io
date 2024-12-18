@@ -1,0 +1,14 @@
+{{ printf "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?>" | safeHTML }}
+{{ $pages := site.AllPages }}
+
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  {{ range $pages }}
+  <url>
+    <loc>{{ .Permalink }}</loc>
+    <lastmod>{{ .Lastmod }}</lastmod>
+	  {{ with .Sitemap.ChangeFreq }}<changefreq>{{ . }}</changefreq>{{end}}
+	  {{ with .Sitemap.Priority   }}<priority>{{.}}</priority>{{end}}
+  </url>
+  {{ end }}
+</urlset>

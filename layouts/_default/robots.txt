@@ -1,0 +1,5 @@
+User-agent: *
+sitemap: {{ .Site.BaseURL }}sitemap.xml
+{{ range .Pages }}
+Allow: {{ .RelPermalink }}
+{{ end }}

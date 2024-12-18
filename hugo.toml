@@ -1,8 +1,13 @@
 baseURL = 'http://127.0.0.1:8080'
-languageCode = 'en-US'
+languageCode = 'en'
 title = 'Jefferson Oliveira'
 theme = "terminal"
 disableKinds = ['taxonomy', 'term']
+enableRobotsTXT = true
+
+
+[sitemap]
+  changeFreq = 'weekly'
 
 [build]
   noJSConfigInAssets = true
@@ -10,7 +15,7 @@ disableKinds = ['taxonomy', 'term']
 
 [outputs]
 home = ['html']
-section = ['html', 'rss']
+section = ['html', 'rss', 'sitemap']
 taxonomy = ['html']
 term = ['html']
 
@@ -43,8 +48,7 @@ path = "page"
 [languages]
 [languages.en]
 languageName = "English"
-contentDir = 'content/en-US'
-languageCode = 'en-US'
+languageCode = 'en'
 languageDirection = 'ltr'
 title = "Jefferson Oliveira"
 copyright = "© Jefferson Oliveira<br/>All content provided by this website are my own opinons and beliefs and are distrubuted under the <br/>"
@@ -99,14 +103,13 @@ name = "Voting Poker"
 url = "https://voting.poker"
 weight = 6
 
-[languages.pt-BR]
+[languages.pt]
 languageName = "Portugês (Brasileiro)"
-contentDir = 'content/pt-BR'
-languageCode = 'pt-BR'
+languageCode = 'pt'
 languageDirection = 'ltr'
 title = "Jefferson Oliveira"
 copyright = "© Jefferson Oliveira<br/>Todo conteúdo distribuido por este website refletem minhas próprias opiniões e estão sob a licença <br/>"
-[languages.pt-BR.params]
+[languages.pt.params]
 subtitle = "Olá! Eu sou Jefferson Oliveira, um engenheiro de software curioso e apaixonado por tecnologia."
 owner = "Jefferson Oliveira"
 keywords = "Jefferson Oliveira, engenheiro de software, desenvolvedor, brasil"
@@ -122,38 +125,38 @@ minuteReadingTime = "min de leitura"
 words = "palavras"
 newTab = true
 
-[languages.pt-BR.params.logo]
+[languages.pt.params.logo]
 logoText = "Jefferson Oliveira"
-logoHomeLink = "/pt-BR"
+logoHomeLink = "/pt"
 
-[languages.pt-BR.menu]
-[[languages.pt-BR.menu.main]]
+[languages.pt.menu]
+[[languages.pt.menu.main]]
 identifier = "linkedin"
 name = "LinkedIn"
 url = "https://www.linkedin.com/in/jeffersonmourak/"
 weight = 1
 newTab = true
-[[languages.pt-BR.menu.main]]
+[[languages.pt.menu.main]]
 identifier = "github"
 name = "Github"
 url = "https://github.com/jeffersonmourak"
 weight = 2
-[[languages.pt-BR.menu.main]]
+[[languages.pt.menu.main]]
 identifier = "email"
 name = "Email"
 url = "mailto:jeffersonmourak@gmail.com"
 weight = 3
-[[languages.pt-BR.menu.main]]
+[[languages.pt.menu.main]]
 identifier = "instagram"
 name = "Instagram"
 url = "https://instagram.com/jeffersonmourak"
 weight = 4
-[[languages.pt-BR.menu.main]]
+[[languages.pt.menu.main]]
 identifier = "blog"
 name = "Blog"
 url = "/blog/"
 weight = 5
-[[languages.pt-BR.menu.main]]
+[[languages.pt.menu.main]]
 identifier = "voting_poker"
 name = "Voting Poker"
 url = "https://voting.poker"

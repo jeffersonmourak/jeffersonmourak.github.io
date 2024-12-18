@@ -10,6 +10,7 @@ showFullContent: false
 readingTime: true
 hideComments: true
 draft: false
+contentLanguage: "pt"
 ---
 > Revisado [11/12/2024]
 >
