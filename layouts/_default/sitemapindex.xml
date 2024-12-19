@@ -1,14 +1,17 @@
 {{ printf "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?>" | safeHTML }}
-{{ $pages := site.AllPages }}
-
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
+{{ $pages := site.AllPages }}
   {{ range $pages }}
+  {{ $lastMod := .Lastmod.Format "2006-01-02" }}
   <url>
     <loc>{{ .Permalink }}</loc>
-    <lastmod>{{ .Lastmod }}</lastmod>
+    {{ if eq $lastMod "0001-01-01" }}
+    {{ $lastMod = time.Now.Format "2006-01-02" }}
+    {{ end }}
+    <lastmod>{{ $lastMod }}</lastmod>
 	  {{ with .Sitemap.ChangeFreq }}<changefreq>{{ . }}</changefreq>{{end}}
-	  {{ with .Sitemap.Priority   }}<priority>{{.}}</priority>{{end}}
+	  {{ with .Sitemap.Priority   }}<priority>1.0</priority>{{end}}
   </url>
   {{ end }}
 </urlset>
