@@ -3,17 +3,19 @@ import type {
   CircTheme,
   DrawArguments,
   LEDState,
-  NandState,
   NotState,
-  OrState,
   PinState,
   ThemeColor,
   WireState,
-  XorState,
 } from "circ-renderer";
-import { loadAsset } from "./assets";
+
+import { assetsManager } from "circ-renderer";
+
+import { AND, NAND, NOT, OR, XOR } from "./assets";
 
 export type ComponentFace = "north" | "south" | "east" | "west";
+
+const assetLoader = assetsManager();
 
 export const colors = {
   primary: "#b097d1",
@@ -50,12 +52,12 @@ export const colors = {
   base100: "#000000",
 } satisfies Record<ThemeColor, string>;
 
-const LEDSkin = ({
+const LEDSkin = <S = LEDState>({
   ctx,
   dimensions,
   theme,
   portsSignals,
-}: DrawArguments<LEDState>) => {
+}: DrawArguments<S>) => {
   ctx.beginPath();
   const [width, height] = dimensions;
 
@@ -72,14 +74,14 @@ const LEDSkin = ({
   ctx.closePath();
 };
 
-const PinSkin = ({
+const PinSkin = <S = PinState>({
   dimensions,
   ctx,
   theme,
   state,
   pointerLocation,
   portsSignals,
-}: DrawArguments<PinState>) => {
+}: DrawArguments<S>) => {
   ctx.beginPath();
   const [width, height] = dimensions;
 
@@ -87,7 +89,7 @@ const PinSkin = ({
 
   ctx.lineWidth = 1;
 
-  if (state.output) {
+  if ((state as PinState).output) {
     ctx.fillStyle = isOn ? theme.colors.base60 : theme.colors.base50;
     ctx.strokeStyle = isOn ? theme.colors.base70 : theme.colors.base40;
   } else {
@@ -116,15 +118,16 @@ const PinSkin = ({
   ctx.fillText(isOn ? "1" : "0", width / 2, height / 2 + 2);
 };
 
-const NotSkin = ({
-  dimensions,
-  ctx,
-  theme,
-  assets,
-}: DrawArguments<NotState>) => {
+const NotSkin = <S = NotState>({ dimensions, ctx, theme }: DrawArguments<S>) => {
   const [width, height] = dimensions;
 
-  ctx.drawImage(assets.NOT, 0, -height / 2, width, height * 2);
+  if (!assetLoader.load(NOT).next().done) {
+    return;
+  }
+
+  const notImageAsset = assetLoader.load(NOT).next().value;
+
+  ctx.drawImage(notImageAsset, 0, -height / 2, width, height * 2);
 
   ctx.beginPath();
   ctx.font = `${6}px monospace`;
@@ -145,15 +148,16 @@ const NotSkin = ({
   ctx.restore();
 };
 
-const AndSkin = ({
-  dimensions,
-  ctx,
-  theme,
-  assets,
-}: DrawArguments<AndState>) => {
+const AndSkin = <S = AndState>({ dimensions, ctx, theme }: DrawArguments<S>) => {
   const [width, height] = dimensions;
 
-  ctx.drawImage(assets.AND, 0, 0, width, height);
+  if (!assetLoader.load(AND).next().done) {
+    return;
+  }
+
+  const andImageAsset = assetLoader.load(AND).next().value;
+
+  ctx.drawImage(andImageAsset, 0, 0, width, height);
 
   ctx.beginPath();
   ctx.font = `${6}px monospace`;
@@ -168,15 +172,16 @@ const AndSkin = ({
   ctx.fillText("AND", width / 2, height / 2 + 3);
 };
 
-const NandSkin = ({
-  dimensions,
-  ctx,
-  theme,
-  assets,
-}: DrawArguments<AndState>) => {
+const NandSkin = <S = AndState>({ dimensions, ctx, theme }: DrawArguments<S>) => {
   const [width, height] = dimensions;
 
-  ctx.drawImage(assets.NAND, 0, 2.5, width, height + 5);
+  if (!assetLoader.load(NAND).next().done) {
+    return;
+  }
+
+  const nandImageAsset = assetLoader.load(NAND).next().value;
+
+  ctx.drawImage(nandImageAsset, 0, 2.5, width, height + 5);
 
   ctx.beginPath();
   ctx.font = `${6}px monospace`;
@@ -190,14 +195,14 @@ const NandSkin = ({
   ctx.fillText("NAND", width / 2, height - 2);
 };
 
-const WireSkin = ({
+const WireSkin = <S = WireState>({
   ctx,
   theme,
   state,
   portsSignals: [signal],
-}: DrawArguments<WireState>) => {
-  const [x1, y1] = state.from;
-  const [x2, y2] = state.to;
+}: DrawArguments<S>) => {
+  const [x1, y1] = (state as WireState).from;
+  const [x2, y2] = (state as WireState).to;
 
   const isOn = signal === 1;
 
@@ -211,15 +216,16 @@ const WireSkin = ({
   ctx.closePath();
 };
 
-const OrSkin = ({
-  dimensions,
-  ctx,
-  theme,
-  assets,
-}: DrawArguments<AndState>) => {
+const OrSkin = <S = AndState>({ dimensions, ctx, theme }: DrawArguments<S>) => {
   const [width, height] = dimensions;
 
-  ctx.drawImage(assets.OR, 0, 0, width, height);
+  if (!assetLoader.load(OR).next().done) {
+    return;
+  }
+
+  const orImageAsset = assetLoader.load(OR).next().value;
+
+  ctx.drawImage(orImageAsset, 0, 0, width, height);
 
   ctx.beginPath();
   ctx.font = `${6}px monospace`;
@@ -234,15 +240,15 @@ const OrSkin = ({
   ctx.fillText("OR", width / 2, height / 2 + 3);
 };
 
-const XorSkin = ({
-  dimensions,
-  ctx,
-  theme,
-  assets,
-}: DrawArguments<AndState>) => {
+const XorSkin = <S = AndState>({ dimensions, ctx, theme }: DrawArguments<S>) => {
   const [width, height] = dimensions;
 
-  ctx.drawImage(assets.XOR, 0, 0, width, height + 10);
+  if (!assetLoader.load(XOR).next().done) {
+    return;
+  }
+
+  const xorImageAsset = assetLoader.load(XOR).next().value;
+  ctx.drawImage(xorImageAsset, 0, 0, width, height + 10);
 
   ctx.beginPath();
   ctx.font = `${6}px monospace`;
@@ -258,27 +264,17 @@ const XorSkin = ({
 };
 
 export const prepareTheme = async (): Promise<CircTheme> => {
-  const assets = await loadAsset();
-
   return {
     colors,
     library: {
-      LED: (drawArgs) =>
-        LEDSkin({ ...(drawArgs as DrawArguments<LEDState>), assets }),
-      NOT: (drawArgs) =>
-        NotSkin({ ...(drawArgs as DrawArguments<NotState>), assets }),
-      pin: (drawArgs) =>
-        PinSkin({ ...(drawArgs as DrawArguments<PinState>), assets }),
-      wire: (drawArgs) =>
-        WireSkin({ ...(drawArgs as DrawArguments<WireState>), assets }),
-      AND: (drawArgs) =>
-        AndSkin({ ...(drawArgs as DrawArguments<AndState>), assets }),
-      NAND: (drawArgs) =>
-        NandSkin({ ...(drawArgs as DrawArguments<NandState>), assets }),
-      OR: (drawArgs) =>
-        OrSkin({ ...(drawArgs as DrawArguments<OrState>), assets }),
-      XOR: (drawArgs) =>
-        XorSkin({ ...(drawArgs as DrawArguments<XorState>), assets }),
+      LED: LEDSkin,
+      NOT: NotSkin,
+      pin: PinSkin,
+      wire: WireSkin,
+      AND: AndSkin,
+      NAND: NandSkin,
+      OR: OrSkin,
+      XOR: XorSkin,
     },
   };
 };
