@@ -1,0 +1,3 @@
+[submodule "packages/circ-renderer"]
+	path = packages/circ-renderer
+	url = https://github.com/jeffersonmourak/circ-renderer.git
