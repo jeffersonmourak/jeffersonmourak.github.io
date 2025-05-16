@@ -1,7 +1,5 @@
 import { initializeShortcode } from "../initializeShortcode";
-
 import { CircRenderer } from "circ-renderer";
-
 import { prepareTheme } from "./theme";
 
 export interface RenderContext {
@@ -28,7 +26,7 @@ function getParams(params: URLSearchParams): {
 }
 
 function onError(error: Error) {
-  console.log(error);
+  console.error(error);
 }
 
 async function mountFromCircRenderer({
@@ -46,7 +44,7 @@ async function mountFromCircRenderer({
     const response = await fetch(input);
     const fileContent = await response.text();
 
-    const theme = await prepareTheme();
+    const theme = prepareTheme();
 
     const canvasElement = CircRenderer(fileContent, {
       theme: theme,
@@ -64,7 +62,7 @@ async function mountFromCircRenderer({
 
     document.body.appendChild(canvasElement);
   } catch (e) {
-    console.log(e);
+    console.error(e);
   }
   return;
 }

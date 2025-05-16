@@ -6,13 +6,41 @@
   {{ end }}
   {{ partial "head.html" . }}
   
-  {{ $highlight := resources.Get "ts/highlight.ts" | babel | js.Build }}
-  {{ $bundle := slice $highlight | resources.Concat "highlight.js" | resources.Minify }}
-  {{ $shortcodes := resources.Get "ts/shortcodes/index.ts" | babel | js.Build }}
-  {{ $shortcodesBundle := slice $shortcodes | resources.Concat "shortcodes.js" | resources.Minify }}
+  {{ with resources.Get "ts/highlight.ts" }}
+    {{$opts := dict
+      "minify" (not (eq hugo.Environment "development"))
+      "sourceMap" (cond (eq hugo.Environment "development") "inline" "")
+      "targetPath" "highlight.js"
+    }}
 
-  <script type="text/javascript" src="{{ $shortcodesBundle.RelPermalink }}"></script>
-  <script type="text/javascript" src="{{ $bundle.RelPermalink }}"></script>
+    {{ with . | babel | js.Build $opts }}
+      {{ if eq hugo.Environment "development" }}
+        <script type="text/javascript" src="{{ .RelPermalink }}"></script>
+      {{ else }}
+        {{ with . | fingerprint }}
+          <script src="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" crossorigin="anonymous"></script>
+        {{ end }}
+      {{ end }}
+    {{ end }}
+  {{ end }}
+
+  {{ with resources.Get "ts/shortcodes/index.ts" }}
+    {{ $opts := dict
+      "minify" (not (eq hugo.Environment "development"))
+      "sourceMap" (cond (eq hugo.Environment "development") "inline" "")
+      "targetPath" "shortcodes.js"
+    }}
+
+    {{ with . | babel | js.Build $opts }}
+      {{ if eq hugo.Environment "development" }}
+        <script type="text/javascript" src="{{ .RelPermalink }}"></script>
+      {{ else }}
+        {{ with . }}
+          <script src="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" crossorigin="anonymous"></script>
+        {{ end }}
+      {{ end }}
+    {{ end }}
+  {{ end }}
 </head>
 <body>
 {{ $container := cond ($.Site.Params.FullWidthTheme | default false) "container full" (cond ($.Site.Params.CenterTheme | default false) "container center" "container") }}

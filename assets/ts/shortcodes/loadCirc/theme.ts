@@ -92,14 +92,12 @@ const PinSkin = <S = PinState>({
   if ((state as PinState).output) {
     ctx.fillStyle = isOn ? theme.colors.base60 : theme.colors.base50;
     ctx.strokeStyle = isOn ? theme.colors.base70 : theme.colors.base40;
+  } else if (pointerLocation !== null) {
+    ctx.fillStyle = theme.colors.yellow;
+    ctx.strokeStyle = theme.colors.yellow;
   } else {
-    if (pointerLocation !== null) {
-      ctx.fillStyle = theme.colors.yellow;
-      ctx.strokeStyle = theme.colors.yellow;
-    } else {
-      ctx.strokeStyle = isOn ? theme.colors.base35 : theme.colors.base20;
-      ctx.fillStyle = isOn ? theme.colors.orange : theme.colors.green;
-    }
+    ctx.strokeStyle = isOn ? theme.colors.base35 : theme.colors.base20;
+    ctx.fillStyle = isOn ? theme.colors.orange : theme.colors.green;
   }
 
   ctx.roundRect(0, 0, width, height, 2);
@@ -118,7 +116,11 @@ const PinSkin = <S = PinState>({
   ctx.fillText(isOn ? "1" : "0", width / 2, height / 2 + 2);
 };
 
-const NotSkin = <S = NotState>({ dimensions, ctx, theme }: DrawArguments<S>) => {
+const NotSkin = <S = NotState>({
+  dimensions,
+  ctx,
+  theme,
+}: DrawArguments<S>) => {
   const [width, height] = dimensions;
 
   if (!assetLoader.load(NOT).next().done) {
@@ -148,7 +150,11 @@ const NotSkin = <S = NotState>({ dimensions, ctx, theme }: DrawArguments<S>) => 
   ctx.restore();
 };
 
-const AndSkin = <S = AndState>({ dimensions, ctx, theme }: DrawArguments<S>) => {
+const AndSkin = <S = AndState>({
+  dimensions,
+  ctx,
+  theme,
+}: DrawArguments<S>) => {
   const [width, height] = dimensions;
 
   if (!assetLoader.load(AND).next().done) {
@@ -172,7 +178,11 @@ const AndSkin = <S = AndState>({ dimensions, ctx, theme }: DrawArguments<S>) => 
   ctx.fillText("AND", width / 2, height / 2 + 3);
 };
 
-const NandSkin = <S = AndState>({ dimensions, ctx, theme }: DrawArguments<S>) => {
+const NandSkin = <S = AndState>({
+  dimensions,
+  ctx,
+  theme,
+}: DrawArguments<S>) => {
   const [width, height] = dimensions;
 
   if (!assetLoader.load(NAND).next().done) {
@@ -240,7 +250,11 @@ const OrSkin = <S = AndState>({ dimensions, ctx, theme }: DrawArguments<S>) => {
   ctx.fillText("OR", width / 2, height / 2 + 3);
 };
 
-const XorSkin = <S = AndState>({ dimensions, ctx, theme }: DrawArguments<S>) => {
+const XorSkin = <S = AndState>({
+  dimensions,
+  ctx,
+  theme,
+}: DrawArguments<S>) => {
   const [width, height] = dimensions;
 
   if (!assetLoader.load(XOR).next().done) {
@@ -263,7 +277,7 @@ const XorSkin = <S = AndState>({ dimensions, ctx, theme }: DrawArguments<S>) => 
   ctx.fillText("XOR", width / 2, height / 2 + 3);
 };
 
-export const prepareTheme = async (): Promise<CircTheme> => {
+export const prepareTheme = (): CircTheme => {
   return {
     colors,
     library: {

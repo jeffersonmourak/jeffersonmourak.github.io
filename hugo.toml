@@ -7,7 +7,8 @@ enableRobotsTXT = true
 
 
 [sitemap]
-  changeFreq = 'weekly'
+  changefreq = 'weekly'
+  priority = 0.8
 
 [build]
   noJSConfigInAssets = true

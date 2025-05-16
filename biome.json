@@ -1,0 +1,95 @@
+{
+  "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
+  "organizeImports": {
+    "enabled": false
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "recommended": true,
+      "a11y": {
+        "useKeyWithClickEvents": "warn"
+      },
+      "complexity": {
+        "noForEach": "off"
+      },
+      "correctness": {
+        "noNewSymbol": "error",
+        "noUnusedImports": "error",
+        "noNodejsModules": "error"
+      },
+      "nursery": {
+        "noDuplicateElseIf": "error",
+        "noRestrictedImports": "error"
+      },
+      "performance": {
+        "noAccumulatingSpread": "warn",
+        "noDelete": "off"
+      },
+      "security": {
+        "all": true
+      },
+      "style": {
+        "noNonNullAssertion": "warn",
+        "noUselessElse": "off",
+        "useCollapsedElseIf": "error",
+        "useImportType": "error"
+      },
+      "suspicious": {
+        "all": true,
+        "noArrayIndexKey": "warn",
+        "noAssignInExpressions": "warn",
+        "noConfusingVoidType": "warn",
+        "noConsole": "off",
+        "noConsoleLog": "error",
+        "noExplicitAny": "warn",
+        "noReactSpecificProps": "off",
+        "noSkippedTests": "off"
+      }
+    }
+  },
+  "json": {
+    "parser": {
+      "allowComments": true
+    }
+  },
+  "formatter": {
+    "enabled": true,
+    "indentStyle": "space",
+    "indentWidth": 2
+  },
+  "javascript": {
+    "formatter": {
+      "quoteStyle": "single",
+      "lineWidth": 140
+    },
+    "parser": {
+      "unsafeParameterDecoratorsEnabled": true
+    }
+  },
+  "files": {
+    "ignoreUnknown": true,
+    "ignore": [
+      "node_modules",
+      "packages/**/node_modules",
+      ".turbo",
+      ".yarn",
+      ".nyc_output",
+      "out",
+      ".husky",
+      "./yarn.lock",
+      "./.yarnrc.yml",
+      "deployment",
+      "stress-tests",
+      "built",
+      "build",
+      "dist",
+      "coverage"
+    ]
+  },
+  "vcs": {
+    "enabled": true,
+    "clientKind": "git",
+    "useIgnoreFile": true
+  }
+}
