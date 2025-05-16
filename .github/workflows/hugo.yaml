@@ -48,8 +48,18 @@ jobs:
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@v5
-      - name: Install Node.js dependencies
-        run: "[[ -f package-lock.json || -f npm-shrinkwrap.json ]] && npm ci || true"
+      - name: Install Bun
+        run: |
+          curl -fsSL https://bun.sh/install | bash
+          export PATH="$HOME/.bun/bin:$PATH"
+      - name: Install Node.js dependencies with Bun
+        run: |
+          export PATH="$HOME/.bun/bin:$PATH"
+          if [ -f bun.lockb ]; then
+        bun install
+          elif [ -f package.json ]; then
+        bun install
+          fi
       - name: Build with Hugo
         env:
           HUGO_CACHEDIR: ${{ runner.temp }}/hugo_cache
