@@ -1,6 +1,8 @@
+import CircuitSimulator from "circ-renderer/src/modules/simulator";
 import { initializeShortcode } from "../initializeShortcode";
-import { CircRenderer } from "circ-renderer";
 import { prepareTheme } from "./theme";
+import { loadLogisimInput } from "circ-renderer/src/modules/loader";
+import { RenderEngine } from "circ-renderer/src/modules/renderer";
 
 export interface RenderContext {
   size: number;
@@ -44,23 +46,40 @@ async function mountFromCircRenderer({
     const response = await fetch(input);
     const fileContent = await response.text();
 
-    const theme = prepareTheme();
+    const [mainCircuit] = loadLogisimInput(fileContent);
 
-    const canvasElement = CircRenderer(fileContent, {
-      theme: theme,
+    const sim = new CircuitSimulator();
+
+    sim.loadCircuit(mainCircuit);
+
+    const renderInstance = new RenderEngine(sim.circuit, {
+      theme: prepareTheme(),
       scale,
       width,
       height,
+      limitFPS: 60,
+      onClick: (context) => {
+        const { activePin: index } = context;
+
+        if (index === null || sim.circuit === null) {
+          return;
+        }
+
+        const activePin = sim.circuit.components.list[index];
+
+        // biome-ignore lint/style/noNonNullAssertion: The activePin is always defined
+        const stateIndex = sim.circuit.wireConnections.get(activePin.location)!;
+
+        const value = sim.circuit.state[stateIndex] === 1 ? 0 : 1;
+
+        sim.updateStateValue(stateIndex, value);
+        sim.step();
+      },
     });
 
-    canvasElement.classList.add("circ-renderer-canvas");
+    renderInstance.render();
 
-    canvasElement.setAttribute(
-      "style",
-      `--width: ${width}px; --ratio: ${width}/${height}`
-    );
-
-    document.body.appendChild(canvasElement);
+    document.body.appendChild(renderInstance.canvasElement);
   } catch (e) {
     console.error(e);
   }
