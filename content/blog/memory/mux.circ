@@ -74,53 +74,50 @@
     <a name="circuit" val="main"/>
     <a name="circuitnamedboxfixedsize" val="true"/>
     <a name="simulationFrequency" val="1.0"/>
-    <comp lib="0" loc="(30,100)" name="Pin"/>
-    <comp lib="0" loc="(30,50)" name="Pin"/>
-    <comp lib="1" loc="(100,50)" name="AND Gate">
+    <comp lib="0" loc="(20,40)" name="Pin"/>
+    <comp lib="0" loc="(20,70)" name="Pin"/>
+    <comp lib="1" loc="(110,70)" name="AND Gate">
       <a name="size" val="30"/>
     </comp>
-    <comp lib="1" loc="(110,100)" name="AND Gate">
+    <comp lib="1" loc="(130,30)" name="OR Gate">
       <a name="size" val="30"/>
     </comp>
-    <comp lib="1" loc="(140,40)" name="OR Gate">
-      <a name="size" val="30"/>
-    </comp>
-    <comp lib="1" loc="(150,90)" name="NOT Gate">
+    <comp lib="1" loc="(130,50)" name="NOT Gate">
+      <a name="facing" val="north"/>
       <a name="size" val="20"/>
     </comp>
-    <comp lib="1" loc="(190,60)" name="AND Gate">
+    <comp lib="1" loc="(170,40)" name="AND Gate">
       <a name="size" val="30"/>
     </comp>
-    <comp lib="1" loc="(70,110)" name="NOT Gate">
+    <comp lib="1" loc="(70,80)" name="NOT Gate">
       <a name="size" val="20"/>
     </comp>
-    <comp lib="5" loc="(210,60)" name="LED"/>
-    <wire from="(100,20)" to="(100,30)"/>
-    <wire from="(100,20)" to="(200,20)"/>
-    <wire from="(100,30)" to="(110,30)"/>
-    <wire from="(100,50)" to="(110,50)"/>
-    <wire from="(110,100)" to="(120,100)"/>
-    <wire from="(120,90)" to="(120,100)"/>
-    <wire from="(120,90)" to="(130,90)"/>
-    <wire from="(140,40)" to="(150,40)"/>
-    <wire from="(150,40)" to="(150,50)"/>
-    <wire from="(150,50)" to="(160,50)"/>
-    <wire from="(150,70)" to="(150,90)"/>
-    <wire from="(150,70)" to="(160,70)"/>
-    <wire from="(190,60)" to="(200,60)"/>
-    <wire from="(200,20)" to="(200,60)"/>
-    <wire from="(200,60)" to="(210,60)"/>
-    <wire from="(30,100)" to="(40,100)"/>
-    <wire from="(30,50)" to="(50,50)"/>
+    <comp lib="1" loc="(80,30)" name="AND Gate">
+      <a name="size" val="30"/>
+    </comp>
+    <comp lib="5" loc="(190,40)" name="LED"/>
+    <wire from="(110,70)" to="(130,70)"/>
+    <wire from="(130,30)" to="(140,30)"/>
+    <wire from="(130,50)" to="(140,50)"/>
+    <wire from="(170,40)" to="(180,40)"/>
+    <wire from="(180,10)" to="(180,40)"/>
+    <wire from="(180,40)" to="(190,40)"/>
+    <wire from="(20,40)" to="(40,40)"/>
+    <wire from="(20,70)" to="(30,70)"/>
+    <wire from="(30,20)" to="(30,70)"/>
+    <wire from="(30,20)" to="(50,20)"/>
+    <wire from="(30,70)" to="(50,70)"/>
     <wire from="(40,40)" to="(40,80)"/>
-    <wire from="(40,40)" to="(70,40)"/>
-    <wire from="(40,80)" to="(40,100)"/>
-    <wire from="(40,80)" to="(60,80)"/>
-    <wire from="(50,50)" to="(50,60)"/>
-    <wire from="(50,60)" to="(50,110)"/>
-    <wire from="(50,60)" to="(70,60)"/>
-    <wire from="(60,80)" to="(60,90)"/>
-    <wire from="(60,90)" to="(80,90)"/>
-    <wire from="(70,110)" to="(80,110)"/>
+    <wire from="(40,40)" to="(50,40)"/>
+    <wire from="(40,80)" to="(50,80)"/>
+    <wire from="(50,60)" to="(50,70)"/>
+    <wire from="(50,60)" to="(80,60)"/>
+    <wire from="(70,80)" to="(80,80)"/>
+    <wire from="(80,30)" to="(90,30)"/>
+    <wire from="(90,10)" to="(180,10)"/>
+    <wire from="(90,10)" to="(90,20)"/>
+    <wire from="(90,20)" to="(100,20)"/>
+    <wire from="(90,30)" to="(90,40)"/>
+    <wire from="(90,40)" to="(100,40)"/>
   </circuit>
 </project>

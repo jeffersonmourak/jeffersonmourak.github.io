@@ -182,7 +182,7 @@ Agora, vamos olhar também para a tabela do resto da nossa soma e se percebe que
 
 E assim como o Capitão Planeta, "Pela união dos seus poderes", nós vamos conseguir fazer a operação de soma de dois dígitos em binário, e esse componente é chamado de "Somador" ou "Adder".
 
-{{< loadCirc "ADDER.circ" 840 505 3.5 >}}
+{{< loadCirc "ADDER.circ" 840 420 3 >}}
 
 Com essa combinação de portas lógicas, um computador já consegue fazer as incríveis somas de: `0 + 0`, `1 + 0`, `0 + 1`, `1 + 1`, mas, além disso, ele consegue também dizer quanto que houve de resto da soma. E quando combinados vários ADDERs, a gente consegue fazer uma soma de números mais complexos como o 42, mas essa nós vamos ver no próximo artigo.
 

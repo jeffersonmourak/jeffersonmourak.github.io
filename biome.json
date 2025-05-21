@@ -41,7 +41,7 @@
         "noAssignInExpressions": "warn",
         "noConfusingVoidType": "warn",
         "noConsole": "off",
-        "noConsoleLog": "error",
+        "noConsoleLog": "warn",
         "noExplicitAny": "warn",
         "noReactSpecificProps": "off",
         "noSkippedTests": "off"

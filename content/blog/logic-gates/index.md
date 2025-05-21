@@ -65,17 +65,17 @@ E se escrevermos ela numa tabela verdade teremos isso aqui:
 
 Então, vamos fazer uma pausa e revisar o que a gente já sabe. Primeiro, as operações e como representá-las numa tabela. Para simplificar, vamos transformar essas operações em símbolos. Toda vez que nos referirmos ao AND, este será o símbolo:
 
-{{< loadCirc "and.circ" 200 175 4 >}}
+{{< loadCirc "and.circ" 232 192 4 >}}
 
 e o NOT:
 
-{{< loadCirc "not.circ" 160 160 4 >}}
+{{< loadCirc "not.circ" 232 192 4 >}}
 
 Com essas duas operações lógicas (AND e NOT), já podemos combinar seus resultados e criar uma terceira porta lógica: a NAND (ou Not AND).
 
 Ela pode ser representada assim:
 
-{{< loadCirc "nand.circ" 240 170 4 >}}
+{{< loadCirc "nand.circ" 272 192 4 >}}
 
 {{< loadCirc "example1.circ" 650 290 3 >}}
 
