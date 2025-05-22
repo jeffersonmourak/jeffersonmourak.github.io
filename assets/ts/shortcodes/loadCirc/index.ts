@@ -1,6 +1,6 @@
 import CircuitSimulator from "circ-renderer/src/modules/simulator";
 import { initializeShortcode } from "../initializeShortcode";
-import { prepareTheme } from "./theme";
+import { blogTheme } from "./theme";
 import { loadLogisimInput } from "circ-renderer/src/modules/loader";
 import { RenderEngine } from "circ-renderer/src/modules/renderer";
 
@@ -53,7 +53,7 @@ async function mountFromCircRenderer({
     sim.loadCircuit(mainCircuit);
 
     const renderInstance = new RenderEngine(sim.circuit, {
-      theme: prepareTheme(),
+      theme: blogTheme,
       scale,
       width,
       height,
@@ -78,6 +78,10 @@ async function mountFromCircRenderer({
     });
 
     renderInstance.render();
+
+    renderInstance.canvasElement.style.width = "100%";
+    renderInstance.canvasElement.width = width;
+    renderInstance.canvasElement.height = height;
 
     document.body.appendChild(renderInstance.canvasElement);
   } catch (e) {

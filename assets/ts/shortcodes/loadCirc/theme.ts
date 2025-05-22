@@ -1,63 +1,58 @@
-import type { CircTheme, ThemeColor } from "circ-renderer";
+import type { CircTheme } from "circ-renderer";
 
-import { assetsManager } from "circ-renderer";
+import { assetsManager, decodeCircCoords, ui } from "circ-renderer";
 
 import { AND, NAND, NOT, OR, XOR } from "./assets";
 import type { ComponentRenderArgument } from "circ-renderer/src/modules/renderer";
+import { box, image, styled, text } from "circ-renderer/src/modules/ui";
 
 export type ComponentFace = "north" | "south" | "east" | "west";
 
 const assetLoader = assetsManager();
 
 export const colors = {
-  primary: "#b097d1",
-  primary1: "#6e49ab",
-  primary2: "#0056b3",
-  backgroundPrimary: "#090311",
-  backgroundPrimaryAlt: "#443856",
-  backgroundSecondary: "#f8f4ff",
+  background: "#090311",
   red: "#dc3545",
   orange: "#fd7e14",
   yellow: "#ffc107",
-  green: "#28a745",
+  green: "hsl(134 61% 41% / 1)",
   cyan: "#17a2b8",
   blue: "#007bff",
   purple: "#6f42c1",
   pink: "#e83e8c",
   //white
-  base00: "#ffffff",
-
-  base05: "#f8f9fa",
-  base10: "#f1f3f5",
+  white: "#ffffff",
   // green shades
-  base20: "#165a26",
-  base25: "#dee2e6",
-  base30: "#ced4da",
+  green00: "#165a26",
+  green10: "#dee2e6",
+  green20: "#ced4da",
   // orange shades
-  base35: "#634e0d",
+  orange00: "#634e0d",
   // blue shades
-  base40: "#24b4ff",
-  base50: "#bee3ff",
-  base60: "#0b99ff",
-  base70: "#0059b9",
+  blue00: "#24b4ff",
+  blue10: "#bee3ff",
+  blue20: "#0b99ff",
+  blue30: "#0059b9",
   // black
-  base100: "#000000",
-} satisfies Record<ThemeColor, string>;
+  black: "#000000",
+} as const;
+
+export type ColorKeys = keyof typeof colors;
 
 const LEDSkin = ({
   ctx,
   dimensions,
   theme,
   portsSignals,
-}: ComponentRenderArgument) => {
+}: ComponentRenderArgument<ColorKeys>) => {
   ctx.beginPath();
   const [width, height] = dimensions;
 
   const isOn = portsSignals[0] === 1;
 
-  ctx.fillStyle = isOn ? theme.colors.base60 : theme.colors.base50;
+  ctx.fillStyle = isOn ? theme.colors.blue20 : theme.colors.blue10;
 
-  ctx.strokeStyle = isOn ? theme.colors.base70 : theme.colors.base40;
+  ctx.strokeStyle = isOn ? theme.colors.blue30 : theme.colors.blue00;
   ctx.lineWidth = 1;
 
   ctx.arc(-8, height / 2, 5, 0, 2 * Math.PI);
@@ -74,75 +69,108 @@ const PinSkin = ({
   pointerLocation,
   portsSignals,
   rotationAngle,
-}: ComponentRenderArgument) => {
+}: ComponentRenderArgument<ColorKeys>) => {
   ctx.beginPath();
   const [width, height] = dimensions;
 
-  const isOn = portsSignals[0] === 1;
+  const isActive = portsSignals[0] === 1;
 
-  ctx.lineWidth = 1;
+  const style = styled(
+    [
+      { borderRadius: 3, lineWidth: 1 },
+      [
+        "input:enabled",
+        { fillStyle: theme.colors.orange, strokeStyle: theme.colors.orange00 },
+      ],
+      [
+        "input:disabled",
+        { fillStyle: theme.colors.green, strokeStyle: theme.colors.green00 },
+      ],
+      [
+        "output:enabled",
+        { fillStyle: theme.colors.blue20, strokeStyle: theme.colors.blue30 },
+      ],
+      [
+        "output:disabled",
+        { fillStyle: theme.colors.blue10, strokeStyle: theme.colors.blue00 },
+      ],
+      [
+        "pointer",
+        { fillStyle: theme.colors.yellow, strokeStyle: theme.colors.yellow },
+      ],
+    ],
+    () => {
+      if (pointerLocation !== null) {
+        return "pointer";
+      }
 
-  if (component.attributes.output) {
-    ctx.fillStyle = isOn ? theme.colors.base60 : theme.colors.base50;
-    ctx.strokeStyle = isOn ? theme.colors.base70 : theme.colors.base40;
-  } else if (pointerLocation !== null) {
-    ctx.fillStyle = theme.colors.yellow;
-    ctx.strokeStyle = theme.colors.yellow;
-  } else {
-    ctx.strokeStyle = isOn ? theme.colors.base35 : theme.colors.base20;
-    ctx.fillStyle = isOn ? theme.colors.orange : theme.colors.green;
-  }
+      const suffix = isActive ? "enabled" : "disabled";
+      return component.attributes.output
+        ? `output:${suffix}`
+        : `input:${suffix}`;
+    }
+  );
 
-  ctx.roundRect(3, 0, width, height, 2);
-  ctx.fill();
-  ctx.stroke();
-
-  ctx.beginPath();
-
-  ctx.fillStyle = theme.colors.base00;
-  ctx.strokeStyle = theme.colors.base70;
-  ctx.lineWidth = 0.5;
-  ctx.textAlign = "center";
-  ctx.fill();
-  ctx.font = `${6}px monospace`;
+  box({
+    ctx,
+    position: [3, 0],
+    dimensions: [width, height],
+    style,
+  });
 
   ctx.translate(width - 2, height / 2);
   ctx.rotate(-rotationAngle);
 
-  ctx.strokeText(isOn ? "1" : "0", 0, 2);
-  ctx.fillText(isOn ? "1" : "0", 0, 2);
+  text({
+    ctx,
+    position: [0, 2],
+    text: `${isActive ? "1" : "0"}`,
+    style: {
+      fillStyle: theme.colors.white,
+      strokeStyle: theme.colors.blue30,
+      lineWidth: 0.5,
+      textAlign: "center",
+      font: `${6}px monospace`,
+    },
+  });
 };
 
-const NotSkin = ({ dimensions, ctx, theme }: ComponentRenderArgument) => {
+const NotSkin = ({
+  dimensions,
+  ctx,
+  theme,
+  rotationAngle,
+}: ComponentRenderArgument<ColorKeys>) => {
   const [width, height] = dimensions;
 
-  if (!assetLoader.load(NOT).next().done) {
-    return;
-  }
-
-  const notImageAsset = assetLoader.load(NOT).next().value;
-
+  ctx.save();
   ctx.translate(-width / 2, height);
   ctx.rotate(-Math.PI / 2);
-  ctx.drawImage(notImageAsset, -height / 2, height, width, height * 2);
 
-  ctx.beginPath();
-  ctx.font = `${6}px monospace`;
+  image({
+    ctx,
+    assetLoader,
+    position: [-height / 2, height],
+    dimensions: [width, height * 2],
+    image: NOT,
+  });
 
-  ctx.fillStyle = theme.colors.base00;
-  ctx.strokeStyle = theme.colors.base70;
-  ctx.lineWidth = 0.5;
-  ctx.textAlign = "center";
-  ctx.fill();
-
-  ctx.save();
-  ctx.translate(height / 2, width);
-  ctx.rotate(-Math.PI / 2);
-
-  ctx.strokeText("NOT", 5, -5);
-
-  ctx.fillText("NOT", 5, -5);
   ctx.restore();
+  ctx.translate(width / 2, height / 2);
+  ctx.rotate(-rotationAngle);
+
+  text({
+    ctx,
+    position: [5, -5],
+    text: "NOT",
+    style: {
+      font: `${6}px monospace`,
+      fillStyle: theme.colors.white,
+      strokeStyle: theme.colors.blue30,
+      lineWidth: 0.5,
+      textAlign: "center",
+    },
+  });
 };
 
 const AndSkin = ({
@@ -150,33 +178,37 @@ const AndSkin = ({
   ctx,
   theme,
   rotationAngle,
-}: ComponentRenderArgument) => {
+}: ComponentRenderArgument<ColorKeys>) => {
   const [width, height] = dimensions;
 
-  if (!assetLoader.load(AND).next().done) {
-    return;
-  }
-
-  const andImageAsset = assetLoader.load(AND).next().value;
   ctx.save();
   ctx.translate(-width / 2, height);
   ctx.rotate(-Math.PI / 2);
-  ctx.drawImage(andImageAsset, 0, height / 2, width, height);
+
+  image({
+    ctx,
+    assetLoader,
+    position: [0, height / 2],
+    dimensions: [width, height],
+    image: AND,
+  });
+
   ctx.restore();
-
-  ctx.beginPath();
-  ctx.font = `${6}px monospace`;
-
-  ctx.fillStyle = theme.colors.base00;
-  ctx.strokeStyle = theme.colors.base70;
-  ctx.lineWidth = 0.5;
-  ctx.textAlign = "center";
-  ctx.fill();
-
   ctx.translate(width / 2, height / 2);
   ctx.rotate(-rotationAngle);
-  ctx.strokeText("AND", 0, 3);
-  ctx.fillText("AND", 0, 3);
+
+  text({
+    ctx,
+    position: [-0.5, 2.5],
+    text: "AND",
+    style: {
+      font: `${6}px monospace`,
+      fillStyle: theme.colors.white,
+      strokeStyle: theme.colors.blue30,
+      lineWidth: 0.5,
+      textAlign: "center",
+    },
+  });
 };
 
 const OrSkin = ({
@@ -184,34 +216,37 @@ const OrSkin = ({
   rotationAngle,
   ctx,
   theme,
-}: ComponentRenderArgument) => {
+}: ComponentRenderArgument<ColorKeys>) => {
   const [width, height] = dimensions;
-
-  if (!assetLoader.load(OR).next().done) {
-    return;
-  }
-
-  const orImageAsset = assetLoader.load(OR).next().value;
 
   ctx.save();
   ctx.translate(-width / 2, height);
   ctx.rotate(-Math.PI / 2);
-  ctx.drawImage(orImageAsset, 0, height / 2, width, height);
+
+  image({
+    ctx,
+    assetLoader,
+    position: [0, height / 2],
+    dimensions: [width, height],
+    image: OR,
+  });
+
   ctx.restore();
-
-  ctx.beginPath();
-  ctx.font = `${6}px monospace`;
-
-  ctx.fillStyle = theme.colors.base00;
-  ctx.strokeStyle = theme.colors.base70;
-  ctx.lineWidth = 0.5;
-  ctx.textAlign = "center";
-  ctx.fill();
-
   ctx.translate(width / 2, height / 2);
   ctx.rotate(-rotationAngle);
-  ctx.strokeText("OR", 0, 3);
-  ctx.fillText("OR", 0, 3);
+
+  text({
+    ctx,
+    position: [-0.5, 2.5],
+    text: "OR",
+    style: {
+      font: `${6}px monospace`,
+      fillStyle: theme.colors.white,
+      strokeStyle: theme.colors.blue30,
+      lineWidth: 0.5,
+      textAlign: "center",
+    },
+  });
 };
 
 const NandSkin = ({
@@ -219,34 +254,37 @@ const NandSkin = ({
   ctx,
   theme,
   rotationAngle,
-}: ComponentRenderArgument) => {
+}: ComponentRenderArgument<ColorKeys>) => {
   const [width, height] = dimensions;
-
-  if (!assetLoader.load(NAND).next().done) {
-    return;
-  }
-
-  const nandImageAsset = assetLoader.load(NAND).next().value;
 
   ctx.save();
   ctx.translate(-width / 2, height);
   ctx.rotate(-Math.PI / 2);
-  ctx.drawImage(nandImageAsset, 0, height / 2 + 2.5, width, height + 4);
+
+  image({
+    ctx,
+    assetLoader,
+    position: [0, height / 2 + 2.5],
+    dimensions: [width, height + 4],
+    image: NAND,
+  });
+
   ctx.restore();
-
-  ctx.beginPath();
-  ctx.font = `${6}px monospace`;
-
-  ctx.fillStyle = theme.colors.base00;
-  ctx.strokeStyle = theme.colors.base70;
-  ctx.lineWidth = 0.5;
-  ctx.textAlign = "center";
-  ctx.fill();
-
   ctx.translate(width / 2, height / 2);
   ctx.rotate(-rotationAngle);
-  ctx.strokeText("NAND", -9, 2.5);
-  ctx.fillText("NAND", -9, 2.5);
+
+  text({
+    ctx,
+    position: [-9, 2.5],
+    text: "NAND",
+    style: {
+      font: `${6}px monospace`,
+      fillStyle: theme.colors.white,
+      strokeStyle: theme.colors.blue30,
+      lineWidth: 0.5,
+      textAlign: "center",
+    },
+  });
 };
 
 const XorSkin = ({
@@ -254,50 +292,126 @@ const XorSkin = ({
   ctx,
   theme,
   rotationAngle,
-}: ComponentRenderArgument) => {
+}: ComponentRenderArgument<ColorKeys>) => {
   const [width, height] = dimensions;
-
-  if (!assetLoader.load(XOR).next().done) {
-    return;
-  }
-
-  const xorImageAsset = assetLoader.load(XOR).next().value;
 
   ctx.save();
   ctx.translate(-width / 2, height);
   ctx.rotate(-Math.PI / 2);
-  ctx.drawImage(xorImageAsset, 0, height / 2 + 2.5, width, height + 7.5);
+
+  image({
+    ctx,
+    assetLoader,
+    position: [0, height / 2],
+    dimensions: [width, height + 12],
+    image: XOR,
+  });
+
   ctx.restore();
-
-  ctx.beginPath();
-  ctx.font = `${6}px monospace`;
-
-  ctx.fillStyle = theme.colors.base00;
-  ctx.strokeStyle = theme.colors.base70;
-  ctx.lineWidth = 0.5;
-  ctx.textAlign = "center";
-  ctx.fill();
-
-  // ctx.strokeText("XOR", width / 2, height / 2 + 3);
-  // ctx.fillText("XOR", width / 2, height / 2 + 3);
-
   ctx.translate(width / 2, height / 2);
   ctx.rotate(-rotationAngle);
-  ctx.strokeText("XOR", -2.5, 2.5);
-  ctx.fillText("XOR", -2.5, 2.5);
+
+  text({
+    ctx,
+    position: [-2.5, 2.5],
+    text: "XOR",
+    style: {
+      font: `${6}px monospace`,
+      fillStyle: theme.colors.white,
+      strokeStyle: theme.colors.blue30,
+      lineWidth: 0.5,
+      textAlign: "center",
+    },
+  });
 };
 
-export const prepareTheme = (): CircTheme => {
-  return {
-    colors,
-    library: {
-      LED: LEDSkin,
-      "NOT Gate": NotSkin,
-      Pin: PinSkin,
-      "AND Gate": AndSkin,
-      "NAND Gate": NandSkin,
-      "OR Gate": OrSkin,
-      "XOR Gate": XorSkin,
-    },
-  };
+export const blogTheme: CircTheme<ColorKeys> = {
+  colors,
+  library: {
+    LED: LEDSkin,
+    "NOT Gate": NotSkin,
+    Pin: PinSkin,
+    "AND Gate": AndSkin,
+    "NAND Gate": NandSkin,
+    "OR Gate": OrSkin,
+    "XOR Gate": XorSkin,
+  },
+  wires(ctx, theme, circuit, gridSize) {
+    const { wires, state } = circuit;
+
+    for (let i = 0; i < state.length; i++) {
+      const groups = wires.connections.get(i);
+
+      if (!groups) {
+        continue;
+      }
+
+      for (const j of groups) {
+        const wire = wires.list[j];
+        const to = decodeCircCoords(wire.to);
+        const from = decodeCircCoords(wire.from);
+
+        const x1 = from[0] * gridSize;
+        const y1 = from[1] * gridSize;
+        const x2 = to[0] * gridSize;
+        const y2 = to[1] * gridSize;
+        const isOn = state[i] === 1;
+
+        ui.line({
+          ctx,
+          from: [x1, y1],
+          to: [x2, y2],
+          style: {
+            lineWidth: 2,
+            lineCap: "round",
+            strokeStyle: isOn ? theme.colors.green : theme.colors.green10,
+          },
+        });
+      }
+    }
+  },
+  ports(ctx, theme, component, circuit, _, gridSize = 10) {
+    const inputStateAddr = circuit.wireConnections.get(component.location);
+
+    if (inputStateAddr === undefined) {
+      return;
+    }
+
+    const coords = decodeCircCoords(component.location);
+    const inputFillStyle =
+      circuit.state[inputStateAddr] === 1
+        ? theme.colors.orange
+        : theme.colors.orange00;
+
+    ui.circle({
+      ctx,
+      center: [coords[0] * gridSize, coords[1] * gridSize],
+      radius: 0.25 * gridSize,
+      style: {
+        fillStyle: inputFillStyle,
+      },
+    });
+
+    for (const port of component.ports) {
+      const portStateAdrr = circuit.wireConnections.get(port);
+      if (portStateAdrr === undefined) {
+        continue;
+      }
+
+      const portLoc = decodeCircCoords(port);
+      const fillStyle =
+        circuit.state[portStateAdrr] === 1
+          ? theme.colors.orange
+          : theme.colors.orange00;
+
+      ui.circle({
+        ctx,
+        center: [portLoc[0] * gridSize, portLoc[1] * gridSize],
+        radius: 0.25 * gridSize,
+        style: {
+          fillStyle,
+        },
+      });
+    }
+  },
 };
