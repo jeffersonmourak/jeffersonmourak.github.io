@@ -1,7 +1,7 @@
 {
   "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
   "organizeImports": {
-    "enabled": false
+    "enabled": true
   },
   "linter": {
     "enabled": true,
@@ -67,6 +67,21 @@
       "unsafeParameterDecoratorsEnabled": true
     }
   },
+  "overrides": [
+    {
+      "include": [
+        "packages/circ-terminal/**/*.ts",
+        "packages/circ-terminal/**/*.tsx"
+      ],
+      "linter": {
+        "rules": {
+          "correctness": {
+            "noNodejsModules": "off"
+          }
+        }
+      }
+    }
+  ],
   "files": {
     "ignoreUnknown": true,
     "ignore": [
