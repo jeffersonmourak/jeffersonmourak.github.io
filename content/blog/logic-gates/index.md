@@ -5,7 +5,7 @@ author: "Jefferson Oliveira"
 cover: ""
 tags: ["PT-BR", "CPU", "Logic Gates"]
 keywords: ["CPU", "Logic Gates", "Portas lógicas", "Computação"]
-description: "As portas lógicas são a base da computação, com elas podemos fazer operações binárias que calculam desde a soma de dois números até a execução um programa."
+description: "Curioso para saber como os computadores tomam decisões? Este artigo é o seu ponto de partida! Desvende o universo das portas lógicas, os blocos construtores que permitem que as máquinas processem informações binárias. Descubra como operações simples de \"sim\" e \"não\" se transformam na inteligência artificial do seu dia a dia."
 showFullContent: false
 readingTime: true
 hideComments: true

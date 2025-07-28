@@ -2,8 +2,12 @@ baseURL = 'http://127.0.0.1:8080'
 languageCode = 'en'
 title = 'Jefferson Oliveira'
 theme = "terminal"
-disableKinds = ['taxonomy', 'term']
+disableKinds = []
 enableRobotsTXT = true
+
+[taxonomies]
+    category = "categories"
+    tag = "tags"
 
 
 [sitemap]

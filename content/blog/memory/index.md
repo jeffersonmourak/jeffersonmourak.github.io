@@ -18,6 +18,8 @@ showFullContent: false
 readingTime: true
 hideComments: true
 draft: false
+contentLanguage: "pt"
+description: "Já se perguntou como seu computador \"lembra\" de tudo? Este artigo desvenda o segredo por trás da memória digital, explorando desde os chips combinacionais e sequenciais até o papel crucial dos flip-flops e registradores. Uma jornada fascinante para entender como a informação é guardada no coração da sua máquina."
 ---
 > Olá todo mundo, este é o terceiro artigo na série sobre computadores, e também o último com esse cabeçalho aqui, pois daqui para a frente é recomendado que você já tenha lido os dois artigos anteriores:
 >
