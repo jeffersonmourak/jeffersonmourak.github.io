@@ -17,6 +17,8 @@ contentLanguage: "pt"
 > Oi pessoal, então tive que fazer umas mudanças aqui no post pra adicionar alguns widgets
 > interativos, e aproveitei para dar um pouco mais de contexto ao conteúdo.
 
+<div id="elevenlabs-audionative-widget" data-height="90" data-width="100%" data-frameborder="no" data-scrolling="no" data-publicuserid="2be4d6242c862832d6b47ec70f7d7daf2c9f1306c933439f7083622af43fe99f" data-playerurl="https://elevenlabs.io/player/index.html" >Loading the <a href="https://elevenlabs.io/text-to-speech" target="_blank" rel="noopener">Elevenlabs Text to Speech</a> AudioNative Player...</div><script src="https://elevenlabs.io/player/audioNativeHelper.js" type="text/javascript"></script>
+
 Olá, este é o primeiro artigo de uma série sobre os fundamentos da computação. A ideia é demonstrar de forma simples e prática como este dispositivo transforma zeros e uns em praticamente qualquer coisa, o funcionamento das CPUs e outros assuntos interessantes. Então, para começar, o primeiro conceito que temos que aprender é o de portas lógicas: elas são a base de toda a computação, com elas podemos fazer certas operações que recebem como entrada um ou mais valores e terão outro valor como resultado.
 
 Mas o que são esses valores? O número 42? O nome da minha mãe? Esses “valores” são energia, mais especificamente a presença e ausência dela. Como foi falado na introdução, computadores funcionam utilizando dígitos binários, ou seja, essas máquinas só entendem 0 e 1 ou “Tem energia” e “Não tem energia”. No entanto, não iremos chamar esses zeros e uns de energia, para o computador eles são sinais.

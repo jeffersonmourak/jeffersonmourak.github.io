@@ -26,6 +26,8 @@ description: "Já se perguntou como seu computador \"lembra\" de tudo? Este arti
 > - [Portas lógicas](https://jeffersonmourak.com/blog/logic-gates/).
 > - [Prazer, Binário.](https://jeffersonmourak.com/blog/the-binary/).
 
+<div id="elevenlabs-audionative-widget" data-height="90" data-width="100%" data-frameborder="no" data-scrolling="no" data-publicuserid="2be4d6242c862832d6b47ec70f7d7daf2c9f1306c933439f7083622af43fe99f" data-playerurl="https://elevenlabs.io/player/index.html" >Loading the <a href="https://elevenlabs.io/text-to-speech" target="_blank" rel="noopener">Elevenlabs Text to Speech</a> AudioNative Player...</div><script src="https://elevenlabs.io/player/audioNativeHelper.js" type="text/javascript"></script>
+
 Nos artigos anteriores, nós vimos como portas lógicas podem ser usadas para fazer comparações e também calcular operações aritméticas, porém ainda não vimos como o computador pode guardar uma informação ao longo do tempo.
 
 Outra coisa que também iremos fazer aqui é categorizar cada tipo de chip: os que foram mostrados anteriormente são ***combinacionais***, o que significa que eles não precisam de nada além de sinais nas suas entradas para poder computar um resultado, mas existem também os ***sequenciais***. A diferença entre eles é que o sequencial depende não só dos sinais das entradas, mas também do valor anteriormente processado.
