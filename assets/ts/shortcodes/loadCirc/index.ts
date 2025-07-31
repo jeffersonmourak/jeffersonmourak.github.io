@@ -53,8 +53,6 @@ async function mountFromCircRenderer({
     sim.loadCircuit(mainCircuit);
     sim.updateStateValue(0, 1); // Set the first pin to high
 
-    console.log("Loaded circuit:", mainCircuit, sim.operationQueue);
-
     const renderInstance = new RenderEngine(sim.circuit, {
       theme: blogTheme,
       scale,

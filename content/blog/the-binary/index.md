@@ -1,7 +1,7 @@
 ---
 title: "Prazer, Binário."
 date: "2024-12-14T08:27:04-03:00"
-auth: "Jefferson Oliveira"
+author: Jefferson Oliveira
 cover: ""
 tags: ["PT-BR", "CPU", "Binary", "Numeric-Systems"]
 keywords: ["CPU", "Binary", "Computação", "Binário"]

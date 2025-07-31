@@ -1,7 +1,7 @@
 ---
 title: Lembra de mim?
 date: 2025-01-19T08:27:04-03:00
-auth: Jefferson Oliveira
+author: Jefferson Oliveira
 cover: ""
 tags:
   - PT-BR
