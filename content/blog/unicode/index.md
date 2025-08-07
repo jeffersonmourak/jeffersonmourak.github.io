@@ -18,7 +18,7 @@ readingTime: true
 hideComments: true
 draft: false
 contentLanguage: "pt"
-description: "Como os computadores desenham fontes? Este artigo explora o processo de renderização de fontes, desde a conversão de texto para formas geométricas até a renderização de fontes em tempo real. Aprenda sobre os algoritmos de renderização de fontes e como eles são usados para criar interfaces de usuário e documentos."
+description: "Já imaginou como computadores transformam letras, números e emojis em zeros e uns que eles possam entender? Assim como nós, humanos, atribuímos significados às letras do alfabeto, o computador faz o mesmo. Vamos explorar aqui dois dos padrões mais populares de codificação de texto."
 ---
 <div id="elevenlabs-audionative-widget" data-height="90" data-width="100%" data-frameborder="no" data-scrolling="no" data-publicuserid="2be4d6242c862832d6b47ec70f7d7daf2c9f1306c933439f7083622af43fe99f" data-playerurl="https://elevenlabs.io/player/index.html" data-projectid="vXqUPGWRArVCy0iXsuvH" >Loading the <a href="https://elevenlabs.io/text-to-speech" target="_blank" rel="noopener">Elevenlabs Text to Speech</a> AudioNative Player...</div><script src="https://elevenlabs.io/player/audioNativeHelper.js" type="text/javascript"></script>
 
