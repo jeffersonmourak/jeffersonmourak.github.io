@@ -69,12 +69,6 @@ O que eles fizeram de forma simplificada foi pegar centenas de milhares de núme
 
 ### UTF-8
 
-Unicode Consortium
-E como em um evento que pode se chamar de milagre do bom senso, durante as últimas décadas, foi formado um padrão com 154.998 caracteres, que cobre toda e qualquer língua que você possa imaginar: árabe, japonês, cirílico, chinês, coreano e até hieróglifos egípcios.
-
-O que eles fizeram de forma simplificada foi pegar centenas de milhares de números e atribuí-los a centenas de milhares de caracteres, ou seja, o número 35307 representará o caractere japonês 觫, o número 963 representará σ e assim por diante.
-
-UTF-8
 Perfeito, agora nós temos centenas de milhares de números para representar todo e qualquer caractere, mas como vamos fazer isso com binário?
 
 Para representar um número nessas proporções, vamos precisar de pelo menos 32 bits para representar qualquer número dessa magnitude, o que agora trouxe problemas para o alfabeto inglês, porque o Unicode é compatível com ASCII, ou seja, "A" ainda é **65** e "a" ainda é **97**. Mas quando olhamos para o binário de 32 bits desses números, agora usamos 4x mais espaço para representar os mesmos caracteres.
