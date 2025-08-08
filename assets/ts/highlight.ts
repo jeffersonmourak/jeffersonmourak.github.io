@@ -9,7 +9,6 @@ const PROJECT_ID = "0dq3no4e";
 
 const trackerInstance = new Tracker({
   projectKey: "4HeENhaRGWlCyfPsCLvO",
-  __DISABLE_SECURE_MODE: true,
 });
 
 ((H: HighlightPublicInterface, tracker: Tracker) => {
