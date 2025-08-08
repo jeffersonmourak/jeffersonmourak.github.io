@@ -61,10 +61,6 @@ Porém, mesmo com toda essa incompatibilidade durante os anos 1980 e 1990, quais
 
 Então chegou a internet, e o que era ruim ficou ainda pior... Agora temos que lidar com documentos sendo enviados pela internet constantemente, e com o tempo foi formado o:
 
-Com certeza! Fiz as correções necessárias para manter o texto coeso e sintaticamente correto, sem alterar o conteúdo ou a mensagem.
-
-Então chegou a internet, e o que era ruim ficou ainda pior... Agora temos que lidar com documentos sendo enviados pela internet constantemente, e com o tempo foi formado o:
-
 ## Unicode Consortium
 
 E como em um evento que pode se chamar de milagre do bom senso, durante as últimas décadas, foi formado um padrão com 154.998 caracteres, que cobre toda e qualquer língua que você possa imaginar: árabe, japonês, cirílico, chinês, coreano e até hieróglifos egípcios.
