@@ -26,6 +26,8 @@
 		"@biomejs/biome": "^1.9.4"
 	},
 	"dependencies": {
+		"@openreplay/tracker": "^16.4.7",
+		"@openreplay/tracker-assist": "^11.0.8",
 		"circ-renderer": "workspace:*",
 		"highlight.run": "^9.5.2",
 		"lodash": "^4.17.21",
