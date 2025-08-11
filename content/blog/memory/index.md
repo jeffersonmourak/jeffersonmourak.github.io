@@ -23,7 +23,7 @@ description: "Já se perguntou como seu computador \"lembra\" de tudo? Este arti
 
 versions:
   - name: English
-    url: /blog/memory/english
+    url: /blog/memory-en
   - name: Português (Brasileiro)
     url: /blog/memory
 ---

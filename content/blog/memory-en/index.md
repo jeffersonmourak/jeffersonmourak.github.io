@@ -23,7 +23,7 @@ description: "Have you ever wondered how your computer 'remembers' everything? T
 
 versions:
   - name: English
-    url: /blog/memory/english
+    url: /blog/memory-en
   - name: Português (Brasileiro)
     url: /blog/memory
 ---

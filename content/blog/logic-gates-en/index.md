@@ -14,7 +14,7 @@ contentLanguage: "en"
 
 versions:
   - name: English
-    url: /blog/logic-gates/english
+    url: /blog/logic-gates-en
   - name: Português (Brasileiro)
     url: /blog/logic-gates
 ---

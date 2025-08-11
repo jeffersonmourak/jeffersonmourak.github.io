@@ -22,7 +22,7 @@ description: "Have you ever wondered how computers transform letters, numbers, a
 
 versions:
   - name: English
-    url: /blog/unicode/english
+    url: /blog/unicode-en
   - name: Português (Brasileiro)
     url: /blog/unicode
 ---

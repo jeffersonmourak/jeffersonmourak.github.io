@@ -14,7 +14,7 @@ description: "Você sabia que a linguagem fundamental dos computadores se resume
 
 versions:
   - name: English
-    url: /blog/the-binary/english
+    url: /blog/the-binary-en
   - name: Português (Brasileiro)
     url: /blog/the-binary
 

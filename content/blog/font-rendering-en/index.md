@@ -22,7 +22,7 @@ description: "How do computers draw fonts? This article explores the font render
 
 versions:
   - name: English
-    url: /blog/font-rendering/english
+    url: /blog/font-rendering-en
   - name: Português (Brasileiro)
     url: /blog/font-rendering
 ---

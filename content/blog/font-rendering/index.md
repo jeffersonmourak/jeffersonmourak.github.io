@@ -19,10 +19,11 @@ hideComments: true
 draft: false
 contentLanguage: "pt"
 description: "Como os computadores desenham fontes? Este artigo explora o processo de renderização de fontes, desde a conversão de texto para formas geométricas até a renderização de fontes em tempo real. Aprenda sobre os algoritmos de renderização de fontes e como eles são usados para criar interfaces de usuário e documentos."
+slug: font-rendering
 
 versions:
   - name: English
-    url: /blog/font-rendering/english
+    url: /blog/font-rendering-en
   - name: Português (Brasileiro)
     url: /blog/font-rendering
 ---

@@ -14,7 +14,7 @@ description: "Did you know that the fundamental language of computers boils down
 
 versions:
   - name: English
-    url: /blog/the-binary/english
+    url: /blog/the-binary-en
   - name: Português (Brasileiro)
     url: /blog/the-binary
 ---

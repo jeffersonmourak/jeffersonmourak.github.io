@@ -22,7 +22,7 @@ description: "Já imaginou como computadores transformam letras, números e emoj
 
 versions:
   - name: English
-    url: /blog/unicode/english
+    url: /blog/unicode-en
   - name: Português (Brasileiro)
     url: /blog/unicode
 
