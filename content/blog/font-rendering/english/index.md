@@ -1,6 +1,6 @@
 ---
 title: The Screen is the Canvas - Drawing Fonts with Mathematics
-date: 2025-07-31T10:29:04-03:00
+date: 2025-07-31T10:29:04-02:00
 author: Jefferson Oliveira
 cover: ""
 tags:

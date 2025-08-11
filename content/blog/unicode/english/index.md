@@ -1,6 +1,6 @@
 ---
 title: The Evolution of Digital Writing - From ASCII to the Wonders of UTF-8
-date: 2025-08-07T10:29:04-03:00
+date: 2025-08-07T10:29:04-02:00
 author: Jefferson Oliveira
 cover: ""
 tags:

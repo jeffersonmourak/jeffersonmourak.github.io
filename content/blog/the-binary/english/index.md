@@ -1,6 +1,6 @@
 ---
 title: "Pleasure to meet you, Binary."
-date: "2024-12-14T08:27:04-03:00"
+date: "2024-12-14T08:27:04-02:00"
 author: Jefferson Oliveira
 cover: ""
 tags: ["EN", "CPU", "Binary", "Numeric-Systems"]

@@ -1,6 +1,6 @@
 ---
 title: "Logic Gates"
-date: "2024-11-07T08:27:04-03:00"
+date: "2024-11-07T08:27:04-02:00"
 author: "Jefferson Oliveira"
 cover: ""
 tags: ["EN", "CPU", "Logic Gates"]
