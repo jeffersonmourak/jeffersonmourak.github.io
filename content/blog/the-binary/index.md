@@ -11,6 +11,13 @@ hideComments: true
 draft: false
 contentLanguage: "pt"
 description: "Você sabia que a linguagem fundamental dos computadores se resume a apenas dois símbolos? Descubra o sistema binário e como ele serve de base para toda a lógica computacional. Este artigo explica desde sua história e matemática até como as portas lógicas se combinam para permitir que seu computador some e realize cálculos complexos."
+
+versions:
+  - name: English
+    url: /blog/the-binary/english
+  - name: Português (Brasileiro)
+    url: /blog/the-binary
+
 ---
 > Olá pessoas dessa internet, para quem está chegando aqui agora, este é o segundo artigo de
 > uma série que estou fazendo para falar sobre os fundamentos da computação, recomendo ler o

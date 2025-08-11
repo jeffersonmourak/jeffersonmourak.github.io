@@ -11,6 +11,11 @@ readingTime: true
 hideComments: true
 draft: false
 contentLanguage: "pt"
+versions:
+  - name: English
+    url: /blog/logic-gates/english
+  - name: Português (Brasileiro)
+    url: /blog/logic-gates
 ---
 > Revisado [11/12/2024]
 >
