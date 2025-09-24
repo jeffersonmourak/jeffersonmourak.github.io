@@ -6,11 +6,11 @@
   {{ end }}
   {{ partial "head.html" . }}
   
-  {{ with resources.Get "ts/highlight.ts" }}
+  {{ with resources.Get "ts/telemetry.ts" }}
     {{$opts := dict
       "minify" (not (eq hugo.Environment "development"))
       "sourceMap" (cond (eq hugo.Environment "development") "inline" "")
-      "targetPath" "highlight.js"
+      "targetPath" "telemetry.js"
     }}
 
     {{ with . | babel | js.Build $opts }}

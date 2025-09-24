@@ -26,11 +26,9 @@
 		"@biomejs/biome": "^1.9.4"
 	},
 	"dependencies": {
-		"@openreplay/tracker": "^16.4.7",
-		"@openreplay/tracker-assist": "^11.0.8",
 		"circ-renderer": "workspace:*",
-		"highlight.run": "^9.5.2",
 		"lodash": "^4.17.21",
+		"posthog-js": "^1.268.2",
 		"sillyname": "^0.1.0",
 		"tslib": "^2.8.1",
 		"uuid": "^11.0.3"
