@@ -1,10 +1,5 @@
-import Tracker from "@openreplay/tracker";
 import sillyname from "sillyname";
 import posthog from 'posthog-js'
-
-const trackerInstance = new Tracker({
-  projectKey: "4HeENhaRGWlCyfPsCLvO",
-});
 
 (() => {
   const currentUserId =
