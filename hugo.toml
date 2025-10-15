@@ -6,16 +6,16 @@ disableKinds = []
 enableRobotsTXT = true
 
 [taxonomies]
-    category = "categories"
-    tag = "tags"
+category = "categories"
+tag = "tags"
 
 
 [sitemap]
-  changefreq = 'weekly'
-  priority = 0.8
+changefreq = 'weekly'
+priority = 0.8
 
 [build]
-  noJSConfigInAssets = true
+noJSConfigInAssets = true
 #   useResourceCacheWhen = 'fallback'
 
 [outputs]
@@ -26,13 +26,13 @@ term = ['html']
 
 [security.exec]
 allow = [
-    '^(dart-)?sass(-embedded)?$',
-    '^go$',
-    '^git$',
-    '^npx$',
-    '^postcss$',
-    '^tailwindcss$',
-    '^babel$',
+  '^(dart-)?sass(-embedded)?$',
+  '^go$',
+  '^git$',
+  '^npx$',
+  '^postcss$',
+  '^tailwindcss$',
+  '^babel$',
 ]
 
 [markup]
@@ -44,6 +44,10 @@ unsafe = true
 showLanguageSelector = true
 fullWidthTheme = false
 centerTheme = true
+author = "Jefferson Oliveira"
+github = "https://github.com/jeffersonmourak"
+og_image = "https://avatars.githubusercontent.com/u/5585596?v=3"
+sitename = "Jefferson Oliveira"
 
 [pagination]
 pageSize = 10

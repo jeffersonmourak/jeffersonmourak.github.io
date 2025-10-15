@@ -1,63 +1,146 @@
 <!DOCTYPE html>
 <html lang="{{ $.Site.Language }}">
-<head>
-  {{ block "title" . }}
-    <title>{{ if .IsHome }}{{ $.Site.Title }}{{ else }}{{ .Title }} :: {{ $.Site.Title }}{{ end }}</title>
-  {{ end }}
-  {{ partial "head.html" . }}
-  
-  {{ with resources.Get "ts/telemetry.ts" }}
-    {{$opts := dict
-      "minify" (not (eq hugo.Environment "development"))
-      "sourceMap" (cond (eq hugo.Environment "development") "inline" "")
-      "targetPath" "telemetry.js"
-    }}
 
-    {{ with . | babel | js.Build $opts }}
-      {{ if eq hugo.Environment "development" }}
-        <script type="text/javascript" src="{{ .RelPermalink }}"></script>
-      {{ else }}
-        {{ with . | fingerprint }}
-          <script src="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" crossorigin="anonymous"></script>
-        {{ end }}
-      {{ end }}
-    {{ end }}
+<head itemscope itemtype="https://schema.org/WebPage">
+  {{ block "title" . }}
+  {{ if .IsHome }}
+  <title itemprop="name">{{ $.Site.Title }}</title>
+  <meta property="og:title" content="{{ $.Site.Title }}" />
+  <meta name="twitter:title" content="{{ $.Site.Title }}" />
+  <meta itemprop="name" content="{{ $.Site.Title }}" />
+  <meta name="application-name" content="{{ $.Site.Title }}" />
+  {{ else }}
+  <title itemprop="name">{{ .Title }} :: {{ $.Site.Title }}</title>
+  <meta property="og:title" content="{{ .Title }} :: {{ $.Site.Title }}" />
+  <meta name="twitter:title" content="{{ .Title }} :: {{ $.Site.Title }}" />
+  <meta itemprop="name" content="{{ .Title }} :: {{ $.Site.Title }}" />
+  <meta name="application-name" content="{{ .Title }} :: {{ $.Site.Title }}" />
+  {{ end }}
+  <meta property="og:site_name" content="{{ .Site.Params.sitename }}" />
+  {{ end }}
+  <meta name="description"
+    content="{{ if .IsHome }}{{ $.Site.Params.Subtitle }}{{ else if .Description}}{{ .Description | plainify }}{{ else }}{{ .Summary | plainify }}{{ end }}" />
+  <!-- To make sure this renders only in the article page, we check the section -->
+  {{ if eq .Section "blog" }}
+
+  <meta property="og:type" content="article" />
+  <meta property="article:publisher" content="{{ .Site.Params.facebook }}" />
+  <meta property="og:article:published_time" content={{ .Date.Format "2006-01-02T15:04:05Z0700" | safeHTML }} />
+  <meta property="article:published_time" content={{ .Date.Format "2006-01-02T15:04:05Z0700" | safeHTML }} />
+
+  {{ with.Params.author }}
+  <meta property="og:article:author" content="{{humanize . }}" />
+  <meta property="article:author" content="{{humanize . }}" />
+  <meta name="author" content="{{humanize . }}" />
+  {{ end }}
+
+  {{ with.Params.category }}
+  <meta name="news_keywords" content="{{ index . 0 }}" />
+  <meta property="article:section" content="{{ index . 0 }}" />
+  {{ end }}
+
+  <meta property="og:updated_time" content={{ .Lastmod.Format "2006-01-02T15:04:05Z0700" | safeHTML }} />
+
+
+  <script defer type="application/ld+json">
+    {
+      "@context": "http://schema.org",
+      "@type": "Article",
+      "headline": {{ .Title }},
+      "author": {
+        "@type": "Person",
+        "name": "{{ .Site.Params.github }}"
+        "url": "{{ .Site.Params.github }}"
+      },
+      "datePublished": "{{ .Date.Format "2006-01-02" }}",
+      "description": {{ .Description }},
+      "wordCount": {{ .WordCount }},
+      "mainEntityOfPage": "True",
+      "dateModified": "{{ .Lastmod.Format "2006-01-02" }}",
+      "image": {
+        "@type": "imageObject",
+        "url": "{{ with .Params.image }}{{ .Permalink }}{{ end }}"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "{{ .Site.Title }}",
+        "logo": {
+          "@type": "imageObject",
+          "url": "{{ .Site.Params.og_image }}"
+        }
+      }
+    }
+  </script>
+  {{ end }}
+
+  {{ partial "head.html" . }}
+
+  <link rel="sitemap" type="application/xml" title="Sitemap" href='{{ "sitemap.xml" | absURL }}' />
+
+  {{ with .OutputFormats.Get "RSS" }}
+  <link href="{{ .Permalink }}" rel="alternate" type="application/rss+xml" title="{{ $.Site.Title }}" />
+  <link href="{{ .Permalink }}" rel="feed" type="application/rss+xml" title="{{ $.Site.Title }}" />
+  {{ end }}
+
+  <meta name="robots" content="index,follow" />
+  <meta name="googlebot" content="index,follow" />
+
+
+  {{ with resources.Get "ts/telemetry.ts" }}
+  {{$opts := dict
+  "minify" (not (eq hugo.Environment "development"))
+  "sourceMap" (cond (eq hugo.Environment "development") "inline" "")
+  "targetPath" "telemetry.js"
+  }}
+
+  {{ with . | babel | js.Build $opts }}
+  {{ if eq hugo.Environment "development" }}
+  <script type="text/javascript" src="{{ .RelPermalink }}"></script>
+  {{ else }}
+  {{ with . | fingerprint }}
+  <script src="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" crossorigin="anonymous"></script>
+  {{ end }}
+  {{ end }}
+  {{ end }}
   {{ end }}
 
   {{ with resources.Get "ts/shortcodes/index.ts" }}
-    {{ $opts := dict
-      "minify" (not (eq hugo.Environment "development"))
-      "sourceMap" (cond (eq hugo.Environment "development") "inline" "")
-      "targetPath" "shortcodes.js"
-    }}
+  {{ $opts := dict
+  "minify" (not (eq hugo.Environment "development"))
+  "sourceMap" (cond (eq hugo.Environment "development") "inline" "")
+  "targetPath" "shortcodes.js"
+  }}
 
-    {{ with . | babel | js.Build $opts }}
-      {{ if eq hugo.Environment "development" }}
-        <script type="text/javascript" src="{{ .RelPermalink }}"></script>
-      {{ else }}
-        {{ with . }}
-          <script src="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" crossorigin="anonymous"></script>
-        {{ end }}
-      {{ end }}
-    {{ end }}
+  {{ with . | babel | js.Build $opts }}
+  {{ if eq hugo.Environment "development" }}
+  <script type="text/javascript" src="{{ .RelPermalink }}"></script>
+  {{ else }}
+  {{ with . }}
+  <script src="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" crossorigin="anonymous"></script>
+  {{ end }}
+  {{ end }}
+  {{ end }}
   {{ end }}
 </head>
+
 <body>
-{{ $container := cond ($.Site.Params.FullWidthTheme | default false) "container full" (cond ($.Site.Params.CenterTheme | default false) "container center" "container") }}
+  {{ $container := cond ($.Site.Params.FullWidthTheme | default false) "container full" (cond ($.Site.Params.CenterTheme
+  | default false) "container center" "container") }}
 
-<div class="{{- $container -}}{{- cond ($.Site.Params.oneHeadingSize | default false) " headings--one-size" "" }}">
+  <div class="{{- $container -}}{{- cond ($.Site.Params.oneHeadingSize | default false) " headings--one-size" "" }}">
 
-  {{ partial "header.html" . }}
+    {{ partial "header.html" . }}
 
-  <div class="content">
-    {{ block "main" . }}
+    <div class="content">
+      {{ block "main" . }}
+      {{ end }}
+    </div>
+
+    {{ block "footer" . }}
+    {{ partial "footer.html" . }}
     {{ end }}
   </div>
 
-  {{ block "footer" . }}
-    {{ partial "footer.html" . }}
-  {{ end }}
-</div>
-
 </body>
+
 </html>

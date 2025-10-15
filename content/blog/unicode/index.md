@@ -13,6 +13,14 @@ keywords:
   - Unicode
   - ASCII
   - UTF-8
+  - Data types
+  - Data encoding
+  - Character encoding
+  - Binary
+  - Shift JIS
+  - Mojibake
+  - Unicode Consortium
+  
 showFullContent: false
 readingTime: true
 hideComments: true
