@@ -61,7 +61,7 @@ Another thing we can do is take inspiration from the previous article, where at 
 
 For now, we say goodbye here, see you next time 😄
 
-<iframe src="https://giphy.com/embed/m9eG1qVjvN56H0MXt8" width="300px" height="400px" frameBorder="0" class="giphy-embed" allowFullScreen></iframe>
+<img src="https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExOXlucmJmbW5mZWp4MGRpOXhpZWZwczdma2xmemIxZGVjZ3hiZG5sciZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/m9eG1qVjvN56H0MXt8/giphy.gif" width="auto" height="440px" objectfit="cover" alt="Bye bye!">
 
 References
 

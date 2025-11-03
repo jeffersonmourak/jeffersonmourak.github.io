@@ -104,7 +104,7 @@ Analisando o diagrama acima, vemos que, quando os dois interruptores estiverem d
 | 0 | 0 | 1 |
 | 1 | 1 | 1 |
 
-<div style="width:100%;height:0;padding-bottom:75%;position:relative;"><iframe src="https://giphy.com/embed/n9h61thJkq6Xe" width="100%" height="100%" style="position:absolute" frameBorder="0" class="giphy-embed" allowFullScreen></iframe></div>
+<img src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExa2F3aTZ5Z2FhajUxem51aG5oYzBwYW1jdHI3NGswMzZzd3duMTh3biZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/n9h61thJkq6Xe/giphy.gif" width="auto" height="440px" objectfit="cover" alt="Eu acho que vi um gatinho?">
 
 Mas espera um pouco, eu tenho a impressão de que eu já vi essa tabela antes? Sim! Essa é a porta lógica OR que estávamos procurando. Uma viagem e tanto, não é? Agora que já sabemos como consertar a fiação da lâmpada, podemos dar uma paradinha aqui. Este é apenas o primeiro artigo de uma série sobre computadores. Mais para frente, vamos abordar outras portas lógicas e outros conceitos da computação.
 

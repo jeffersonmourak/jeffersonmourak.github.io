@@ -57,7 +57,7 @@ In the same way, the letters of the alphabet: "A" is **65** → 100 0001 and "a"
 
 _... meanwhile in the rest of the world ..._
 
-<div style="width:100%;height:0;padding-bottom:56%;position:relative;"><iframe src="https://giphy.com/embed/3oz8xQBcUXftkrlmmc" width="100%" height="100%" style="position:absolute" frameBorder="0" class="giphy-embed" allowFullScreen></iframe></div><p><a href="https://giphy.com/gifs/southparkgifs-3oz8xQBcUXftkrlmmc">via GIPHY</a></p>
+<img width="100%" src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExZzNvcXQ4aTBpNGs5YWI3czdjeXBuaTU0dmw3eG44aWNxbTFxbzBieSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3oz8xQBcUXftkrlmmc/giphy.gif">
 
 As you might imagine, with the advancement of technology and computer capacity, each country used this extra capacity to encode their own characters. Japan, for example, didn't even use ASCII. Other encoders, like Shift JIS, used multiple bytes, and with all this, a gigantic incompatibility was generated.
 
@@ -66,7 +66,7 @@ As you might imagine, with the advancement of technology and computer capacity, 
 
 However, even with all this incompatibility during the 1980s and 1990s, what were the chances of a London company having to constantly send documents to Japan? At that time, the solution was simple: print and send by fax!
 
-<div style="width:100%;height:0;padding-bottom:76%;position:relative;"><iframe src="https://giphy.com/embed/xT5LMKZ9tnioMLEjBe" width="100%" height="100%" style="position:absolute" frameBorder="0" class="giphy-embed" allowFullScreen></iframe></div><p><a href="https://giphy.com/gifs/season-7-the-simpsons-7x15-xT5LMKZ9tnioMLEjBe">via GIPHY</a></p>
+<img width="100%" src="https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExY2IzdGtqeHVmemRsZ2cwYTliY2trM2Zla3M2bXZndHF1eHE5b2NkciZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/xT5LMKZ9tnioMLEjBe/giphy.gif">
 
 Then the internet came, and what was bad got even worse... Now we have to deal with documents being constantly sent over the internet, and over time the following was formed:
 

@@ -199,7 +199,7 @@ And just like Captain Planet, "By the union of their powers", we will be able to
 With this combination of logic gates, a computer can already perform the incredible additions of: `0 + 0`, `1 + 0`, `0 + 1`, `1 + 1`, but beyond that, it can also say how much remainder there was from the addition. And when several ADDERs are combined, we can perform addition of more complex numbers like 42, but that we'll see in the next article.
 
 That's all for today, folks.
-<div style="width:100%;height:0;padding-bottom:56%;position:relative;"><iframe src="https://giphy.com/embed/xUPOqo6E1XvWXwlCyQ" width="100%" height="100%" style="position:absolute" frameBorder="0" class="giphy-embed" allowFullScreen></iframe></div>
+<img src="https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExaXg4ZHNiMjVkMG1nY3M3NjRhaDI5cmFoNWtmaHVxNDBweGV5ZjdwOCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/xUPOqo6E1XvWXwlCyQ/giphy.gif" width="100%" height="100%" alt="That's all folks!">
 
 References
 

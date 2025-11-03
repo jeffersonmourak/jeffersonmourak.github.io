@@ -108,7 +108,7 @@ Analyzing the diagram above, we see that when both switches are off, both signal
 | 0 | 0 | 1 |
 | 1 | 1 | 1 |
 
-<div style="width:100%;height:0;padding-bottom:75%;position:relative;"><iframe src="https://giphy.com/embed/n9h61thJkq6Xe" width="100%" height="100%" style="position:absolute" frameBorder="0" class="giphy-embed" allowFullScreen></iframe></div>
+<img src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExa2F3aTZ5Z2FhajUxem51aG5oYzBwYW1jdHI3NGswMzZzd3duMTh3biZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/n9h61thJkq6Xe/giphy.gif" width="auto" height="440px" objectfit="cover" alt="I tawt I taw a puddy tat!">
 
 But wait a minute, I have the impression that I've seen this table before? Yes! This is the OR logic gate we were looking for. Quite a journey, isn't it? Now that we know how to fix the lamp wiring, we can take a break here. This is just the first article in a series about computers. Later on, we'll address other logic gates and other computing concepts.
 
