@@ -16,7 +16,9 @@
 	},
 	"homepage": "https://github.com/jeffersonmourak/jeffersonmourak.github.io#readme",
 	"description": "",
-	"workspaces": ["packages/*"],
+	"workspaces": [
+		"packages/*"
+	],
 	"devDependencies": {
 		"@babel/cli": "^7.25.9",
 		"@babel/core": "^7.26.0",
@@ -28,7 +30,7 @@
 	"dependencies": {
 		"circ-renderer": "workspace:*",
 		"lodash": "^4.17.21",
-		"posthog-js": "^1.281.0",
+		"posthog-js": "^1.298.1",
 		"sillyname": "^0.1.0",
 		"tslib": "^2.8.1",
 		"uuid": "^11.0.3"
