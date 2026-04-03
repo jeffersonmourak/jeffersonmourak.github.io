@@ -65,4 +65,4 @@ jobs:
             </details>
           branch: chore/dependency-upgrade
           delete-branch: true
-          base: main
+          base: master
