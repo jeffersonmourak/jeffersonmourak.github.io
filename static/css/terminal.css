@@ -452,9 +452,55 @@ hr {
 }
 
 .circ-block {
-  display: flex;
-  flex-direction: column;
+  display: block;
   margin: 1em 0;
+}
+
+.circ-tab-input {
+  display: none;
+}
+
+.circ-tabs {
+  display: flex;
+  gap: 4px;
+}
+
+.circ-tab-label {
+  cursor: pointer;
+  padding: 6px 14px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  background: color-mix(in srgb, var(--foreground) 5%, transparent);
+  border: 1px solid color-mix(in srgb, var(--foreground) 10%, transparent);
+  color: color-mix(in srgb, var(--foreground) 65%, transparent);
+  user-select: none;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.circ-tab-label:hover {
+  color: var(--foreground);
+}
+
+.circ-tab-input--code:checked ~ .circ-tabs .circ-tab-label--code,
+.circ-tab-input--topology:checked ~ .circ-tabs .circ-tab-label--topology,
+.circ-tab-input--interactive:checked ~ .circ-tabs .circ-tab-label--interactive {
+  background: var(--accent);
+  color: var(--background);
+  border-color: var(--accent);
+}
+
+.circ-tab-panel {
+  display: none;
+}
+
+.circ-tab-panel .code-toolbar {
+  margin: 0;
+}
+
+.circ-tab-input--code:checked ~ .circ-tab-panel--code,
+.circ-tab-input--topology:checked ~ .circ-tab-panel--topology,
+.circ-tab-input--interactive:checked ~ .circ-tab-panel--interactive {
+  display: block;
 }
 
 .circ-block pre {
@@ -462,22 +508,40 @@ hr {
   border-radius: 0;
 }
 
-.circ-block .circ-source {
-  border-bottom: none;
-}
-
 .circ-block .circ-preview {
   line-height: 1.2rem;
   background: color-mix(in srgb, var(--accent) 6%, transparent) !important;
-  border-top: 1px dashed color-mix(in srgb, var(--accent) 50%, transparent);
   border-left: 4px solid var(--accent);
   white-space: pre;
 }
 
 .circ-block .circ-error {
   background: color-mix(in srgb, #d33 8%, transparent) !important;
-  border-top: 1px dashed color-mix(in srgb, #d33 60%, transparent);
   border-left: 4px solid #d33;
   color: #d33;
   white-space: pre-wrap;
+}
+
+.circ-canvas-mount {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+  padding: 16px;
+  background: color-mix(in srgb, var(--background) 6%, transparent);
+  border: 2px solid var(--accent);
+  /* border-top: none; */
+  overflow-x: auto;
+}
+
+.circ-canvas-mount canvas {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+.circ-canvas-mount:empty::before {
+  content: "Loading circuit…";
+  color: color-mix(in srgb, var(--foreground) 60%, transparent);
+  font-size: 0.9rem;
 }

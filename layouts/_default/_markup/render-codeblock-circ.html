@@ -1,26 +1,46 @@
 {{- /*
-Renders a fenced ` ```circ ` block as a stacked source + ASCII preview pair.
+Renders a fenced ` ```circ ` block as a tabbed view: "circ code" (the source)
+and "circuit topology" (the ASCII schematic from circ-compile --preview).
 The preview is pre-rendered by scripts/preprocess-circ.ts into
 data/circ_previews.json and looked up here by sha256 of the canonicalized
-source. The hashing convention must stay in sync with the preprocessor.
+source. Tabs are pure-CSS via hidden radios — no client JS.
 
 Optional attribute: `{expand=true}` → renders builtin macros (xor, nand, …)
-as their expanded primitive sub-circuits in the preview.
+as their expanded primitive sub-circuits in the topology view.
 */ -}}
 {{- $expand := eq (printf "%v" (.Attributes.expand | default false)) "true" -}}
 {{- $tag := cond $expand "expand" "plain" -}}
 {{- $source := strings.TrimRight "\n" .Inner -}}
 {{- $key := printf "%s %s" $tag $source | crypto.SHA256 -}}
 {{- $entry := index site.Data.circ_previews $key -}}
+{{- $id := printf "circ-%d" .Ordinal -}}
+{{- $entryOk := and $entry (eq (index $entry "status") "ok") -}}
 <div class="circ-block"{{ if $expand }} data-circ-expand="true"{{ end }}>
-  <pre class="circ-source"><code class="language-circ">{{- $source -}}</code></pre>
-  {{- with $entry -}}
-    {{- if eq .status "ok" -}}
-      <pre class="circ-preview" aria-label="ASCII schematic">{{- .preview -}}</pre>
+  <input type="radio" class="circ-tab-input circ-tab-input--code" id="{{ $id }}-code" name="{{ $id }}">
+  <input type="radio" class="circ-tab-input circ-tab-input--topology" id="{{ $id }}-topology" name="{{ $id }}">
+  <input type="radio" class="circ-tab-input circ-tab-input--interactive" id="{{ $id }}-interactive" name="{{ $id }}" checked>
+  <div class="circ-tabs" role="tablist">
+    {{ if $entryOk }}<label class="circ-tab-label circ-tab-label--interactive" for="{{ $id }}-interactive" role="tab">Interactive</label>{{ end }}
+    <label class="circ-tab-label circ-tab-label--topology" for="{{ $id }}-topology" role="tab">Topology</label>
+    <label class="circ-tab-label circ-tab-label--code" for="{{ $id }}-code" role="tab">Code</label>
+  </div>
+  <div class="circ-tab-panel circ-tab-panel--code" role="tabpanel">
+    <pre class="circ-source"><code class="language-circ">{{- $source -}}</code></pre>
+  </div>
+  <div class="circ-tab-panel circ-tab-panel--topology" role="tabpanel">
+    {{- with $entry -}}
+      {{- if eq .status "ok" -}}
+        <pre class="circ-preview" aria-label="ASCII schematic">{{- .preview -}}</pre>
+      {{- else -}}
+        <pre class="circ-error" role="alert">{{- .message -}}</pre>
+      {{- end -}}
     {{- else -}}
-      <pre class="circ-error" role="alert">{{- .message -}}</pre>
+      <pre class="circ-error" role="alert">circ preview missing — run `bun scripts/preprocess-circ.ts`.</pre>
     {{- end -}}
-  {{- else -}}
-    <pre class="circ-error" role="alert">circ preview missing — run `bun scripts/preprocess-circ.ts`.</pre>
-  {{- end -}}
+  </div>
+  {{ if $entryOk }}
+  <div class="circ-tab-panel circ-tab-panel--interactive" role="tabpanel">
+    <div class="circ-canvas-mount" data-circ-wasm="/circ/{{ $key }}.wasm" aria-label="Interactive circuit"></div>
+  </div>
+  {{ end }}
 </div>

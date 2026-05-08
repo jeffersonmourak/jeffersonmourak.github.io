@@ -18,6 +18,7 @@ import {
   readdirSync,
   rmSync,
   statSync,
+  unlinkSync,
   watch,
   writeFileSync,
 } from "node:fs";
@@ -31,6 +32,7 @@ const CONTENT_ROOT = join(REPO_ROOT, "content");
 const DATA_DIR = join(REPO_ROOT, "data");
 const OUTPUT_FILE = join(DATA_DIR, "circ_previews.json");
 const BIN_DIR = join(REPO_ROOT, "bin");
+const WASM_DIR = join(REPO_ROOT, "static", "circ");
 
 const BINARY_BY_PLATFORM: Record<string, string> = {
   "darwin-arm64": "circ-compile-darwin-arm64",
@@ -152,6 +154,49 @@ function compileOne(binary: string, source: string, expand: boolean): Entry {
   }
 }
 
+function compileWasm(binary: string, source: string, key: string): string | null {
+  const wasmPath = join(WASM_DIR, `${key}.wasm`);
+  // Same hash ⇒ same source ⇒ same artifact, so skip if already on disk.
+  if (existsSync(wasmPath)) return null;
+
+  const dir = mkdtempSync(join(tmpdir(), "circ-wasm-"));
+  try {
+    if (!existsSync(WASM_DIR)) mkdirSync(WASM_DIR, { recursive: true });
+    const file = join(dir, "input.circ");
+    writeFileSync(file, `${source}\n`, "utf8");
+    const res = spawnSync(binary, [file, "-o", wasmPath], { encoding: "utf8" });
+    if (res.error) return res.error.message;
+    if (res.status !== 0) {
+      const raw = res.stderr || res.stdout || `circ-compile exited ${res.status}`;
+      return raw.split(file).join("circ-block").trim();
+    }
+    return null;
+  } finally {
+    try {
+      rmSync(dir, { recursive: true, force: true });
+    } catch {
+      /* OS reaps tmp */
+    }
+  }
+}
+
+function pruneWasm(activeKeys: Set<string>): number {
+  if (!existsSync(WASM_DIR)) return 0;
+  let removed = 0;
+  for (const entry of readdirSync(WASM_DIR)) {
+    if (!entry.endsWith(".wasm")) continue;
+    const key = entry.slice(0, -".wasm".length);
+    if (activeKeys.has(key)) continue;
+    try {
+      unlinkSync(join(WASM_DIR, entry));
+      removed++;
+    } catch {
+      /* best-effort */
+    }
+  }
+  return removed;
+}
+
 function runOnce(binary: string): number {
   if (!existsSync(CONTENT_ROOT)) {
     console.warn(`circ preprocess: no ${relative(REPO_ROOT, CONTENT_ROOT)} dir; nothing to do.`);
@@ -160,6 +205,7 @@ function runOnce(binary: string): number {
 
   const files = walkMarkdown(CONTENT_ROOT);
   const entries: Record<string, Entry> = {};
+  const activeKeys = new Set<string>();
   let total = 0;
   let errors = 0;
 
@@ -167,6 +213,7 @@ function runOnce(binary: string): number {
     const content = readFileSync(file, "utf8");
     for (const block of findBlocks(file, content)) {
       total++;
+      activeKeys.add(block.key);
       if (entries[block.key]) continue;
       const entry = compileOne(binary, block.source, block.expand);
       entries[block.key] = entry;
@@ -174,9 +221,19 @@ function runOnce(binary: string): number {
         errors++;
         const rel = relative(REPO_ROOT, block.file);
         console.error(`circ preprocess: error in ${rel}:${block.line} — ${entry.message}`);
+        continue;
+      }
+      // Block previewed cleanly; build the runtime WASM the interactive tab needs.
+      const wasmErr = compileWasm(binary, block.source, block.key);
+      if (wasmErr) {
+        const rel = relative(REPO_ROOT, block.file);
+        console.error(`circ preprocess: wasm build failed for ${rel}:${block.line} — ${wasmErr}`);
+        errors++;
       }
     }
   }
+
+  const prunedWasm = pruneWasm(activeKeys);
 
   if (!existsSync(DATA_DIR)) mkdirSync(DATA_DIR, { recursive: true });
   // Idempotent write: only touch the file when content actually changes, so
@@ -187,8 +244,9 @@ function runOnce(binary: string): number {
 
   const unique = Object.keys(entries).length;
   const changed = next !== prev ? "" : " (unchanged)";
+  const wasmNote = prunedWasm > 0 ? `, pruned ${prunedWasm} stale wasm` : "";
   console.log(
-    `circ preprocess: ${total} blocks, ${unique} unique, ${errors} errors → ${relative(REPO_ROOT, OUTPUT_FILE)}${changed}`,
+    `circ preprocess: ${total} blocks, ${unique} unique, ${errors} errors${wasmNote} → ${relative(REPO_ROOT, OUTPUT_FILE)}${changed}`,
   );
 
   return errors;

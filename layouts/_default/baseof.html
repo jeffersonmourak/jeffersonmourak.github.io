@@ -121,6 +121,25 @@
   {{ end }}
   {{ end }}
   {{ end }}
+
+  {{ with resources.Get "ts/circ-runtime/index.ts" }}
+  {{ $opts := dict
+  "minify" (not (eq hugo.Environment "development"))
+  "sourceMap" (cond (eq hugo.Environment "development") "inline" "")
+  "targetPath" "circ-runtime.js"
+  "format" "iife"
+  }}
+
+  {{ with . | babel | js.Build $opts }}
+  {{ if eq hugo.Environment "development" }}
+  <script type="text/javascript" defer src="{{ .RelPermalink }}"></script>
+  {{ else }}
+  {{ with . | fingerprint }}
+  <script defer src="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" crossorigin="anonymous"></script>
+  {{ end }}
+  {{ end }}
+  {{ end }}
+  {{ end }}
 </head>
 
 <body>

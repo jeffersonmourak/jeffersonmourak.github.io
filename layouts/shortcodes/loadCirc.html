@@ -1,3 +1,10 @@
+{{- /*
+DEPRECATED — superseded by the ` ```circ ` fenced code block, which renders
+through layouts/_default/_markup/render-codeblock-circ.html and embeds the
+new circ-renderer (assets/ts/circ-runtime). Existing posts continue to work;
+new content should use the fenced block so authors get the source +
+topology + interactive tabs all from one source-of-truth.
+*/ -}}
 {{ if .IsNamedParams }}
 <div class="shortcode-widget">
   <iframe class="shortcode-iframe" src="/embedded/shortcode.html?type=loadCirc&width={{ if .Get " width" }}{{
