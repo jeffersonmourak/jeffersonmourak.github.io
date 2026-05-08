@@ -52,7 +52,6 @@ and g_and1(a=g_or1.out, b=g_not1.out)
 or g_or1(a=g_and1.out, b=in1.out)
 output out1(in=g_and1.out)
 ```
-{{< loadCirc "dff.circ" 800 355 3.5 >}}
 If you stop to analyze, it's quite simple: following the `set` trail, you'll see there are two logic gates in the path, an `OR` and an `AND`. One of the `OR` gate inputs is connected to the result of the `AND` at the end of the chip. This combination makes it so that when we have **0** and are given a value **1**, the `OR` gate will result in **1**, and the `AND` will also.
 
 However, when we remove the signal from `set`, the value that was previously placed is persisted because now the `OR` is maintaining the state that keeps the `AND` also in the previous state. Problem solved, right? No! Notice that our circuit is now locked, as there's no way to get out of this state unless the `AND` gets another value, and that's what the `reset` gate is for: it's connected to a `NOT`, meaning while it's off (0), its result will be 1 (on), and vice versa.
@@ -79,7 +78,6 @@ not g_qbar(in=i_qbar.out)
 
 output out1(in=g_q.out)
 ```
-{{< loadCirc "mux.circ" 800 355 3.5 >}}
 If we break it down a bit, what happens is the following: the upper input, which we'll now call `data`, will only be saved in the ***flip-flop*** when the lower input, which also changed names, now called `enabled`. So instead of using two inputs, one to save and another to erase, this combination of `AND`s and `NOT` chooses which operation will be performed.
 
 - If `data` = 1 and `enabled` = 1, then it's the same as turning on the `set` input of the ***flip-flop***.

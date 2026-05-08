@@ -49,7 +49,6 @@ and g_and1(a=g_or1.out, b=g_not1.out)
 or g_or1(a=g_and1.out, b=in1.out)
 output out1(in=g_and1.out)
 ```
-{{< loadCirc "dff.circ" 800 355 3.5 >}}
 Se parar para analisar, é bem simples: seguindo a trilha do `set`, verá que há duas portas lógicas no caminho, uma `OR` e uma `AND`. Uma das entradas da porta `OR` está ligada com o resultado da `AND` lá no fim do chip. Essa combinação faz com que, quando temos **0** e é nos dado um valor **1**, a porta `OR` vai resultar em **1**, e a `AND` também.
 
 Porém, quando removemos o sinal do `set`, o valor que foi anteriormente colocado é persistido porque agora o `OR` está mantendo o estado que mantém o `AND` também no estado anterior. Problema resolvido, certo? Não! Perceba que nosso circuito agora está travado, pois não há como sair desse estado a não ser que o `AND` passe a ter um outro valor, e é para isso que serve a porta `reset`: ela está ligada a um `NOT`, ou seja, enquanto ela estiver desligada (0), o seu resultado vai ser 1 (ligado), e vice-versa.
@@ -76,7 +75,6 @@ not g_qbar(in=i_qbar.out)
 
 output out1(in=g_q.out)
 ```
-{{< loadCirc "mux.circ" 800 355 3.5 >}}
 Se a gente destrinchar um pouco, o que acontece é o seguinte: a entrada superior, que agora chamaremos de `data`, só será salva no ***flip-flop*** quando a entrada inferior, que também mudou o nome, agora se chama `enabled`. Ou seja, em vez de usar duas entradas, uma para salvar e outra para apagar, essa combinação de `AND`s e `NOT` escolhe qual operação será feita.
 
 - Se `data` = 1 e `enabled` = 1, então é a mesma coisa que ligar a entrada `set` do ***flip-flop***.

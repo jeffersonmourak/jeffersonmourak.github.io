@@ -64,14 +64,13 @@ A resposta está na própria pergunta! 😉 Vamos precisar de uma outra porta l�
 Mas antes de falar da OR, vamos dar uma olhada na porta NOT (ou Negação). Ela é bem simples, mas vai ser importante mais pra frente.
 
 ```circ
-input in1
+input a
 
-not g_not1(in=in1.out)
-output out1(in=g_not1.out)
+not g_not1(in=a.out)
+led out(in=g_not1.out)
 
 ```
 
-{{< loadCirc "sample.circ" 720 270 6 >}}
 
 E se escrevermos ela numa tabela verdade teremos isso aqui:
 
@@ -87,7 +86,6 @@ input in1, in2
 and g_and1(a=in1.out, b=in2.out)
 output out1(in=g_and1.out)
 ```
-{{< loadCirc "and.circ" 232 192 4 >}}
 
 e o NOT:
 
@@ -97,7 +95,6 @@ input in1
 not g_not1(in=in1.out)
 output out1(in=g_not1.out)
 ```
-{{< loadCirc "not.circ" 232 192 4 >}}
 
 Com essas duas operações lógicas (AND e NOT), já podemos combinar seus resultados e criar uma terceira porta lógica: a NAND (ou Not AND).
 
@@ -111,7 +108,6 @@ input in1, in2
 nand g_nand1(a=in1.out, b=in2.out)
 output out1(in=g_nand1.out)
 ```
-{{< loadCirc "nand.circ" 272 192 4 >}}
 
 ```circ
 input in1, in2
@@ -120,7 +116,6 @@ and g_and1(a=in1.out, b=in2.out)
 not g_not1(in=g_and1.out)
 output out1(in=g_not1.out)
 ```
-{{< loadCirc "example1.circ" 650 290 3 >}}
 
 A tabela-verdade dela é idêntica à do AND, porém com os resultados invertidos.
 
@@ -141,7 +136,6 @@ not g_not2(in=in2.out)
 nand g_nand1(a=g_not1.out, b=g_not2.out)
 output out1(in=g_nand1.out)
 ```
-{{< loadCirc "example2.circ" 650 290 3 >}}
 
 Analisando o diagrama acima, vemos que, quando os dois interruptores estiverem desligados, ambos os sinais serão invertidos pelo NOT, e o NAND vai resultar em ¬∧(1, 1) = 0. Ou seja, com ambos desligados, a lâmpada apaga. Mas o que acontece quando temos ¬∧(1, 0) ou ¬∧(0, 1)? Para descobrir, vamos analisar a tabela-verdade:
 

@@ -75,7 +75,6 @@ output out1(in=g_not1.out)
 
 ```
 
-{{< loadCirc "sample.circ" 720 270 6 >}}
 
 And if we write it in a truth table we'll have this here:
 
@@ -91,7 +90,6 @@ input in1, in2
 and g_and1(a=in1.out, b=in2.out)
 output out1(in=g_and1.out)
 ```
-{{< loadCirc "and.circ" 232 192 4 >}}
 
 and the NOT:
 
@@ -101,7 +99,6 @@ input in1
 not g_not1(in=in1.out)
 output out1(in=g_not1.out)
 ```
-{{< loadCirc "not.circ" 232 192 4 >}}
 
 With these two logical operations (AND and NOT), we can already combine their results and create a third logic gate: the NAND (or Not AND).
 
@@ -115,7 +112,6 @@ input in1, in2
 nand g_nand1(a=in1.out, b=in2.out)
 output out1(in=g_nand1.out)
 ```
-{{< loadCirc "nand.circ" 272 192 4 >}}
 
 ```circ
 input in1, in2
@@ -124,7 +120,6 @@ and g_and1(a=in1.out, b=in2.out)
 not g_not1(in=g_and1.out)
 output out1(in=g_not1.out)
 ```
-{{< loadCirc "example1.circ" 650 290 3 >}}
 
 Its truth table is identical to AND's, but with the results inverted.
 
@@ -145,7 +140,6 @@ not g_not2(in=in2.out)
 nand g_nand1(a=g_not1.out, b=g_not2.out)
 output out1(in=g_nand1.out)
 ```
-{{< loadCirc "example2.circ" 650 290 3 >}}
 
 Analyzing the diagram above, we see that when both switches are off, both signals will be inverted by the NOT, and the NAND will result in ¬∧(1, 1) = 0. So with both off, the lamp turns off. But what happens when we have ¬∧(1, 0) or ¬∧(0, 1)? To find out, let's analyze the truth table:
 

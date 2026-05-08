@@ -155,7 +155,6 @@ or g_or1(a=in1.out, b=in2.out)
 and g_and1(a=g_or1.out, b=g_nand1.out)
 output out1(in=g_and1.out)
 ```
-{{< loadCirc "XOR.circ" 800 455 4 >}}
 
 Agora, vamos olhar também para a tabela do resto da nossa soma e se percebe que é uma cópia exata da porta AND.
 
@@ -218,7 +217,6 @@ or g_or1(a=g_and1.out, b=g_and2.out)
 output out1(in=g_xor2.out)
 output out2(in=g_or1.out)
 ```
-{{< loadCirc "ADDER.circ" 840 420 3 >}}
 
 Com essa combinação de portas lógicas, um computador já consegue fazer as incríveis somas de: `0 + 0`, `1 + 0`, `0 + 1`, `1 + 1`, mas, além disso, ele consegue também dizer quanto que houve de resto da soma. E quando combinados vários ADDERs, a gente consegue fazer uma soma de números mais complexos como o 42, mas essa nós vamos ver no próximo artigo.
 
