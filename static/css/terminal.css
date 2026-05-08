@@ -450,3 +450,34 @@ hr {
     translate: 0 calc(var(--height) / -6) 0;
   }
 }
+
+.circ-block {
+  display: flex;
+  flex-direction: column;
+  margin: 1em 0;
+}
+
+.circ-block pre {
+  margin: 0;
+  border-radius: 0;
+}
+
+.circ-block .circ-source {
+  border-bottom: none;
+}
+
+.circ-block .circ-preview {
+  line-height: 1.2rem;
+  background: color-mix(in srgb, var(--accent) 6%, transparent) !important;
+  border-top: 1px dashed color-mix(in srgb, var(--accent) 50%, transparent);
+  border-left: 4px solid var(--accent);
+  white-space: pre;
+}
+
+.circ-block .circ-error {
+  background: color-mix(in srgb, #d33 8%, transparent) !important;
+  border-top: 1px dashed color-mix(in srgb, #d33 60%, transparent);
+  border-left: 4px solid #d33;
+  color: #d33;
+  white-space: pre-wrap;
+}

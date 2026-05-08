@@ -42,6 +42,16 @@ In the previous articles, we saw how logic gates can be used to make comparisons
 Another thing we'll do here is categorize each type of chip: the ones shown previously are ***combinational***, which means they don't need anything beyond signals at their inputs to be able to compute a result, but there are also ***sequential*** ones. The difference between them is that sequential depends not only on the input signals, but also on the previously processed value.
 
 A very practical way to use logic gates to store information is using a chip called ***flip-flop***, which is represented below. It contains 2 inputs: the top one `set` and the bottom one `reset` (you can click on the circuit below to interact with them).
+```circ
+import or "<builtin>/or.circ"
+
+input in1, in2
+
+not g_not1(in=in2.out)
+and g_and1(a=g_or1.out, b=g_not1.out)
+or g_or1(a=g_and1.out, b=in1.out)
+output out1(in=g_and1.out)
+```
 {{< loadCirc "dff.circ" 800 355 3.5 >}}
 If you stop to analyze, it's quite simple: following the `set` trail, you'll see there are two logic gates in the path, an `OR` and an `AND`. One of the `OR` gate inputs is connected to the result of the `AND` at the end of the chip. This combination makes it so that when we have **0** and are given a value **1**, the `OR` gate will result in **1**, and the `AND` will also.
 
@@ -50,6 +60,25 @@ However, when we remove the signal from `set`, the value that was previously pla
 An evolution we can make to the ***flip-flop*** is to transform it into a ***Register***. In the register, we can choose whether it's time or not to read our signal and store it, and subsequently rewrite it, all at our leisure. There are many ways to achieve this chip, so I'll use the implementation demonstrated by [Sebastian Lague](https://www.youtube.com/watch?v=I0-izyq6q5s).
 
 In it, we just need to add 3 more logic gates and that's it!
+```circ
+input in1, in2
+
+not g_not_d(in=in1.out)
+
+and i_sp(a=in1.out, b=in2.out)
+not g_sp(in=i_sp.out)
+
+and i_rp(a=g_not_d.out, b=in2.out)
+not g_rp(in=i_rp.out)
+
+and i_q(a=g_sp.out, b=g_qbar.out)
+not g_q(in=i_q.out)
+
+and i_qbar(a=g_rp.out, b=g_q.out)
+not g_qbar(in=i_qbar.out)
+
+output out1(in=g_q.out)
+```
 {{< loadCirc "mux.circ" 800 355 3.5 >}}
 If we break it down a bit, what happens is the following: the upper input, which we'll now call `data`, will only be saved in the ***flip-flop*** when the lower input, which also changed names, now called `enabled`. So instead of using two inputs, one to save and another to erase, this combination of `AND`s and `NOT` chooses which operation will be performed.
 

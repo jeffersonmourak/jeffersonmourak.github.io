@@ -145,6 +145,18 @@ Remembering the [previous article](https://jeffersonmourak.com/blog/logic-gates/
 </div>
 
 For this, we can combine the results of the gates we saw earlier into a single circuit called "Exclusive OR" or "XOR".
+
+```circ
+import nand "<builtin>/nand.circ"
+import or "<builtin>/or.circ"
+
+input in1, in2
+
+nand g_nand1(a=in2.out, b=in1.out)
+or g_or1(a=in1.out, b=in2.out)
+and g_and1(a=g_or1.out, b=g_nand1.out)
+output out1(in=g_and1.out)
+```
 {{< loadCirc "XOR.circ" 800 455 4 >}}
 
 Now, let's also look at the remainder table of our addition and you'll notice that it's an exact copy of the AND gate.
@@ -194,6 +206,20 @@ Now, let's also look at the remainder table of our addition and you'll notice th
 
 And just like Captain Planet, "By the union of their powers", we will be able to perform the operation of adding two digits in binary, and this component is called "Adder".
 
+```circ
+import xor "<builtin>/xor.circ"
+import or "<builtin>/or.circ"
+
+input in1, in2, in3
+
+xor g_xor1(a=in1.out, b=in2.out)
+xor g_xor2(a=g_xor1.out, b=in3.out)
+and g_and1(a=g_xor1.out, b=in3.out)
+and g_and2(a=in2.out, b=in1.out)
+or g_or1(a=g_and1.out, b=g_and2.out)
+output out1(in=g_xor2.out)
+output out2(in=g_or1.out)
+```
 {{< loadCirc "ADDER.circ" 840 420 3 >}}
 
 With this combination of logic gates, a computer can already perform the incredible additions of: `0 + 0`, `1 + 0`, `0 + 1`, `1 + 1`, but beyond that, it can also say how much remainder there was from the addition. And when several ADDERs are combined, we can perform addition of more complex numbers like 42, but that we'll see in the next article.

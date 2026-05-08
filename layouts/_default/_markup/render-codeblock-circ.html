@@ -1,0 +1,26 @@
+{{- /*
+Renders a fenced ` ```circ ` block as a stacked source + ASCII preview pair.
+The preview is pre-rendered by scripts/preprocess-circ.ts into
+data/circ_previews.json and looked up here by sha256 of the canonicalized
+source. The hashing convention must stay in sync with the preprocessor.
+
+Optional attribute: `{expand=true}` → renders builtin macros (xor, nand, …)
+as their expanded primitive sub-circuits in the preview.
+*/ -}}
+{{- $expand := eq (printf "%v" (.Attributes.expand | default false)) "true" -}}
+{{- $tag := cond $expand "expand" "plain" -}}
+{{- $source := strings.TrimRight "\n" .Inner -}}
+{{- $key := printf "%s %s" $tag $source | crypto.SHA256 -}}
+{{- $entry := index site.Data.circ_previews $key -}}
+<div class="circ-block"{{ if $expand }} data-circ-expand="true"{{ end }}>
+  <pre class="circ-source"><code class="language-circ">{{- $source -}}</code></pre>
+  {{- with $entry -}}
+    {{- if eq .status "ok" -}}
+      <pre class="circ-preview" aria-label="ASCII schematic">{{- .preview -}}</pre>
+    {{- else -}}
+      <pre class="circ-error" role="alert">{{- .message -}}</pre>
+    {{- end -}}
+  {{- else -}}
+    <pre class="circ-error" role="alert">circ preview missing — run `bun scripts/preprocess-circ.ts`.</pre>
+  {{- end -}}
+</div>
