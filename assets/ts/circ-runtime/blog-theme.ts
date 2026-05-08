@@ -569,10 +569,12 @@ export const blogTheme: CircTheme<Key> = {
     ctx.fillRect(-4, -4, width * cell + 8, height * cell + 8);
   },
   /**
-   * 2px round-cap segments — matches the line style the blog used in its
+   * 4px round-cap segments — matches the line style the blog used in its
    * `wires` override. Differs from the default in lineWidth (smaller +
    * uniform regardless of cell size) and skips the in-box stubs (the
-   * orange port dots already anchor wires to gates).
+   * orange port dots already anchor wires to gates). Horizontal segments
+   * arc over recorded crossings so wires of different signals read as
+   * separate strands rather than fusing at intersections.
    */
   wire: ({ ctx, cell, wire, signal, theme }) => {
     ctx.strokeStyle =
@@ -584,12 +586,38 @@ export const blogTheme: CircTheme<Key> = {
     ctx.lineWidth = 4;
     ctx.lineCap = "round";
     ctx.lineJoin = "round";
-    ctx.beginPath();
+    const arcRadius = cell * 0.4;
     for (const seg of wire.segments) {
-      ctx.moveTo(seg.from.x * cell + cell / 2, seg.from.y * cell + cell / 2);
-      ctx.lineTo(seg.to.x * cell + cell / 2, seg.to.y * cell + cell / 2);
+      const horiz = seg.from.y === seg.to.y;
+      const startX = seg.from.x * cell + cell / 2;
+      const startY = seg.from.y * cell + cell / 2;
+      const endX = seg.to.x * cell + cell / 2;
+      const endY = seg.to.y * cell + cell / 2;
+      if (!horiz) {
+        ctx.beginPath();
+        ctx.moveTo(startX, startY);
+        ctx.lineTo(endX, endY);
+        ctx.stroke();
+        continue;
+      }
+      const [segLo, segHi] = [startX, endX].sort((a, b) => a - b);
+      const y = startY;
+      const jumps = wire.crossings
+        .filter((c) => c.y === seg.from.y && c.x * cell + cell / 2 >= segLo && c.x * cell + cell / 2 <= segHi)
+        .map((c) => c.x * cell + cell / 2)
+        .sort((a, b) => a - b);
+      ctx.beginPath();
+      let cursor = segLo;
+      for (const jx of jumps) {
+        ctx.moveTo(cursor, y);
+        ctx.lineTo(jx - arcRadius, y);
+        ctx.arc(jx, y, arcRadius, Math.PI, 0, false);
+        cursor = jx + arcRadius;
+      }
+      ctx.moveTo(cursor, y);
+      ctx.lineTo(segHi, y);
+      ctx.stroke();
     }
-    ctx.stroke();
   },
   /**
    * No port markers — each skin draws its own tail from the gate's
