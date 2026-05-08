@@ -3,7 +3,7 @@ import {
   type CircTheme,
   type Signal,
   type Skin,
-} from "./lib";
+} from "circ-renderer";
 import { type AssetsLibrary, loadAssets } from "./blog-assets";
 
 /**

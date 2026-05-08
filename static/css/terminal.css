@@ -537,7 +537,11 @@ hr {
 .circ-canvas-mount canvas {
   display: block;
   max-width: 100%;
-  height: auto;
+  /* Override the renderer's inline `style="height: …px"` so the canvas keeps
+     its intrinsic aspect ratio when max-width clamps the width on narrow
+     viewports. Without !important the inline height wins and the canvas
+     stretches/squashes. */
+  height: auto !important;
 }
 
 .circ-canvas-mount:empty::before {

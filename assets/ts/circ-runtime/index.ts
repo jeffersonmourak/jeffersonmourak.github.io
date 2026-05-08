@@ -6,7 +6,7 @@
  * activated, then leave the canvas mounted for instant re-shows.
  */
 
-import { renderCircuit, type CircView } from "./lib";
+import { renderCircuit, type CircView } from "circ-renderer";
 import { blogTheme, onBlogAssetsReady } from "./blog-theme";
 
 const mounted = new WeakMap<HTMLElement, CircView>();
