@@ -56,6 +56,8 @@ jobs:
           bun-version: 1.2.10
       - name: Install JavaScript dependencies
         run: bun install || true
+      - name: Preprocess circ blocks
+        run: bun scripts/preprocess-circ.ts
       - name: Build with Hugo
         env:
           HUGO_CACHEDIR: ${{ runner.temp }}/hugo_cache

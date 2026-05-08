@@ -99,7 +99,8 @@
       "built",
       "build",
       "dist",
-      "coverage"
+      "coverage",
+      "scripts"
     ]
   },
   "vcs": {

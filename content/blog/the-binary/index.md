@@ -143,7 +143,18 @@ Lembrando do [artigo anterior](https://jeffersonmourak.com/blog/logic-gates/), v
 </div>
 
 Para isso, podemos combinar o resultado das portas que já vimos anteriormente em um só circuito chamado "OU Exclusivo" ou "XOR".
-{{< loadCirc "XOR.circ" 800 455 4 >}}
+
+```circ
+import nand "<builtin>/nand.circ"
+import or "<builtin>/or.circ"
+
+input a, b
+
+nand _nand_(a=b.out, b=a.out)
+or _or_(a=a.out, b=b.out)
+and _and_(a=_or_.out, b=_nand_.out)
+led out(in=_and_.out)
+```
 
 Agora, vamos olhar também para a tabela do resto da nossa soma e se percebe que é uma cópia exata da porta AND.
 
@@ -192,7 +203,20 @@ Agora, vamos olhar também para a tabela do resto da nossa soma e se percebe que
 
 E assim como o Capitão Planeta, "Pela união dos seus poderes", nós vamos conseguir fazer a operação de soma de dois dígitos em binário, e esse componente é chamado de "Somador" ou "Adder".
 
-{{< loadCirc "ADDER.circ" 840 420 3 >}}
+```circ
+import xor "<builtin>/xor.circ"
+import or "<builtin>/or.circ"
+
+input a, b, c_in
+
+xor _xor_1_(a=a.out, b=b.out)
+xor _xor_2_(a=_xor_1_.out, b=c_in.out)
+and _and_1_(a=_xor_1_.out, b=c_in.out)
+and _and_2_(a=b.out, b=a.out)
+or _or_(a=_and_1_.out, b=_and_2_.out)
+led out(in=_xor_2_.out)
+led c_out(in=_or_.out)
+```
 
 Com essa combinação de portas lógicas, um computador já consegue fazer as incríveis somas de: `0 + 0`, `1 + 0`, `0 + 1`, `1 + 1`, mas, além disso, ele consegue também dizer quanto que houve de resto da soma. E quando combinados vários ADDERs, a gente consegue fazer uma soma de números mais complexos como o 42, mas essa nós vamos ver no próximo artigo.
 

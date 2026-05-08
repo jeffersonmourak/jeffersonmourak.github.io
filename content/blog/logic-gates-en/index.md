@@ -66,7 +66,15 @@ The answer is in the question itself! 😉 We'll need another logic gate, the OR
 | 1 | 1 | 1 |
 
 But before talking about OR, let's take a look at the NOT gate (or Negation). It's quite simple, but it will be important later on.
-{{< loadCirc "sample.circ" 720 270 6 >}}
+
+```circ
+input a
+
+not _not_(in=a.out)
+led out(in=_not_.out)
+
+```
+
 
 And if we write it in a truth table we'll have this here:
 
@@ -76,19 +84,42 @@ And if we write it in a truth table we'll have this here:
 
 So, let's take a break and review what we already know. First, the operations and how to represent them in a table. To simplify, let's transform these operations into symbols. Every time we refer to AND, this will be the symbol:
 
-{{< loadCirc "and.circ" 232 192 4 >}}
+```circ
+input a, b
+
+and _and_(a=a.out, b=b.out)
+led out(in=_and_.out)
+```
 
 and the NOT:
 
-{{< loadCirc "not.circ" 232 192 4 >}}
+```circ
+input a
+
+not _not_(in=a.out)
+led out(in=_not_.out)
+```
 
 With these two logical operations (AND and NOT), we can already combine their results and create a third logic gate: the NAND (or Not AND).
 
 It can be represented like this:
 
-{{< loadCirc "nand.circ" 272 192 4 >}}
+```circ
+import nand "<builtin>/nand.circ"
 
-{{< loadCirc "example1.circ" 650 290 3 >}}
+input a, b
+
+nand _nand_(a=a.out, b=b.out)
+led out(in=_nand_.out)
+```
+
+```circ
+input a, b
+
+and _and_(a=a.out, b=b.out)
+not _not_(in=_and_.out)
+led out(in=_not_.out)
+```
 
 Its truth table is identical to AND's, but with the results inverted.
 
@@ -99,7 +130,16 @@ Its truth table is identical to AND's, but with the results inverted.
 
 Following this same logic of combining gates, we can use a NAND gate and invert each switch input with a NOT. Thus, we'll have the following:
 
-{{< loadCirc "example2.circ" 650 290 3 >}}
+```circ
+import nand "<builtin>/nand.circ"
+
+input a, b
+
+not _not_a_(in=a.out)
+not _not_b_(in=b.out)
+nand _nand_(a=_not_a_.out, b=_not_b_.out)
+led out(in=_nand_.out)
+```
 
 Analyzing the diagram above, we see that when both switches are off, both signals will be inverted by the NOT, and the NAND will result in ¬∧(1, 1) = 0. So with both off, the lamp turns off. But what happens when we have ¬∧(1, 0) or ¬∧(0, 1)? To find out, let's analyze the truth table:
 
