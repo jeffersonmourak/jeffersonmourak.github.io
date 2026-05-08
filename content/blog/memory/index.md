@@ -42,12 +42,12 @@ Um jeito muito prático de usar portas lógicas para guardar informações é us
 ```circ
 import or "<builtin>/or.circ"
 
-input in1, in2
+input set, reset
 
-not g_not1(in=in2.out)
-and g_and1(a=g_or1.out, b=g_not1.out)
-or g_or1(a=g_and1.out, b=in1.out)
-output out1(in=g_and1.out)
+not _not_b_(in=reset.out)
+and _and_(a=_or_.out, b=_not_b_.out)
+or _or_(a=_and_.out, b=set.out)
+led out(in=_and_.out)
 ```
 Se parar para analisar, é bem simples: seguindo a trilha do `set`, verá que há duas portas lógicas no caminho, uma `OR` e uma `AND`. Uma das entradas da porta `OR` está ligada com o resultado da `AND` lá no fim do chip. Essa combinação faz com que, quando temos **0** e é nos dado um valor **1**, a porta `OR` vai resultar em **1**, e a `AND` também.
 
@@ -57,23 +57,23 @@ Uma evolução que podemos fazer no ***flip-flop*** é transformá-lo em um ***R
 
 Nela, a gente só precisa adicionar mais 3 portas lógicas e pronto!
 ```circ
-input in1, in2
+input data, enabled
 
-not g_not_d(in=in1.out)
+not _not_a_(in=data.out)
 
-and i_sp(a=in1.out, b=in2.out)
-not g_sp(in=i_sp.out)
+and _and_sp_(a=data.out, b=enabled.out)
+not _sp_(in=_and_sp_.out)
 
-and i_rp(a=g_not_d.out, b=in2.out)
-not g_rp(in=i_rp.out)
+and _and_rp_(a=_not_a_.out, b=enabled.out)
+not _rp_(in=_and_rp_.out)
 
-and i_q(a=g_sp.out, b=g_qbar.out)
-not g_q(in=i_q.out)
+and _and_q_(a=_sp_.out, b=_qbar_.out)
+not _q_(in=_and_q_.out)
 
-and i_qbar(a=g_rp.out, b=g_q.out)
-not g_qbar(in=i_qbar.out)
+and _and_qbar_(a=_rp_.out, b=_q_.out)
+not _qbar_(in=_and_qbar_.out)
 
-output out1(in=g_q.out)
+led out(in=_q_.out)
 ```
 Se a gente destrinchar um pouco, o que acontece é o seguinte: a entrada superior, que agora chamaremos de `data`, só será salva no ***flip-flop*** quando a entrada inferior, que também mudou o nome, agora se chama `enabled`. Ou seja, em vez de usar duas entradas, uma para salvar e outra para apagar, essa combinação de `AND`s e `NOT` escolhe qual operação será feita.
 

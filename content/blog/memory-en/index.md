@@ -45,12 +45,12 @@ A very practical way to use logic gates to store information is using a chip cal
 ```circ
 import or "<builtin>/or.circ"
 
-input in1, in2
+input set, reset
 
-not g_not1(in=in2.out)
-and g_and1(a=g_or1.out, b=g_not1.out)
-or g_or1(a=g_and1.out, b=in1.out)
-output out1(in=g_and1.out)
+not _not_b_(in=reset.out)
+and _and_(a=_or_.out, b=_not_b_.out)
+or _or_(a=_and_.out, b=set.out)
+led out(in=_and_.out)
 ```
 If you stop to analyze, it's quite simple: following the `set` trail, you'll see there are two logic gates in the path, an `OR` and an `AND`. One of the `OR` gate inputs is connected to the result of the `AND` at the end of the chip. This combination makes it so that when we have **0** and are given a value **1**, the `OR` gate will result in **1**, and the `AND` will also.
 
@@ -60,23 +60,23 @@ An evolution we can make to the ***flip-flop*** is to transform it into a ***Reg
 
 In it, we just need to add 3 more logic gates and that's it!
 ```circ
-input in1, in2
+input data, enabled
 
-not g_not_d(in=in1.out)
+not _not_a_(in=data.out)
 
-and i_sp(a=in1.out, b=in2.out)
-not g_sp(in=i_sp.out)
+and _and_sp_(a=data.out, b=enabled.out)
+not _sp_(in=_and_sp_.out)
 
-and i_rp(a=g_not_d.out, b=in2.out)
-not g_rp(in=i_rp.out)
+and _and_rp_(a=_not_a_.out, b=enabled.out)
+not _rp_(in=_and_rp_.out)
 
-and i_q(a=g_sp.out, b=g_qbar.out)
-not g_q(in=i_q.out)
+and _and_q_(a=_sp_.out, b=_qbar_.out)
+not _q_(in=_and_q_.out)
 
-and i_qbar(a=g_rp.out, b=g_q.out)
-not g_qbar(in=i_qbar.out)
+and _and_qbar_(a=_rp_.out, b=_q_.out)
+not _qbar_(in=_and_qbar_.out)
 
-output out1(in=g_q.out)
+led out(in=_q_.out)
 ```
 If we break it down a bit, what happens is the following: the upper input, which we'll now call `data`, will only be saved in the ***flip-flop*** when the lower input, which also changed names, now called `enabled`. So instead of using two inputs, one to save and another to erase, this combination of `AND`s and `NOT` chooses which operation will be performed.
 

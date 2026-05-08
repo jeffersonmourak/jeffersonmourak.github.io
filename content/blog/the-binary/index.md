@@ -148,12 +148,12 @@ Para isso, podemos combinar o resultado das portas que já vimos anteriormente e
 import nand "<builtin>/nand.circ"
 import or "<builtin>/or.circ"
 
-input in1, in2
+input a, b
 
-nand g_nand1(a=in2.out, b=in1.out)
-or g_or1(a=in1.out, b=in2.out)
-and g_and1(a=g_or1.out, b=g_nand1.out)
-output out1(in=g_and1.out)
+nand _nand_(a=b.out, b=a.out)
+or _or_(a=a.out, b=b.out)
+and _and_(a=_or_.out, b=_nand_.out)
+led out(in=_and_.out)
 ```
 
 Agora, vamos olhar também para a tabela do resto da nossa soma e se percebe que é uma cópia exata da porta AND.
@@ -207,15 +207,15 @@ E assim como o Capitão Planeta, "Pela união dos seus poderes", nós vamos cons
 import xor "<builtin>/xor.circ"
 import or "<builtin>/or.circ"
 
-input in1, in2, in3
+input a, b, c_in
 
-xor g_xor1(a=in1.out, b=in2.out)
-xor g_xor2(a=g_xor1.out, b=in3.out)
-and g_and1(a=g_xor1.out, b=in3.out)
-and g_and2(a=in2.out, b=in1.out)
-or g_or1(a=g_and1.out, b=g_and2.out)
-output out1(in=g_xor2.out)
-output out2(in=g_or1.out)
+xor _xor_1_(a=a.out, b=b.out)
+xor _xor_2_(a=_xor_1_.out, b=c_in.out)
+and _and_1_(a=_xor_1_.out, b=c_in.out)
+and _and_2_(a=b.out, b=a.out)
+or _or_(a=_and_1_.out, b=_and_2_.out)
+led out(in=_xor_2_.out)
+led c_out(in=_or_.out)
 ```
 
 Com essa combinação de portas lógicas, um computador já consegue fazer as incríveis somas de: `0 + 0`, `1 + 0`, `0 + 1`, `1 + 1`, mas, além disso, ele consegue também dizer quanto que houve de resto da soma. E quando combinados vários ADDERs, a gente consegue fazer uma soma de números mais complexos como o 42, mas essa nós vamos ver no próximo artigo.

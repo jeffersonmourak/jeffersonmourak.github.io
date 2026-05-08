@@ -66,8 +66,8 @@ Mas antes de falar da OR, vamos dar uma olhada na porta NOT (ou Negação). Ela 
 ```circ
 input a
 
-not g_not1(in=a.out)
-led out(in=g_not1.out)
+not _not_(in=a.out)
+led out(in=_not_.out)
 
 ```
 
@@ -81,19 +81,19 @@ E se escrevermos ela numa tabela verdade teremos isso aqui:
 Então, vamos fazer uma pausa e revisar o que a gente já sabe. Primeiro, as operações e como representá-las numa tabela. Para simplificar, vamos transformar essas operações em símbolos. Toda vez que nos referirmos ao AND, este será o símbolo:
 
 ```circ
-input in1, in2
+input a, b
 
-and g_and1(a=in1.out, b=in2.out)
-output out1(in=g_and1.out)
+and _and_(a=a.out, b=b.out)
+led out(in=_and_.out)
 ```
 
 e o NOT:
 
 ```circ
-input in1
+input a
 
-not g_not1(in=in1.out)
-output out1(in=g_not1.out)
+not _not_(in=a.out)
+led out(in=_not_.out)
 ```
 
 Com essas duas operações lógicas (AND e NOT), já podemos combinar seus resultados e criar uma terceira porta lógica: a NAND (ou Not AND).
@@ -103,18 +103,18 @@ Ela pode ser representada assim:
 ```circ
 import nand "<builtin>/nand.circ"
 
-input in1, in2
+input a, b
 
-nand g_nand1(a=in1.out, b=in2.out)
-output out1(in=g_nand1.out)
+nand _nand_(a=a.out, b=b.out)
+led out(in=_nand_.out)
 ```
 
 ```circ
-input in1, in2
+input a, b
 
-and g_and1(a=in1.out, b=in2.out)
-not g_not1(in=g_and1.out)
-output out1(in=g_not1.out)
+and _and_(a=a.out, b=b.out)
+not _not_(in=_and_.out)
+led out(in=_not_.out)
 ```
 
 A tabela-verdade dela é idêntica à do AND, porém com os resultados invertidos.
@@ -129,12 +129,12 @@ Seguindo essa mesma lógica de combinar portas, podemos usar uma porta NAND e in
 ```circ
 import nand "<builtin>/nand.circ"
 
-input in1, in2
+input a, b
 
-not g_not1(in=in1.out)
-not g_not2(in=in2.out)
-nand g_nand1(a=g_not1.out, b=g_not2.out)
-output out1(in=g_nand1.out)
+not _not_a_(in=a.out)
+not _not_b_(in=b.out)
+nand _nand_(a=_not_a_.out, b=_not_b_.out)
+led out(in=_nand_.out)
 ```
 
 Analisando o diagrama acima, vemos que, quando os dois interruptores estiverem desligados, ambos os sinais serão invertidos pelo NOT, e o NAND vai resultar em ¬∧(1, 1) = 0. Ou seja, com ambos desligados, a lâmpada apaga. Mas o que acontece quando temos ¬∧(1, 0) ou ¬∧(0, 1)? Para descobrir, vamos analisar a tabela-verdade:
