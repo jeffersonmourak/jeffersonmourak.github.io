@@ -58,8 +58,7 @@ Se notarem, os últimos 4 bits estão em sequência. Logo, para descobrir em ASC
 
 Da mesma forma, as letras do alfabeto: "A" é **65** → 100 0001 e o "a" é **97** → 110 0001. Com isso, era possível codificar todas as letras do alfabeto inglês 🇬🇧.
 
-<iframe width="100%" height="1026" frameborder="0"
-  src="https://observablehq.com/embed/62a48ff7bbb43b02@440?cells=ascii"></iframe>
+{{< observable notebook="unicode" cells="ascii" >}}
 
 _... enquanto isso no resto do mundo ..._
 
@@ -118,8 +117,7 @@ Quer ir além? Tudo bem! O padrão suporta até o cabeçalho `1111110x` + 6 byte
 
 ### Codificando UTF-8
 
-<iframe width="100%" height="965" frameborder="0" style="background-color: var(--foreground); border-radius: 10px;"
-  src="https://observablehq.com/embed/62a48ff7bbb43b02@442?cells=viewof+character%2Ccodepoint%2CencodingVisualizer"></iframe>
+{{< observable notebook="unicode" cells="viewof character,codepoint,encodingVisualizer" >}}
 
 É incrível como esse padrão consegue entregar:
 

@@ -956,6 +956,106 @@ a.read-more::after { content: " →"; }
   font-size: 0.85rem;
 }
 
+/* ---------- observable (notebook-kit) embeds ---------- */
+/* Cells from an Observable notebook are rendered natively (no iframe)
+   via a host-and-mount split:
+
+     .observable-host  — one per (page, notebook). Holds every cell DIV
+                         plus the bundled module script. Visually hidden
+                         but kept in layout so width/ResizeObserver still
+                         work. The kit's runtime defines all cells here.
+
+     .observable-mount — one per `{{< observable >}}` call. Empty at
+                         first; the inline loader (in the shortcode)
+                         appendChild's the requested cell DIVs from the
+                         host into this mount on DOMContentLoaded. The
+                         runtime's DOM references stay live through the
+                         move, so cells remain reactive in their new
+                         parent.
+
+   We scope the kit's `--theme-*` tokens to .observable-embed so the
+   inspector + cell chrome read against the blog's purple palette
+   without leaking. We deliberately don't import the kit's typography
+   reset — cells inherit Ronzino like the rest of the post. */
+.observable-embed,
+.observable-host {
+  /* Notebooks are authored against a light surface — cells hardcode
+     pale purple (#c0abda) backgrounds for the ASCII grid, #f9f9f9
+     boxes in the byte visualizer, dark accent text, etc. Anchor the
+     embed to the blog's LIGHT palette regardless of the surrounding
+     prefers-color-scheme so those hardcoded values have the contrast
+     the author expected. (In dark mode the embed becomes a light
+     island; less mood-consistent than the rest of the page but the
+     readability tradeoff is worth it.)
+
+     Same tokens on the host so cells inherit the right text color
+     during the brief moment they render there before the loader moves
+     them into the mount. */
+  --theme-background: #f8f4ff;
+  --theme-background-a: #f8f4ff;
+  --theme-background-alt: #f4eefb;
+  --theme-background-b: #f4eefb;
+  --theme-foreground: #443856;
+  --theme-foreground-alt: #443856;
+  --theme-foreground-muted: #8a7e9a;
+  --theme-foreground-faint: color-mix(in srgb, #443856 50%, transparent);
+  --theme-foreground-fainter: color-mix(in srgb, #443856 30%, transparent);
+  --theme-foreground-faintest: color-mix(in srgb, #443856 14%, transparent);
+  --theme-foreground-focus: #6e49ab;
+  --theme-error: #d33;
+  color: #443856;
+  color-scheme: light;
+}
+.observable-mount {
+  margin: 1.5rem 0;
+  padding: 1rem 1.25rem;
+  background: var(--pane-bg);                                                                                                            
+  border: 1px solid var(--border);  
+  border-radius: 6px;
+}
+.observable-mount:empty::before {
+  content: "Loading notebook…";
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+}
+.observable-mount > .observablehq--cell { margin: 0.5rem 0; }
+.observable-mount .observablehq--cell > div > :first-child { margin-top: 0; }
+.observable-mount .observablehq--cell > div > :last-child  { margin-bottom: 0; }
+
+/* Form-control reset inside the embed.
+   The blog's terminal.css restyles <button>/<input>/<select>/<textarea>
+   globally (display: inline-flex, accent border, Ronzino prose font,
+   padding, …). Notebook cells assemble UIs out of those same elements
+   relying on the browser's UA defaults — e.g. the ASCII cell builds
+   buttons whose inline `display: flex` on inner spans expects the
+   button itself NOT to be a flex row container. `all: revert` strips
+   author styles so the UA default applies, while inline-style
+   declarations on the cell's elements still win on specificity. */
+.observable-mount button,
+.observable-mount input,
+.observable-mount select,
+.observable-mount textarea {
+  all: revert;
+}
+.observable-mount button { cursor: pointer; }
+
+/* Hidden host: kept in flow with finite size so ResizeObserver-based
+   `width` reads a real number, but visually clipped and isolated from
+   pointer events. We don't use `display: none` because that would make
+   width = 0 and break cells that compute layout from it. */
+.observable-host {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  pointer-events: none;
+  /* When the loader empties the host, it collapses to 1×1; nothing to
+     see, no effect on the page. */
+}
+
 /* ---------- responsive ---------- */
 @media (max-width: 684px) {
   body { font-size: 16px; }

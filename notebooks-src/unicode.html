@@ -1,0 +1,452 @@
+<!doctype html>
+<notebook theme="air">
+  <title>Unicode</title>
+  <script id="0" type="text/markdown">
+    # Unicode
+  </script>
+  <script id="315" type="text/markdown">
+    Já imaginou como que computadores transformam letras, números e emojis em zeros e uns que eles possam entender? assim como nós humanos atribuímos significados as letras do alfabeto, o computador faz o mesmo, vamos explorar aqui dois dos padrões mais populares de codificação de texto.
+  </script>
+  <script id="320" type="text/markdown">
+    ### ASCII
+
+    Desenvolvido na década de 1960 o ASCII (American Standard Code for Information Interchange) tem um premissa bem simples, usando apenas 7 bits, consegue-se representar 127 números, deixando reservado os primeiros 32 números da sequencia para comandos importantes de escrita, o resto se preenche com letras, números e alguns caracteres de pontuação.
+
+    As pessoas envolvidas no desenvolvimento do padrão fizeram de tal forma que a sequencia do alfabeto pudesse ajudar na decodificação.
+
+    por exemplo, o caractere do número "0" é o número **48**, que representando em 7 bits fica `011 0000`
+    assim como
+
+    - 1 → `011` `0001`
+    - 2 → `011` `0010`
+    - 3 → `011` `0011`
+
+    Se notarem os últimos 4 bits estão em sequencia, logo para descobrir em ascii qual o inteiro é só subtrair `011 0000` (decimal: 48).
+
+    da mesma forma as letras do alfabeto, "A" é **65** → `100 0001` e o "a" é **97** → `110 0001`, e com isso era possível codificar todas as letras do alfabeto inglês 🇬🇧.
+
+  </script>
+  <script id="119" type="application/vnd.observable.javascript">
+    mutable ascii_message = [72, 101, 108, 108, 111]
+  </script>
+  <script id="32" type="application/vnd.observable.javascript">
+    ascii = {
+      const buttonStyle = `
+        padding: 0.25rem 0.25rem;
+        background-color: #b097d1;
+        border: none;
+        border-radius: 0.5rem;
+        cursor: pointer;
+    `;
+
+      const charStyle = `
+        height: 2rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #c0abda;
+        border-radius: 0.25rem;
+    `;
+
+      const infoStyle = `
+        font-weight: normal;
+        font-size: 0.5em;
+        font-family: monospace;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    `;
+
+      const gridStyle = `
+        flex: 1;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, 50px);
+        grid-template-rows: repeat(5, 50px);
+        gap: 10px;
+    `;
+
+      let buttons = [];
+      for (let i = 32; i <= 127; i++) {
+        const button = html`<button style="${buttonStyle}">
+        <span style="${charStyle}">${
+          i === 127 ? "DEL" : String.fromCharCode(i)
+        }</span>
+        <span style="${infoStyle}">${i} 0x${i.toString(16)}</span>
+        </button>`;
+
+        button.addEventListener("click", () => {
+          if (i === 127) {
+            const k = [...ascii_message];
+            k.pop();
+            mutable ascii_message = [...k];
+            return;
+          }
+
+          mutable ascii_message = [...ascii_message, i];
+        });
+
+        buttons.push(button);
+      }
+
+      const displayView = html`<div>${ascii_message.reduce(
+        (str, code) => `${str}${String.fromCharCode(code)}`,
+        ""
+      )}</div>`;
+
+      const cellStyle = `
+      height: 1.2rem;
+      background-color: #c0abda;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 0.3rem;
+      padding: 0.5rem;
+      font-family: monospace;
+      position: relative;
+    `;
+
+      const style = html`<style>
+        .hex-value {
+          position: relative;
+        }
+
+        .hex-value:hover .hex-info {
+          opacity: 1;
+        }
+
+        .hex-info {
+          opacity: 0;
+          pointer-events: none;
+          position: absolute;
+          background-color: #634091;
+          left: -50%;
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          grid-template-rows: repeat(2, 1fr);
+          font-family: monospace;
+          gap: .25rem;
+          padding: 0.25rem;
+          bottom: -100%;
+          z-index: 1;
+        }
+
+        .hex-info span {
+          text-align: center;
+          padding: 0 .25rem;
+          font-size: .75rem;
+          background-color: #b097d1;
+        }
+
+      </style>`;
+
+      const displayCell = [];
+      const memoryCells = [];
+
+      for (let code of ascii_message) {
+        displayCell.push(
+          html`<span style="${cellStyle};">${String.fromCharCode(code)}</span>`
+        );
+      }
+
+      for (let code of ascii_message) {
+        memoryCells.push(
+          html`
+          <div class="hex-value" style="${cellStyle};">
+            ${code.toString(16).toUpperCase()}
+
+            <div class="hex-info">
+              <span>Dec</span>
+              <span>Bin</span>
+              <span>${code}</span>
+              <span>${code.toString(2).padStart(8, "0")}</span>
+            </div>
+
+          </div>`
+        );
+      }
+
+      const buttonsGrid = html`<div style="${gridStyle}">${buttons}</div>`;
+      const display = html`<div style="flex: 1; display: flex; flex-direction: column; gap: 2px;">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, 50px); gap: 2px;">
+          ${displayCell}
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, 50px); gap: 2px;">
+          ${memoryCells}
+        </div>
+      </div>`;
+
+      return html`${style}<div style="display: flex; gap: 10px;">
+        ${buttonsGrid}
+        ${display}
+    </div>`;
+    }
+  </script>
+  <script id="355" type="text/markdown">
+
+    _... enquanto isso no resto do mundo ..._
+  </script>
+  <script id="363" type="application/vnd.observable.javascript">
+    html`<iframe src="https://giphy.com/embed/3oz8xQBcUXftkrlmmc" width="480" height="271" style="" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/southparkgifs-3oz8xQBcUXftkrlmmc">via GIPHY</a></p>`
+  </script>
+  <script id="366" type="text/markdown">
+    Como se já era de imaginar, com o avanço da tecnologia e da capacidade dos computadores, cada país utilizou essa capacidade extra para codificar seus próprios caracteres, Japão por exemplo nem o ASCII usou, outros codificadores como o Shift JIS, que utilizava de multiplos bytes, e com isso tudo gerou-se uma gigantesca incompatibilidade.
+
+    > **Curiosidade**:
+    > No Japão existe uma palavra mojibake (文字化け) que significa "Caractere distorcido", que acontecia devido aos problemas codificação entre todos os alfabetos japoneses e também o latino.
+
+    porém mesmo com toda essa incompatibilidade durante os anos 1980 e 1990, quais eram as chances de uma empresa de Londres ter que mandar documentos constantemente para o Japão? naquela época, a solução era simples. imprime, e envia por fax!.
+  </script>
+  <script id="380" type="text/html">
+    <iframe src="https://giphy.com/embed/xT5LMKZ9tnioMLEjBe" width="480" height="367" style="" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/season-7-the-simpsons-7x15-xT5LMKZ9tnioMLEjBe">via GIPHY</a></p>
+  </script>
+  <script id="387" type="text/markdown">
+    Então chegou a internet, e o que era ruim ficou ainda pior... agora temos que lidar com documentos sendo enviados pela internet constantemente, e com o tempo foi formado.
+
+    ## Unicode Consortium
+
+    E como em um que pode se chamar de milagre do bom senso, durante as últimas décadas, foi formado um padrão com 154,998 caracteres, que cobre toda e qualquer lingua que você possa imaginar, Árabe, Japonês, Cirílico, Chinês, Coreano e até hieroglifo egipcio
+
+    o que eles fizeram de forma simplificada foi pegar centenas de milhares de números e assinalarem a centenas de milhares de caracteres, ou seja o número 35307 vai representar o caractere japonês 觫, o número 963 vai representar σ e assim por diante.
+
+    ### UTF-8
+
+    Perfeito, agora nós temos centenas de milhares de números para representar todo e qualquer caractere, mas como que vamos fazer isso com binário?
+
+    para representar um número nessas proporções vamos precisar de pelo menos 32 bits para representar qualquer numero dessa magnitude, o que agora trouxe problemas para o alfabeto inglês, por que o Unicode é compatível com ASCII, ou seja, "A" ainda é **65** e "a" ainda é **97**, mas quando olhamos para o binário de 32 bits desses números agora usamos 4x mais espaço para representar os mesmos caracteres.
+
+    |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |
+    |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+    | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | **1** | 0 | 0 | 0 | 0 | 0 | **1** |  |**A** |
+    | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | **1** | **1** | 0 | 0 | 0 | 0 | **1** |  |**a** |
+
+    contando a cima, tem 25 zeros seguidos que vão estar presente em **_TODO_** texto que utilizar caracteres latinos, e esse é só primeiro dos nossos problemas. O segundo é que alguns sistemas antigos interpretam uma sequencia de 8 zeros [`NULL`] como fim de caractere, o famoso `\0` do C.
+
+    Então entra o UTF-8, primeira coisa é, se a letra tiver numeração a baixo de 127, então você representa exatamente igual a ASCII.
+
+    logo primeiro problema resolvido, "A" ainda é **65** e cabe em 8 bits. `01000001`,
+
+    e para números maiores que 127?, para isso você vai quebrar seu binário em 2 bytes.
+
+    | 1 | 2 |
+    |---|---|
+    |`110xxxxx`|`10xxxxxx`|
+
+    No byte 1 você tem o cabeçalho `110` que significa que esse caractere foi quebrado em 2 bytes.
+    no byte 2 você começa com o cabeçalho de continuidade `10`, todos os outros bits restantes você vai preencher com o número que você quer representar.
+
+    para calcular, só remover os cabeçalhos unir todos os bits e o número resultante é o caractere unicode, você pode fazer isso até 4096, passou disso? sem problemas. usando o cabeçalho `1110` + 2 bytes e você tem 16 bits.
+
+    | 1 | 2 | 3 |
+    |---|---|---|
+    |`1110xxxx`|`10xxxxxx`|`10xxxxxx`|
+
+    quer ir além? tudo bem! o padrão suporta até o cabeçalho `1111110x` + 6 bytes de continuidade.
+
+    ### Codificando UTF-8
+  </script>
+  <script id="375" type="application/vnd.observable.javascript">
+    // Célula 1: Uma célula view-of cria um elemento de UI (uma caixa de texto).
+    // O valor desta célula está vinculado à variável `character`.
+    viewof character = Inputs.text({
+      label: "Insira um Caractere",
+      value: "😊", // Valor padrão para demonstrar um caractere multi-byte
+      placeholder: "ex: A, €, 😊",
+    })
+  </script>
+  <script id="312" type="application/vnd.observable.javascript">
+    codepoint = {
+      const cp = character.codePointAt(0);
+
+      if (!cp) {
+        const defaultChar = "😊"
+        return {
+          character: defaultChar,
+          decimal: defaultChar.codePointAt(0),
+          hex: `U+${defaultChar.codePointAt(0).toString(16).toUpperCase().padStart(4, '0')}`
+        }
+      }
+
+      return {
+        character,
+        decimal: cp,
+        hex: `U+${cp.toString(16).toUpperCase().padStart(4, '0')}`
+      };
+    }
+  </script>
+  <script id="250" type="application/vnd.observable.javascript">
+    encodingVisualizer = {
+      // Função auxiliar para formatar um número como uma string binária com preenchimento de zeros
+      const toBinary = (num, length) => num.toString(2).padStart(length, "0");
+
+      let htmlOutput = "";
+      const cp = codepoint.decimal;
+
+      htmlOutput += `<h3>1. Caractere & Codepoint</h3>`;
+      htmlOutput += `<p>O caractere <strong>"${character}"</strong> corresponde ao codepoint Unicode <strong>${
+        codepoint.decimal
+      }</strong> (em decimal) ou <strong>${
+        codepoint.hex
+      }</strong> (em hexadecimal).</p>`;
+
+      let bytes = [];
+      let explanation = "";
+      let binaryVis = "";
+
+      htmlOutput += `<h3>2. Determinar o Número de Bytes</h3>`;
+
+      // Caso 1: Sequência de 1 byte (para caracteres ASCII padrão)
+      if (cp <= 0x7f) {
+        bytes.push(cp);
+        explanation = `
+          <p>O codepoint ${cp} é ≤ 127 (0x7F), então ele cabe em um <strong>único byte</strong>.</p>
+          <p>O padrão para uma sequência de 1 byte é <code><span class="byte-prefix">0</span><span class="payload">xxxxxxx</span></code>, onde os bits 'x' são o próprio codepoint.</p>
+        `;
+        const binaryCp = toBinary(cp, 7);
+        binaryVis = `
+          <div class="byte-vis">
+            <span class="byte-prefix" title="Prefixo de 1 byte">0</span><span class="payload" title="Bits do codepoint">${binaryCp}</span>
+          </div>
+        `;
+      }
+      // Caso 2: Sequência de 2 bytes
+      else if (cp <= 0x7ff) {
+        bytes.push(0b11000000 | (cp >> 6));
+        bytes.push(0b10000000 | (cp & 0b00111111));
+        explanation = `
+          <p>O codepoint ${cp} está entre 128 (0x80) e 2047 (0x7FF), então ele requer uma <strong>sequência de 2 bytes</strong>.</p>
+          <p>O padrão é <code><span class="byte-prefix">110</span><span class="payload">xxxxx</span> <span class="byte-prefix">10</span><span class="payload-alt">xxxxxx</span></code>. Isso fornece 5 + 6 = 11 bits para o codepoint.</p>
+        `;
+        const binaryCp = toBinary(cp, 11);
+        const part1 = binaryCp.slice(0, 5);
+        const part2 = binaryCp.slice(5);
+        binaryVis = `
+          <p>Codepoint em binário (11 bits): <span class="payload">${part1}</span><span class="payload-alt">${part2}</span></p>
+          <div class="byte-vis-container">
+            <div class="byte-vis">
+              <span class="byte-prefix" title="Prefixo do primeiro byte">110</span><span class="payload" title="Primeiros 5 bits do codepoint">${part1}</span>
+            </div>
+            <div class="byte-vis">
+              <span class="byte-prefix" title="Prefixo de byte de continuação">10</span><span class="payload-alt" title="Últimos 6 bits do codepoint">${part2}</span>
+            </div>
+          </div>
+        `;
+      }
+      // Caso 3: Sequência de 3 bytes (inclui a maioria dos caracteres multilíngues comuns)
+      else if (cp <= 0xffff) {
+        bytes.push(0b11100000 | (cp >> 12));
+        bytes.push(0b10000000 | ((cp >> 6) & 0b00111111));
+        bytes.push(0b10000000 | (cp & 0b00111111));
+        explanation = `
+          <p>O codepoint ${cp} está entre 2048 (0x800) e 65535 (0xFFFF), então ele requer uma <strong>sequência de 3 bytes</strong>.</p>
+          <p>O padrão é <code><span class="byte-prefix">1110</span><span class="payload">xxxx</span> <span class="byte-prefix">10</span><span class="payload-alt">xxxxxx</span> <span class="byte-prefix">10</span><span class="payload">xxxxxx</span></code>. Isso fornece 4 + 6 + 6 = 16 bits.</p>
+        `;
+        const binaryCp = toBinary(cp, 16);
+        const part1 = binaryCp.slice(0, 4);
+        const part2 = binaryCp.slice(4, 10);
+        const part3 = binaryCp.slice(10);
+        binaryVis = `
+          <p>Codepoint em binário (16 bits): <span class="payload">${part1}</span><span class="payload-alt">${part2}</span><span class="payload">${part3}</span></p>
+          <div class="byte-vis-container">
+            <div class="byte-vis">
+              <span class="byte-prefix" title="Prefixo do primeiro byte">1110</span><span class="payload" title="Primeiros 4 bits do codepoint">${part1}</span>
+            </div>
+            <div class="byte-vis">
+              <span class="byte-prefix" title="Prefixo de byte de continuação">10</span><span class="payload-alt" title="Próximos 6 bits do codepoint">${part2}</span>
+            </div>
+            <div class="byte-vis">
+              <span class="byte-prefix" title="Prefixo de byte de continuação">10</span><span class="payload" title="Últimos 6 bits do codepoint">${part3}</span>
+            </div>
+          </div>
+        `;
+      }
+      // Caso 4: Sequência de 4 bytes (para emojis, escritas históricas, etc.)
+      else if (cp <= 0x10ffff) {
+        bytes.push(0b11110000 | (cp >> 18));
+        bytes.push(0b10000000 | ((cp >> 12) & 0b00111111));
+        bytes.push(0b10000000 | ((cp >> 6) & 0b00111111));
+        bytes.push(0b10000000 | (cp & 0b00111111));
+        explanation = `
+          <p>O codepoint ${cp} é > 65535 (0x10000), então ele requer uma <strong>sequência de 4 bytes</strong>.</p>
+          <p>O padrão é <code><span class="byte-prefix">11110</span><span class="payload">xxx</span> <span class="byte-prefix">10</span><span class="payload-alt">xxxxxx</span> <span class="byte-prefix">10</span><span class="payload">xxxxxx</span> <span class="byte-prefix">10</span><span class="payload-alt">xxxxxx</span></code>. Isso fornece 3 + 6 + 6 + 6 = 21 bits.</p>
+        `;
+        const binaryCp = toBinary(cp, 21);
+        const part1 = binaryCp.slice(0, 3);
+        const part2 = binaryCp.slice(3, 9);
+        const part3 = binaryCp.slice(9, 15);
+        const part4 = binaryCp.slice(15);
+        binaryVis = `
+          <p>Codepoint em binário (21 bits): <span class="payload">${part1}</span><span class="payload-alt">${part2}</span><span class="payload">${part3}</span><span class="payload-alt">${part4}</span></p>
+          <div class="byte-vis-container">
+            <div class="byte-vis">
+              <span class="byte-prefix" title="Prefixo do primeiro byte">11110</span><span class="payload" title="Primeiros 3 bits do codepoint">${part1}</span>
+            </div>
+            <div class="byte-vis">
+              <span class="byte-prefix" title="Prefixo de byte de continuação">10</span><span class="payload-alt" title="Próximos 6 bits do codepoint">${part2}</span>
+            </div>
+            <div class="byte-vis">
+              <span class="byte-prefix" title="Prefixo de byte de continuação">10</span><span class="payload" title="Próximos 6 bits do codepoint">${part3}</span>
+            </div>
+            <div class="byte-vis">
+              <span class="byte-prefix" title="Prefixo de byte de continuação">10</span><span class="payload-alt" title="Últimos 6 bits do codepoint">${part4}</span>
+            </div>
+          </div>
+        `;
+      }
+
+      htmlOutput += explanation;
+      htmlOutput += `<h3>3. Preencher os Bits</h3>`;
+      htmlOutput += binaryVis;
+
+      // Resultado Final
+      if (bytes.length > 0) {
+        const hexBytes = bytes
+          .map((b) => b.toString(16).toUpperCase().padStart(2, "0"))
+          .join(" ");
+        const binaryBytes = bytes.map((b) => toBinary(b, 8)).join(" ");
+        htmlOutput += `
+          <hr>
+          <h3>4. Resultado Final</h3>
+          <p>A sequência de bytes UTF-8 final para "${character}" é:</p>
+          <p><strong>Binário:</strong> <code>${binaryBytes}</code></p>
+          <p><strong>Hexadecimal:</strong> <code>${hexBytes}</code></p>
+        `;
+      }
+
+      // Retorna um objeto HTML com o conteúdo e estilos gerados.
+      // Patched for notebook-kit: htl (the kit's `html` tag) HTML-escapes
+      // string interpolations, so `${htmlOutput}` would render as literal
+      // markup text. Build a DOM node first — htl interpolates Nodes as-is.
+      const _out = document.createElement("div");
+      _out.innerHTML = htmlOutput;
+      return html`<style>
+        .byte-vis-container { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 1em; }
+        .byte-vis { font-family: monospace; font-size: 1.2em; border: 1px solid #ccc; padding: 0.5em; border-radius: 4px; background: #f9f9f9; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+        .byte-prefix { color: #d32f2f; /* Vermelho */ font-weight: bold; }
+        .payload { color: #1976d2; /* Azul */ }
+        .payload-alt { color: #388e3c; /* Verde */ }
+        code { background-color: #eee; padding: 3px 6px; border-radius: 4px; font-size: 0.95em; }
+        h3 { border-bottom: 2px solid #eee; padding-bottom: 0.3em; margin-top: 2em; }
+        hr { margin: 2rem 0; border: 0; border-top: 1px solid #ddd; }
+      </style>
+      ${_out}`;
+    }
+  </script>
+  <script id="431" type="text/markdown">
+    É incrível como que esse padrão consegue entregar, 
+
+    - É compatível com os sistemas anteriores;
+    - Não gasta espaço;
+    - e em nenhum momento na vida haverá 8 zeros seguidos em nenhuma parte de qualquer byte.
+    Além disso outra que o fez se tornar o padrão mundial hoje em dia é que para se mover entre caracteres e você não sabe onde está é só procurar o proximo cabeçalho, não precisa de índice.
+
+    já fazem alguns anos que UTF-8 virou o padrão em toda comunicação pela internet, e o fato de hoje a pessoa japonesa média não precisar se preocupar com mojibake mais é por causa desse método genial de codificar texto.
+  </script>
+  <script id="438" type="text/markdown">
+    ### Referencias
+
+    - [Characters, Symbols and the Unicode Miracle - Computerphile (YouTube)](https://www.youtube.com/watch?v=MijmeoH9LT4)
+    - [UTF-8, a transformation format of ISO 10646 - ietf.org](https://datatracker.ietf.org/doc/html/rfc3629)
+    - [The Absolute Minimum Every Software Developer Absolutely, Positively Must Know About Unicode and Character Sets (No Excuses!) - Joel Spolsky](https://www.joelonsoftware.com/2003/10/08/the-absolute-minimum-every-software-developer-absolutely-positively-must-know-about-unicode-and-character-sets-no-excuses/)
+
+  </script>
+</notebook>

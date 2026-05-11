@@ -58,6 +58,10 @@ jobs:
         run: bun install || true
       - name: Preprocess circ blocks
         run: bun scripts/preprocess-circ.ts
+      - name: Build Observable notebooks
+        # Vite-bundles each notebook in notebooks-src/ into static/notebooks/.
+        # That directory is gitignored — every build regenerates it.
+        run: bun scripts/build-notebooks.ts
       - name: Build with Hugo
         env:
           HUGO_CACHEDIR: ${{ runner.temp }}/hugo_cache
