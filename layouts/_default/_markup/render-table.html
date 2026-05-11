@@ -1,0 +1,32 @@
+{{- /*
+  Wrap every Markdown table in a .table-wrap div so the table itself can
+  stay laid out at its natural width while the wrapper handles overflow
+  / scroll boundaries. Re-emits the table from the render-hook context
+  (.THead / .TBody, each row is a slice of cells with .Alignment + .Text).
+*/ -}}
+<div class="table-wrap">
+  <table{{ with .Attributes }}{{ range $k, $v := . }} {{ $k }}="{{ $v }}"{{ end }}{{ end }}>
+    {{- with .THead }}
+    <thead>
+      {{- range . }}
+      <tr>
+        {{- range . }}
+        <th{{ with .Alignment }} style="text-align: {{ . }}"{{ end }}>{{ .Text }}</th>
+        {{- end }}
+      </tr>
+      {{- end }}
+    </thead>
+    {{- end }}
+    {{- with .TBody }}
+    <tbody>
+      {{- range . }}
+      <tr>
+        {{- range . }}
+        <td{{ with .Alignment }} style="text-align: {{ . }}"{{ end }}>{{ .Text }}</td>
+        {{- end }}
+      </tr>
+      {{- end }}
+    </tbody>
+    {{- end }}
+  </table>
+</div>

@@ -145,6 +145,21 @@
     }
   </style>
   <style>
+    /* Mirror the host page's background so the iframe doesn't paint a
+       white rectangle against the dark blog theme. Tokens kept in sync
+       with static/css/terminal.css (--bg light/dark). */
+    :root {
+      --bg: #f8f4ff;
+      color-scheme: light;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #090311;
+        color-scheme: dark;
+      }
+    }
+    html, body { background: var(--bg); }
+
     body {
       margin: 0;
       padding: 0;

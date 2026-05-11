@@ -1,402 +1,803 @@
+/* ============================================================
+   Blog theme override — inspired by circ-compiler.dev.
+   Loaded AFTER the upstream `terminal` theme bundle via
+   layouts/partials/extended_head.html, so rules here override
+   the theme at equal specificity.
+   ============================================================ */
+
+/* ---------- typefaces (self-hosted from /static/fonts/) ---------- */
+/* `../fonts/...` resolves from /css/terminal.css → /fonts/*.woff2.
+   font-display: swap paints prose immediately in the system fallback
+   and swaps in the webfont once it arrives. Both faces SIL OFL 1.1 —
+   see static/fonts/*-LICENSE.txt. */
+@font-face {
+  font-family: 'Ronzino';
+  src: url('../fonts/Ronzino-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Necto Mono';
+  src: url('../fonts/NectoMono-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ---------- design tokens ---------- */
+/* Palette mirrors circ-compiler.dev — same purple family, light and
+   dark variants. Theme-legacy tokens (--background, --foreground,
+   --font-size, --line-height, --radius) alias the new ones so upstream
+   `terminal` rules keep working without edits. */
 :root {
-  --background: #f8f4ff;
-  --foreground: #443856;
+  --bg: #f8f4ff;
+  --fg: #443856;
+  --muted: #8a7e9a;
+  --border: #e6dff5;
   --accent: #6e49ab;
+  --accent-soft: #8a6dc4;
+  --code-bg: #ece2f7;
+  --pane-bg: #f4eefb;
+  --pane-label-bg: #ebe4f5;
+
+  --font-prose: 'Ronzino', ui-sans-serif, system-ui, -apple-system,
+    "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: 'Necto Mono', ui-monospace, SFMono-Regular, "JetBrains Mono",
+    Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  --font-mono-strict: ui-monospace, SFMono-Regular, "JetBrains Mono",
+    Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+
+  --measure: 36rem;
+  --line: 1.65;
+
+  /* theme-legacy aliases — keep terminal-theme css valid */
+  --background: var(--bg);
+  --foreground: var(--fg);
   --font-size: 1rem;
-  --line-height: 1.54rem;
-  --radius: 0px;
+  --line-height: 1.65rem;
+  --radius: 6px;
+
+  color-scheme: light;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
+    --bg: #090311;
+    --fg: #c0abda;
+    --muted: #7d6e94;
+    --border: #1a1228;
     --accent: #b097d1;
-    --foreground: #c0abda;
-    --background: #090311;
-    --font-size: 1rem;
-    --line-height: 1.54rem;
-    --radius: 0px;
+    --accent-soft: #c8b3e0;
+    --code-bg: #1f1438;
+    --pane-bg: #0c0517;
+    --pane-label-bg: #13091f;
+
+    color-scheme: dark;
   }
 }
 
-html {
-  box-sizing: border-box;
-}
-
-*,
-*:before,
-*:after {
-  box-sizing: inherit;
-  margin: 0;
-  padding: 0;
-}
+/* ---------- base ---------- */
+html { box-sizing: border-box; -webkit-text-size-adjust: 100%; }
+*, *::before, *::after { box-sizing: inherit; }
 
 body {
   margin: 0;
   padding: 0;
-  font-family: "Fira Code", Monaco, Consolas, "Ubuntu Mono", monospace;
-  font-size: 1rem;
+  font-family: var(--font-prose);
+  font-size: 17px;
   font-weight: 400;
-  line-height: var(--line-height);
-  letter-spacing: -0.02em;
-  background-color: var(--background);
-  color: var(--foreground);
-  text-rendering: optimizeLegibility;
+  line-height: var(--line);
+  letter-spacing: normal;
+  background-color: var(--bg);
+  color: var(--fg);
   -webkit-font-smoothing: antialiased;
-  -webkit-overflow-scrolling: touch;
-  -webkit-text-size-adjust: 100%;
+  text-rendering: optimizeLegibility;
 }
 
 ::placeholder {
-  color: color-mix(in srgb var(--foreground) 50%, black);
+  color: color-mix(in srgb, var(--fg) 50%, transparent);
 }
 
-h1,
-h2 {
-  font-size: calc(var(--font-size) * 1.1);
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
+/* ---------- typography ---------- */
+/* Reset the theme's uppercase + underline + tight letter-spacing on
+   headings so prose reads as a soft literary surface, not a CLI. */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-prose);
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  text-transform: none;
+  text-decoration: none;
+  margin: 2.5rem 0 0.75rem;
 }
-
 h1 {
-  text-decoration: underline;
-  text-decoration-thickness: 2px;
-  text-underline-offset: calc(var(--font-size) * 0.2);
+  font-size: 2.25rem;
+  letter-spacing: -0.02em;
+  text-decoration: none;
 }
+h2 { font-size: 1.5rem; text-transform: none; }
+h3 { font-size: 1.2rem; }
+h4, h5, h6 { font-size: 1.05rem; }
 
-h3,
-h4,
-h5,
-h6 {
-  font-size: calc(var(--font-size) * 1.1);
-  letter-spacing: 0.04em;
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-p,
-ul,
-ol,
-img,
-figure,
-video,
-table {
-  margin: calc(var(--line-height) * 1.2) 0;
+p {
+  margin: 0 0 1rem;
+  max-width: var(--measure);
 }
 
 a {
   color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  text-decoration-thickness: 1px;
 }
+a:hover { text-decoration-thickness: 2px; }
 
-button {
-  position: relative;
-  font: inherit;
-  font-weight: bold;
-  text-decoration: none;
-  text-align: center;
-  background: transparent;
-  color: var(--accent);
-  padding: 5px 18px;
-  border: 4px solid var(--accent);
-  border-radius: var(--radius);
-  transition: background 0.15s linear;
-  appearance: none;
-  cursor: pointer;
-  outline: none;
-}
-
-button:hover {
-  background: color-mix(in srgb, var(--accent) 15%, transparent);
-}
-
-button:focus-visible,
-a:focus-visible {
+a:focus-visible,
+button:focus-visible {
   outline: 1px solid var(--accent);
   outline-offset: 2px;
 }
 
-fieldset {
-  display: inline-block;
-  border: 2px solid var(--foreground);
-  border-radius: calc(var(--radius) * 1.6);
-  padding: 10px;
+/* Lists — recover the theme's aggressive 4ch indent + accent dash to a
+   conventional bullet so they sit alongside prose without shouting. */
+ul, ol {
+  margin: 1rem 0;
+  padding-left: 1.5rem;
+  max-width: var(--measure);
 }
+ul ul, ul ol, ol ul, ol ol { margin: 0; }
+li { margin: 0.2rem 0; position: static; }
+li::marker { color: var(--accent); }
+/* Theme inserts a "- " pseudo-element on .post ul li::before; cancel it
+   so we get a proper round bullet from list-style. */
+.post ul { list-style: disc; }
+.post ul li::before { content: none !important; }
 
-fieldset *:first-child {
-  margin-top: 0;
-}
-
-fieldset input,
-fieldset select,
-fieldset textarea,
-fieldset label,
-fieldset button {
-  margin-top: calc(var(--line-height) * 0.5);
-  width: 100%;
-}
-
-label {
-  display: inline-block;
-}
-
-label input {
-  margin-top: 0;
-}
-
-input,
-textarea,
-select {
-  background: transparent;
-  color: var(--foreground);
-  border: 1px solid var(--foreground);
-  border-radius: var(--radius);
-  padding: 10px;
-  font: inherit;
-  appearance: none;
-}
-
-input[type="checkbox"] {
-  width: auto;
-}
-
-input:focus-visible,
-input:active,
-textarea:focus-visible,
-textarea:active,
-select:focus-visible,
-select:active {
-  border-color: var(--accent);
-  outline: 1px solid var(--accent);
-  outline-offset: 2px;
-}
-
-input:active,
-textarea:active,
-select:active {
-  box-shadow: none;
-}
-
-select {
-  background-image: linear-gradient(
-      45deg,
-      transparent 50%,
-      var(--foreground) 50%
-    ),
-    linear-gradient(135deg, var(--foreground) 50%, transparent 50%);
-  background-position: calc(100% - 20px), calc(100% - 1em);
-  background-size: 5px 5px, 5px 5px;
-  background-repeat: no-repeat;
-  padding-right: 40px;
-}
-
-select option {
-  background: var(--background);
-}
-
-input[type="checkbox"] {
-  vertical-align: middle;
-  padding: 10px;
-  box-shadow: inset 0 0 0 3px var(--background);
-}
-
-input[type="checkbox"]:checked {
-  background: var(--accent);
-}
-
-img {
-  display: block;
-  max-width: 100%;
-  border: 8px solid var(--accent);
-  border-radius: var(--radius);
-  padding: 8px;
-  overflow: hidden;
-}
-
-figure img,
-figure video {
-  margin-bottom: 0;
-}
-
-figure figcaption {
-  background: var(--accent);
-  color: var(--background);
-  text-align: center;
-  font-size: 1rem;
-  font-weight: normal;
-  margin-top: -8px;
-  border-radius: 0 0 var(--radius) var(--radius);
-}
-
-ul,
-ol {
-  margin-left: 4ch;
-  padding: 0;
-}
-
-ul ul,
-ul ol,
-ol ul,
-ol ol {
-  margin-top: 0;
-}
-
-li::marker {
-  color: var(--accent);
-}
-
-ul li,
-ol li {
-  position: relative;
-}
-
-code,
-kbd {
-  font-family: "Fira Code", Monaco, Consolas, Ubuntu Mono, monospace !important;
+/* ---------- code / kbd / pre ---------- */
+code, kbd, samp {
+  font-family: var(--font-mono) !important;
   font-feature-settings: normal;
-  background: color-mix(in srgb, var(--foreground) 5%, transparent);
-  color: var(--accent);
-  padding: 1px 6px;
-  margin: 0 2px;
-  font-size: 0.95rem;
 }
-
+:not(pre) > code,
+:not(pre) > kbd {
+  background: var(--code-bg);
+  color: var(--accent);
+  padding: 0.1em 0.4em;
+  margin: 0 1px;
+  border-radius: 3px;
+  border: 1px solid var(--border);
+  font-size: 0.9em;
+}
 kbd {
   border-top: 1px solid color-mix(in srgb, var(--accent) 25%, transparent);
   border-left: 1px solid var(--accent);
   border-right: 1px solid var(--accent);
-  border-bottom: 4px solid var(--accent);
+  border-bottom: 3px solid var(--accent);
   border-radius: 4px;
-}
-
-code code {
-  background: transparent;
-  padding: 0;
-  margin: 0;
 }
 
 pre {
   tab-size: 4;
-  background: color-mix(in srgb, var(--foreground) 5%, transparent) !important;
-  color: var(--foreground);
-  padding: 20px 10px;
-  font-size: 0.95rem !important;
-  overflow: auto;
-  border-radius: var(--radius);
-  border: 1px solid color-mix(in srgb, var(--foreground) 10%, transparent);
+  background: var(--code-bg) !important;
+  color: var(--fg);
+  padding: 1rem 1.25rem;
+  margin: 1.25rem 0;
+  font-size: 0.9rem !important;
+  line-height: 1.55;
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 6px;
 }
-
 pre code {
   background: none !important;
+  color: inherit;
   margin: 0;
   padding: 0;
   font-size: inherit;
   border: none;
+  border-radius: 0;
 }
 
-sup {
-  line-height: 0;
-}
-
-abbr {
-  position: relative;
-  text-decoration-style: wavy;
-  text-decoration-color: var(--accent);
-  cursor: help;
-}
-
-sub {
-  bottom: -0.25em;
-}
-
-sup {
-  top: -0.25em;
-}
-
-mark {
-  background: color-mix(in srgb, var(--accent) 45%, transparent);
-  color: var(--foreground);
-}
-
+/* ---------- blockquote ---------- */
+/* Replace the theme's top+bottom-border + leading ">" decoration with a
+   single accent left-rule. Quieter, and matches circ's pane treatment. */
 blockquote {
   position: relative;
-  border-top: 1px solid var(--accent);
-  border-bottom: 1px solid var(--accent);
-  margin: 0;
-  padding: 25px;
+  border: none;
+  border-left: 3px solid var(--accent);
+  background: var(--pane-bg);
+  margin: 1.5rem 0;
+  padding: 0.75rem 1.1rem;
+  border-radius: 0 4px 4px 0;
+  font-style: italic;
+  color: var(--fg);
+}
+blockquote::before { content: none; }
+blockquote p { max-width: none; }
+blockquote p:first-child { margin-top: 0; }
+blockquote p:last-child { margin-bottom: 0; }
+
+/* ---------- tables ---------- */
+/* Every Markdown table is wrapped in `.table-wrap` by the
+   layouts/_default/_markup/render-table.html hook. The wrapper owns
+   horizontal overflow; the table inside is free to size to its natural
+   content width.
+
+   Geometry — `max-width: calc(50vw + 50%)` resolves to the distance
+   from the wrapper's left edge to the viewport's right rail (for a
+   centered container with symmetric horizontal padding):
+
+       wrapper_left  = (100vw - C)/2 + P
+       50% of parent = (C - 2P)/2  = C/2 - P
+       50vw + 50%    = 50vw + C/2 - P
+       wrapper_right = wrapper_left + max-width = 100vw  ✓
+
+   So the wrapper's right edge stops at the viewport edge, never
+   beyond. Because nothing here transforms or negative-margins, the
+   page body never has a reason to horizontally scroll. */
+.table-wrap {
+  width: max-content;
+  min-width: 100%;
+  max-width: calc(50vw + 50%);
+  overflow-x: auto;
+  margin: 1.25rem 0;
 }
 
-blockquote:before {
-  content: ">";
-  display: block;
-  position: absolute;
-  left: 0;
-  color: var(--accent);
-}
-
-blockquote p:first-child {
-  margin-top: 0;
-}
-
-blockquote p:last-child {
-  margin-bottom: 0;
-}
-
+/* Tables inside the wrapper are free to grow to their natural content
+   width — the wrapper handles overflow. */
 table {
+  width: max-content;
   table-layout: auto;
   border-collapse: collapse;
+  margin: 0;
+  font-size: 0.95rem;
 }
-
-table,
-th,
-td {
-  border: 2px solid var(--foreground);
-  padding: 10px;
+table, th, td {
+  border: 1px solid var(--border);
 }
-
-th {
-  border-style: solid;
-  color: var(--foreground);
+th, td {
+  padding: 0.5rem 0.8rem;
   text-align: left;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
+  vertical-align: top;
+}
+th {
+  background: var(--pane-bg);
+  font-weight: 600;
+  color: var(--fg);
+  text-transform: none;
+  letter-spacing: normal;
 }
 
 hr {
   width: 100%;
   border: none;
-  background: var(--accent);
-  height: 2px;
+  border-top: 1px solid var(--border);
+  background: transparent;
+  height: 0;
+  margin: 2.5rem 0;
 }
 
-.footer__inner {
+/* ---------- form elements ---------- */
+button {
+  position: relative;
+  font: inherit;
+  font-family: var(--font-prose);
+  font-weight: 600;
+  text-decoration: none;
+  text-align: center;
+  background: transparent;
+  color: var(--accent);
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--accent);
+  border-radius: 6px;
+  transition: background 0.15s linear, color 0.15s linear;
+  appearance: none;
+  cursor: pointer;
+}
+button:hover {
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+}
+
+fieldset {
+  display: inline-block;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 1rem;
+  background: var(--pane-bg);
+}
+fieldset *:first-child { margin-top: 0; }
+fieldset input,
+fieldset select,
+fieldset textarea,
+fieldset label,
+fieldset button {
+  margin-top: 0.5rem;
   width: 100%;
 }
 
-.footer__inner .copyright {
+label { display: inline-block; }
+label input { margin-top: 0; }
+
+input, textarea, select {
+  background: var(--bg);
+  color: var(--fg);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 0.55rem 0.7rem;
+  font: inherit;
+  font-family: var(--font-prose);
+  appearance: none;
+}
+input[type="checkbox"] { width: auto; padding: 0.5rem; }
+input:focus-visible, input:active,
+textarea:focus-visible, textarea:active,
+select:focus-visible, select:active {
+  border-color: var(--accent);
+  outline: 1px solid var(--accent);
+  outline-offset: 2px;
+  box-shadow: none;
+}
+input[type="checkbox"]:checked { background: var(--accent); }
+
+select {
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--fg) 50%),
+    linear-gradient(135deg, var(--fg) 50%, transparent 50%);
+  background-position: calc(100% - 18px), calc(100% - 12px);
+  background-size: 5px 5px, 5px 5px;
+  background-repeat: no-repeat;
+  padding-right: 36px;
+}
+select option { background: var(--bg); }
+
+mark {
+  background: color-mix(in srgb, var(--accent) 35%, transparent);
+  color: var(--fg);
+}
+abbr {
+  position: relative;
+  text-decoration: underline dotted;
+  text-decoration-color: var(--accent-soft);
+  cursor: help;
+}
+sup { line-height: 0; top: -0.25em; }
+sub { bottom: -0.25em; }
+
+/* ---------- images / figures ---------- */
+/* Strip the theme's heavy 8px solid-accent frame — it competes for
+   attention with the image itself. A thin border keeps the photo
+   anchored without re-framing it. */
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  border: none;
+  padding: 0;
+  border-radius: 6px;
+}
+figure {
+  margin: 1.5rem 0;
+}
+figure img, figure video { margin-bottom: 0; }
+figure figcaption {
+  background: transparent;
+  color: var(--muted);
+  text-align: center;
+  font-size: 0.9rem;
+  font-weight: normal;
+  margin-top: 0.5rem;
+  border-radius: 0;
+}
+
+/* ============================================================
+   Hugo `terminal` theme — class-level overrides
+   ============================================================ */
+
+/* ---------- container ---------- */
+/* Theme draws a right rule at the column edge to evoke a terminal pane.
+   Drop it; widen the column slightly so prose breathes. */
+.container {
   display: flex;
-  justify-content: center;
-  align-items: center;
   flex-direction: column;
+  padding: 2.5rem 1.5rem 3rem;
+  max-width: 880px;
+  min-height: 100vh;
+  border-right: none;
+}
+.container.full, .container.center {
+  border: none;
+  margin: 0 auto;
+}
+.container.full { max-width: 100%; }
+
+/* ---------- header / logo ---------- */
+/* Theme renders the brand as a solid accent block followed by a dashed
+   repeating-line. Replace with a quiet text mark and a single border
+   under the whole header — same role (separate masthead from content),
+   different volume. */
+.header {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  padding-bottom: 1rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border);
+}
+.header__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.header__logo { display: flex; flex: 1; }
+.header__logo::after { content: none; background: none; }
+.header__logo a { flex: 0 0 auto; text-decoration: none; }
+
+.logo {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+  background: transparent;
+  color: var(--fg);
+  padding: 0;
+  font-family: var(--font-mono);
+  font-weight: 600;
+  font-size: 1.05rem;
+  letter-spacing: -0.01em;
+}
+.logo:hover { color: var(--accent); }
+
+/* ---------- navigation ---------- */
+.navigation-menu {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin: 0.5rem 0 0;
+}
+.navigation-menu__inner {
+  display: flex;
+  flex: 1;
+  flex-wrap: wrap;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  gap: 1.25rem;
+}
+.navigation-menu__inner > li {
+  flex: 0 0 auto;
+  margin: 0;
+  white-space: nowrap;
+}
+.navigation-menu__inner > li:not(:last-of-type) { margin-right: 0; }
+.navigation-menu a {
+  color: var(--fg);
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-family: var(--font-prose);
+}
+.navigation-menu a:hover { color: var(--accent); }
+
+.menu__trigger { color: var(--accent); }
+.menu__dropdown {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  box-shadow: 0 4px 16px color-mix(in srgb, var(--fg) 8%, transparent);
+  color: var(--fg);
+  border-radius: 6px;
+}
+.menu--mobile .menu__trigger,
+.menu--language-selector .menu__trigger {
+  border: 1px solid var(--border);
+  border-radius: 4px;
 }
 
-.footer .copyright span {
-  white-space: initial;
-}
-
+/* ---------- index / posts list ---------- */
+.index-content { margin-top: 1rem; }
 .index-content h1 {
-  --font-size: 2.5rem;
-  --line-height: 3.54rem;
-  line-height: var(--line-height);
+  font-size: 2.25rem;
+  line-height: 1.2;
+  margin-top: 0;
+  letter-spacing: -0.02em;
 }
 
-.post:not(.on-list) .post-title {
-  --font-size: 2.5rem;
-  --line-height: 3.54rem;
-  line-height: var(--line-height);
+.posts { width: 100%; }
+.post {
+  width: 100%;
+  text-align: left;
+  padding: 2rem 0;
 }
+.post:not(:last-of-type) {
+  border-bottom: 1px solid var(--border);
+}
+.post.on-list .post-title {
+  font-size: 1.5rem;
+  margin: 0 0 0.5rem;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+.post.on-list .post-title::after { content: none; }
+
+/* Post body: title is the strongest accent on the page, but loses the
+   theme's dotted-double-underline drama. Just an accent-coloured H1. */
+.post:not(.on-list) .post-title {
+  font-size: 2.5rem;
+  line-height: 1.2;
+  color: var(--accent);
+  margin: 0 0 0.75rem !important;
+  padding-bottom: 0;
+  border-bottom: none;
+  text-decoration: none !important;
+}
+.post:not(.on-list) .post-title::after { content: none; }
+.post-title a {
+  color: inherit;
+  text-decoration: none;
+}
+.post-title a:hover {
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+}
+
+/* Meta line — theme uses "::" as a separator; swap for a middot so it
+   doesn't read as code. */
+.post-meta {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--muted);
+  margin: 0 0 0.75rem;
+  letter-spacing: 0.02em;
+}
+.post-meta > *:not(:first-child)::before {
+  content: "·";
+  display: inline-block;
+  margin: 0 0.5rem;
+  color: var(--muted);
+}
+
+.post-tags {
+  display: block;
+  margin: 0 0 1.5rem;
+  font-size: 0.85rem;
+  font-family: var(--font-mono);
+  color: var(--accent);
+}
+.post-tags a {
+  color: var(--accent);
+  text-decoration: none;
+}
+.post-tags a:hover { text-decoration: underline; }
+
+.post-content { margin-top: 1.5rem; }
+.post-cover { margin: 1.5rem 0; }
+
+.table-of-contents {
+  margin: 2rem 0;
+  padding: 1rem 1.25rem;
+  background: var(--pane-bg);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 4px 4px 0;
+}
+.table-of-contents h2 {
+  margin: 0 0 0.5rem;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+  font-weight: 600;
+}
+.table-of-contents ul,
+.table-of-contents ol { margin: 0; padding-left: 1.25rem; }
+
+.hanchor {
+  position: absolute;
+  color: var(--accent);
+  text-decoration: none;
+  margin-left: 0.5rem;
+  visibility: hidden;
+}
+h1:hover .hanchor, h2:hover .hanchor, h3:hover .hanchor,
+h4:hover .hanchor, h5:hover .hanchor, h6:hover .hanchor {
+  visibility: visible;
+}
+
+.footnotes {
+  color: var(--muted);
+  font-size: 0.92rem;
+  margin-top: 3rem;
+}
+.footnotes hr { border-top-color: var(--border); }
+
+.framed {
+  border: 1px solid var(--border);
+  background: var(--pane-bg);
+  border-radius: 6px;
+  padding: 1.25rem;
+}
+.framed *:first-child { margin-top: 0; }
+.framed *:last-child { margin-bottom: 0; }
+
+/* ---------- buttons / read-more ---------- */
+button, .button, a.button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 1rem;
+  text-decoration: none;
+  text-align: center;
+  border: 1px solid var(--accent);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--accent);
+  font: inherit;
+  font-family: var(--font-prose);
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+button:hover, .button:hover, a.button:hover {
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+  text-decoration: none;
+}
+a.button.inline {
+  background: none;
+  color: var(--accent);
+  padding: 0;
+  border: none;
+  font-weight: 600;
+}
+a.button.inline::before { content: ""; }
+a.button.inline::after { content: " →"; }
+a.button.inline.prev::before { content: "← "; }
+a.button.inline.next::after { content: " →"; }
+
+a.read-more,
+a.read-more:hover,
+a.read-more:active {
+  display: inline-flex;
+  border: none;
+  background: none;
+  padding: 0;
+  color: var(--accent);
+  font-weight: 600;
+  text-decoration: none;
+}
+a.read-more::after { content: " →"; }
+
+/* ---------- pagination ---------- */
+.pagination { margin-top: 3rem; }
+.pagination__title {
+  display: flex;
+  text-align: center;
+  position: relative;
+  margin: 4rem 0 1.25rem;
+}
+.pagination__title-h {
+  text-align: center;
+  margin: 0 auto;
+  padding: 0 0.75rem;
+  background: var(--bg);
+  color: var(--muted);
+  font-size: 0.75rem;
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  text-decoration: none;
+  letter-spacing: 0.12em;
+  z-index: 1;
+}
+.pagination__title hr {
+  position: absolute;
+  left: 0;
+  right: 0;
+  width: 100%;
+  margin-top: 0.65rem;
+  border-top: 1px solid var(--border);
+  z-index: 0;
+}
+.pagination__buttons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  flex-flow: row wrap;
+}
+
+/* ---------- code-toolbar (theme generates this around code blocks) ---------- */
+.code-toolbar {
+  position: relative;
+  margin: 1.25rem 0;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  overflow: hidden;
+  background: var(--code-bg);
+}
+.code-toolbar + .code-toolbar,
+.code-toolbar + .highlight,
+.code-toolbar + .highlight .code-toolbar {
+  border-top: 0;
+  margin-top: -1.25rem;
+}
+.code-toolbar pre,
+.code-toolbar code { border: none; }
+.code-toolbar pre {
+  margin: 0;
+  border-radius: 0;
+}
+.code-toolbar > .toolbar button,
+.code-toolbar > .toolbar .toolbar-item a {
+  font-size: 0.75rem !important;
+  font-weight: 500 !important;
+  background: transparent !important;
+  color: var(--muted) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 4px !important;
+  box-shadow: none !important;
+  margin: 0.4rem !important;
+  padding: 0.2rem 0.5rem !important;
+}
+.code-toolbar > .toolbar button:hover,
+.code-toolbar > .toolbar .toolbar-item a:hover {
+  color: var(--accent) !important;
+  border-color: var(--accent) !important;
+}
+
+.collapsable-code label {
+  border-bottom: 1px solid var(--border);
+}
+.collapsable-code__title,
+.collapsable-code__language,
+.collapsable-code__toggle {
+  color: var(--accent);
+}
+.collapsable-code__language {
+  border: 1px solid var(--border);
+  border-bottom: none;
+  font-family: var(--font-mono);
+  text-transform: lowercase;
+  letter-spacing: 0.02em;
+  padding: 0.2rem 0.5rem;
+  font-size: 0.8rem;
+}
+
+/* ---------- footer ---------- */
+.footer {
+  padding: 2rem 0 1.5rem;
+  margin-top: 3rem;
+  border-top: 1px solid var(--border);
+  flex-grow: 0;
+  opacity: 1;
+}
+.footer__inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  width: 100%;
+  max-width: 100%;
+}
+.footer a { color: var(--fg); }
+.footer a:hover { color: var(--accent); }
+.footer .copyright {
+  display: flex;
+  flex-flow: row wrap;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--muted);
+  gap: 0.5rem;
+}
+.footer .copyright--user { margin: auto; text-align: center; }
+.footer .copyright > *:first-child:not(:only-child) { margin-right: 0; }
+.footer .copyright span { white-space: initial; }
+
+/* ============================================================
+   Profile / shortcode / circ-block widgets
+   (carried over from prior terminal.css — retuned to new tokens)
+   ============================================================ */
 
 .profile-container {
   display: flex;
@@ -404,38 +805,39 @@ hr {
   align-items: center;
   flex-direction: column;
 }
-
 .profile-container .profile-picture {
   width: 250px;
   height: 250px;
   border-radius: 50%;
+  border: none;
+  padding: 0;
 }
 
 .shortcode-widget {
   position: relative;
   overflow: hidden;
+  margin: 1.5rem 0;
 }
-
 .shortcode-widget .interactive-label {
   position: absolute;
   top: -40px;
   left: 0;
   background: var(--accent);
-  color: var(--background);
-  padding: 5px 10px;
-  border-radius: var(--radius);
+  color: var(--bg);
+  padding: 0.25rem 0.6rem;
+  border-radius: 4px;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
   transition: top 0.3s ease;
 }
-
-.shortcode-widget:hover .interactive-label {
-  top: 0;
-}
+.shortcode-widget:hover .interactive-label { top: 0; }
 
 .shortcode-iframe {
   position: relative;
-  border: 8px solid var(--accent);
-  border-radius: var(--radius);
-  padding: 8px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.5rem;
+  background: var(--pane-bg);
   width: var(--width);
   max-width: 100%;
   aspect-ratio: var(--ratio);
@@ -443,7 +845,8 @@ hr {
 
 @media (min-width: 768px) {
   .binary-counter-widget {
-    border-top: 8px solid var(--accent);
+    border-top: 0px;
+    border-radius: 6px;
   }
   .binary-counter-widget .shortcode-iframe {
     height: calc(var(--width) - calc(var(--height) / 3));
@@ -451,51 +854,54 @@ hr {
   }
 }
 
+/* ---------- circ-block (live circuit shortcode) ---------- */
 .circ-block {
   display: block;
-  margin: 1em 0;
+  margin: 1.5rem 0;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  overflow: hidden;
 }
 
-.circ-tab-input {
-  display: none;
-}
+.circ-tab-input { display: none; }
 
 .circ-tabs {
   display: flex;
-  gap: 4px;
+  gap: 0;
+  background: var(--pane-label-bg);
+  border-bottom: 1px solid var(--border);
 }
 
 .circ-tab-label {
   cursor: pointer;
-  padding: 6px 14px;
-  font-size: 0.85rem;
+  padding: 0.4rem 0.85rem;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
   font-weight: 500;
-  background: color-mix(in srgb, var(--foreground) 5%, transparent);
-  border: 1px solid color-mix(in srgb, var(--foreground) 10%, transparent);
-  color: color-mix(in srgb, var(--foreground) 65%, transparent);
+  background: transparent;
+  border: none;
+  border-right: 1px solid var(--border);
+  color: var(--muted);
   user-select: none;
+  letter-spacing: 0.04em;
   transition: background 0.15s ease, color 0.15s ease;
 }
-
-.circ-tab-label:hover {
-  color: var(--foreground);
-}
+.circ-tab-label:hover { color: var(--fg); }
 
 .circ-tab-input--code:checked ~ .circ-tabs .circ-tab-label--code,
 .circ-tab-input--topology:checked ~ .circ-tabs .circ-tab-label--topology,
 .circ-tab-input--interactive:checked ~ .circ-tabs .circ-tab-label--interactive {
   background: var(--accent);
-  color: var(--background);
-  border-color: var(--accent);
+  color: var(--bg);
 }
 
-.circ-tab-panel {
-  display: none;
-}
-
+.circ-tab-panel { display: none; }
 .circ-tab-panel .code-toolbar {
   margin: 0;
+  border: none;
+  border-radius: 0;
 }
+.circ-tab-panel .code-toolbar pre { border-radius: 0; }
 
 .circ-tab-input--code:checked ~ .circ-tab-panel--code,
 .circ-tab-input--topology:checked ~ .circ-tab-panel--topology,
@@ -505,19 +911,21 @@ hr {
 
 .circ-block pre {
   margin: 0;
+  border: none;
   border-radius: 0;
 }
 
 .circ-block .circ-preview {
-  line-height: 1.2rem;
+  font-family: var(--font-mono-strict);
+  line-height: 1.2;
   background: color-mix(in srgb, var(--accent) 6%, transparent) !important;
-  border-left: 4px solid var(--accent);
+  border-left: 3px solid var(--accent);
   white-space: pre;
 }
 
 .circ-block .circ-error {
   background: color-mix(in srgb, #d33 8%, transparent) !important;
-  border-left: 4px solid #d33;
+  border-left: 3px solid #d33;
   color: #d33;
   white-space: pre-wrap;
 }
@@ -527,25 +935,41 @@ hr {
   justify-content: center;
   align-items: center;
   min-height: 200px;
-  padding: 16px;
-  background: color-mix(in srgb, var(--background) 6%, transparent);
-  border: 2px solid var(--accent);
-  /* border-top: none; */
+  padding: 1rem;
+  background: var(--pane-bg);
   overflow-x: auto;
 }
 
 .circ-canvas-mount canvas {
   display: block;
   max-width: 100%;
-  /* Override the renderer's inline `style="height: …px"` so the canvas keeps
-     its intrinsic aspect ratio when max-width clamps the width on narrow
-     viewports. Without !important the inline height wins and the canvas
-     stretches/squashes. */
+  /* Override the renderer's inline `style="height: …px"` so the canvas
+     keeps its intrinsic aspect ratio when max-width clamps the width on
+     narrow viewports. Without !important the inline height wins. */
   height: auto !important;
 }
 
 .circ-canvas-mount:empty::before {
   content: "Loading circuit…";
-  color: color-mix(in srgb, var(--foreground) 60%, transparent);
-  font-size: 0.9rem;
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+}
+
+/* ---------- responsive ---------- */
+@media (max-width: 684px) {
+  body { font-size: 16px; }
+  .container { padding: 1.5rem 1rem 2rem; }
+  .post:not(.on-list) .post-title { font-size: 2rem; }
+  .index-content h1 { font-size: 2rem; }
+  h1 { font-size: 1.85rem; }
+  h2 { font-size: 1.3rem; }
+  ul, ol { padding-left: 1.25rem; }
+  .table-wrap { max-width: 100%; }
+}
+
+@media print {
+  .container { display: initial; border: none; }
+  .content { display: initial; }
+  .header, .footer, .pagination { display: none; }
 }
