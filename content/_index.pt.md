@@ -15,6 +15,8 @@ Mas nem só de código vive o homem, sou um entusiasta de jogos de tabuleiro, As
 
 Se você quiser saber mais sobre mim, ou só bater um papo, me chama nos links acima e vamos bater um papo.
 
+<small>Chech this out in [english](/)</small>
+
 </div>
 
 <div class="profile-intro-image">

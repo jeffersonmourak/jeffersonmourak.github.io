@@ -3,8 +3,20 @@
     <div class="header__logo">
       {{ partial "logo.html" . }}
     </div>
-    {{ if and $.Site.Params.showLanguageSelector (len $.Site.Home.AllTranslations) }}
-      {{ partial "language-menu.html" . }}
-    {{ end }}
+    <button type="button" class="theme-toggle" aria-label="Toggle dark mode">
+      <span class="theme-icon" aria-hidden="true">◐</span>
+    </button>
   </div>
 </header>
+<script>
+  (function () {
+    document.querySelectorAll('.theme-toggle').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var cur = document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light';
+        var next = cur === 'dark' ? 'light' : 'dark';
+        document.documentElement.dataset.theme = next;
+        try { localStorage.setItem('theme', next); } catch (_) {}
+      });
+    });
+  })();
+</script>

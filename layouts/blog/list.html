@@ -1,0 +1,105 @@
+{{ define "main" }}
+  {{ with .Content }}
+    <div class="index-content">
+      {{ . }}
+    </div>
+  {{ end }}
+
+  {{ $defaultLang := or .Site.Language.Lang "en" }}
+  {{ $isPt := eq .Site.Language.Lang "pt" }}
+  {{ $labelFilter := cond $isPt "Filtrar por idioma:" "Filter by language:" }}
+  {{ $labelAll := cond $isPt "Ver posts em todos os idiomas" "See posts from all languages" }}
+
+  <form class="blog-filter" aria-label="{{ $labelFilter }}" onsubmit="return false;">
+    <label class="blog-filter-lang">
+      <span>{{ $labelFilter }}</span>
+      <select data-lang-select>
+        <option value="en"{{ if eq $defaultLang "en" }} selected{{ end }}>English</option>
+        <option value="pt"{{ if eq $defaultLang "pt" }} selected{{ end }}>Português</option>
+      </select>
+    </label>
+    <label class="blog-filter-all">
+      <input type="checkbox" data-all-langs>
+      <span>{{ $labelAll }}</span>
+    </label>
+  </form>
+
+  <div class="posts" data-posts-root data-lang-filter="{{ $defaultLang }}">
+    {{ range .Paginator.Pages }}
+      {{ $postLang := or .Params.contentLanguage "en" }}
+      <article class="post on-list" data-content-language="{{ $postLang }}">
+        <h2 class="post-title">
+          <a href="{{ .Permalink }}">{{ .Title | markdownify }}</a>
+        </h2>
+        <div class="post-meta">
+          {{- if .Date -}}
+            <time class="post-date">
+              {{- .Date.Format "2006-01-02" -}}
+            </time>
+          {{- end -}}
+          {{- with .Params.Author -}}
+            <span class="post-author">{{- . -}}</span>
+          {{- end -}}
+        </div>
+
+        {{ if .Params.tags }}
+          <span class="post-tags">
+            {{ range .Params.tags }}
+            #<a href="{{ (urlize (printf "tags/%s/" . )) | absLangURL }}">
+              {{- . -}}
+            </a>&nbsp;
+            {{ end }}
+          </span>
+        {{ end }}
+
+        {{ partial "cover.html" . }}
+
+        <div class="post-content">
+          {{ if .Params.showFullContent }}
+            {{ .Content }}
+          {{ else if .Description }}
+            <p>{{ .Description | markdownify }}</p>
+          {{ else }}
+            {{ .Summary }}
+          {{ end }}
+        </div>
+
+        {{ if not .Params.showFullContent }}
+           <div>
+            <a class="read-more button inline" href="{{ .RelPermalink }}">{{ $.Site.Params.ReadMore }}</a>
+          </div>
+        {{ end }}
+      </article>
+    {{ end }}
+
+    {{ partial "pagination.html" . }}
+  </div>
+
+  <script>
+    (function () {
+      var root = document.querySelector('[data-posts-root]');
+      var form = document.querySelector('.blog-filter');
+      if (!root || !form) return;
+      var select = form.querySelector('[data-lang-select]');
+      var allCheck = form.querySelector('[data-all-langs]');
+      var params = new URLSearchParams(window.location.search);
+      var langParam = params.get('lang');
+      if (langParam) {
+        var opt = select.querySelector('option[value="' + langParam.replace(/[^a-zA-Z0-9_-]/g, '') + '"]');
+        if (opt) select.value = langParam;
+      }
+      function apply() {
+        if (allCheck.checked) {
+          root.setAttribute('data-lang-filter', 'all');
+          select.disabled = true;
+        } else {
+          root.setAttribute('data-lang-filter', select.value);
+          select.disabled = false;
+        }
+      }
+      select.addEventListener('change', apply);
+      allCheck.addEventListener('change', apply);
+      apply();
+    })();
+  </script>
+{{ end }}

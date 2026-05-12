@@ -163,7 +163,7 @@ weight = 4
 [[languages.pt.menu.main]]
 identifier = "blog"
 name = "Blog"
-url = "/blog/"
+url = "/blog"
 weight = 5
 [[languages.pt.menu.main]]
 identifier = "voting_poker"

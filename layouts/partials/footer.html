@@ -4,7 +4,11 @@
       <nav class="site-footer-links" aria-label="Site links">
         {{ range . }}
           {{ if not .HasChildren }}
-            <a href="{{ .URL }}"{{ if .Params.NewTab }} target="_blank" rel="noreferrer noopener"{{ end }}>{{ .Name }}</a>
+            {{ $href := .URL }}
+            {{ if and (eq .Identifier "blog") (eq $.Site.Language.Lang "pt") }}
+              {{ $href = "/blog/?lang=pt" }}
+            {{ end }}
+            <a href="{{ $href }}"{{ if .Params.NewTab }} target="_blank" rel="noreferrer noopener"{{ end }}>{{ .Name }}</a>
           {{ end }}
         {{ end }}
       </nav>

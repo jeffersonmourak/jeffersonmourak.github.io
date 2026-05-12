@@ -61,20 +61,22 @@
   color-scheme: light;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #090311;
-    --fg: #c0abda;
-    --muted: #7d6e94;
-    --border: #1a1228;
-    --accent: #b097d1;
-    --accent-soft: #c8b3e0;
-    --code-bg: #1f1438;
-    --pane-bg: #0c0517;
-    --pane-label-bg: #13091f;
+/* Dark palette is gated on `[data-theme="dark"]` rather than the OS
+   media query so the in-page toggle can override the system preference.
+   The pre-paint script in extended_head.html seeds this attribute from
+   localStorage, falling back to `prefers-color-scheme` on first visit. */
+[data-theme="dark"] {
+  --bg: #090311;
+  --fg: #c0abda;
+  --muted: #7d6e94;
+  --border: #1a1228;
+  --accent: #b097d1;
+  --accent-soft: #c8b3e0;
+  --code-bg: #1f1438;
+  --pane-bg: #0c0517;
+  --pane-label-bg: #13091f;
 
-    color-scheme: dark;
-  }
+  color-scheme: dark;
 }
 
 /* ---------- base ---------- */
@@ -447,6 +449,28 @@ figure figcaption {
 }
 .logo:hover { color: var(--accent); }
 
+/* Circular sun/moon button in the header — flips `data-theme` on <html>
+   between "light" and "dark", with the choice persisted to localStorage. */
+.theme-toggle {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--fg);
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  font-size: 0.95rem;
+  line-height: 1;
+  padding: 0;
+  flex: 0 0 auto;
+}
+.theme-toggle:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
 /* ---------- navigation ---------- */
 .navigation-menu {
   display: flex;
@@ -511,6 +535,49 @@ figure figcaption {
 .post:not(:last-of-type) {
   border-bottom: 1px solid var(--border);
 }
+
+/* /blog/ language filter — visibility is CSS-only so the DOM stays intact
+   (no nodes added or removed). `data-lang-filter` on the .posts container
+   toggles which articles are visible; "all" disables filtering. */
+.blog-filter {
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+  gap: 0.75rem 1.5rem;
+  margin: 1rem 0 1.5rem;
+  padding: 0.75rem 1rem;
+  background: var(--pane-bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 0.95rem;
+}
+.blog-filter-lang,
+.blog-filter-all {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0;
+}
+.blog-filter select {
+  font: inherit;
+  color: var(--fg);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 0.25rem 0.5rem;
+}
+.blog-filter select:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+.blog-filter input[type="checkbox"] {
+  accent-color: var(--accent);
+}
+
+.posts[data-lang-filter="en"] > article[data-content-language="pt"],
+.posts[data-lang-filter="pt"] > article[data-content-language="en"] {
+  display: none;
+}
 .post.on-list .post-title {
   font-size: 1.5rem;
   margin: 0 0 0.5rem;
@@ -518,6 +585,48 @@ figure figcaption {
   border-bottom: none;
 }
 .post.on-list .post-title::after { content: none; }
+
+/* Single-post breadcrumb — small, muted, sits above the title. */
+.post-breadcrumb {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  margin: 0 0 0.75rem;
+  letter-spacing: 0.02em;
+}
+.post-breadcrumb a {
+  color: var(--muted);
+  text-decoration: none;
+}
+.post-breadcrumb a:hover {
+  color: var(--accent);
+  text-decoration: underline;
+}
+
+/* Notice shown on bilingual posts pointing readers to the other version. */
+.post-other-versions {
+  display: flex;
+  flex-flow: row wrap;
+  align-items: baseline;
+  gap: 0.25rem 0.5rem;
+  margin: 0 0 1.25rem;
+  padding: 0.6rem 0.85rem;
+  border-left: 3px solid var(--accent);
+  background: var(--pane-bg);
+  border-radius: 0 4px 4px 0;
+  font-size: 0.9rem;
+}
+.post-other-versions__label {
+  color: var(--muted);
+}
+.post-other-versions__links a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.post-other-versions__sep {
+  color: var(--muted);
+  margin: 0 0.25rem;
+}
 
 /* Post body: title is the strongest accent on the page, but loses the
    theme's dotted-double-underline drama. Just an accent-coloured H1. */

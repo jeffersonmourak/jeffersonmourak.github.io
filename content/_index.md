@@ -14,6 +14,8 @@ But man cannot live by code alone, I'm a board game enthusiast, and a fan of Ast
 
 If you want to know more about me, or just have a chat, hit me up on the links above and let's talk.
 
+<small>Veja também em [português](/pt)</small>
+
 </div>
 
 <div class="profile-intro-image">
