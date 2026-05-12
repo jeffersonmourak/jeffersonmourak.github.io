@@ -1,0 +1,318 @@
+/* ============================================================
+   Page-scoped styles for /blog/unicode-en/ (English translation of
+   /blog/unicode/). Kept in sync with that bundle's style.css — both
+   pages embed the same `observable:notebook` cells.
+   Auto-loaded by layouts/partials/extended_head.html when this file
+   sits next to index.md (Hugo page-bundle resource). Rules here run
+   only on this post — safe to override the inline `observable:notebook`
+   embed without affecting other posts.
+
+   The .ascii-* tree below styles the interactive ASCII keyboard cell.
+   The cell's JS just composes DOM with these class names; no inline
+   styles. Colors come from the blog's theme tokens, which
+   .observable-embed pins to the LIGHT-mode values regardless of system
+   color-scheme — so this palette stays stable even in dark mode.
+   ============================================================ */
+
+/* ---- outer two-column layout: buttons on the bottom, display on top --- */
+.ascii-keyboard {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* ---- buttons grid (6×16 ASCII printable range) ---- */
+.ascii-grid {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, 50px);
+  grid-template-rows: repeat(5, 50px);
+  gap: 10px;
+}
+
+.ascii-button {
+  padding: 0.25rem;
+  background-color: var(--accent-soft);
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+}
+
+.ascii-button-char {
+  height: 2rem;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Light wash of accent-soft against the embed's bg — a tier brighter
+     than the button itself so the character "sits" on the key. The mix
+     ratio (≈50/50) approximates the previous hardcoded #c0abda. */
+  background-color: color-mix(in srgb, var(--accent-soft) 50%, var(--bg));
+  border-radius: 0.25rem;
+}
+
+.ascii-button-info {
+  font-weight: normal;
+  font-size: 0.5em;
+  font-family: monospace;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ---- top display: typed message + hex memory view ---- */
+/* No overflow: a horizontal scroll context here would also clip the hex
+   hover popups. The CSS spec forces `overflow-y: auto` whenever
+   `overflow-x: auto` is set (the "you can't mix scroll and visible across
+   axes" rule), so the popup's `bottom: -100%; left: -50%` would get cut
+   off. For long messages we let the row overflow the embed and rely on
+   `body { overflow-x: clip }` to keep the page from scrolling sideways.
+   If long-message scrolling becomes important, switch the popup to CSS
+   anchor positioning (Chrome 125+) or a JS portal so it escapes the
+   scroll container. */
+/* Scroll-frame for the display. `min-width: 0` overrides the default
+   `min-width: auto` that flex items inherit from their content's
+   min-content size — without it, every extra ASCII cell would widen the
+   embed (and eventually the page) instead of triggering a scrollbar
+   here. `overflow-x: auto` then handles long messages locally. */
+.ascii-view {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  overflow-x: auto;
+}
+
+.ascii-display {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  /* Reserve space below the bottom row for the popup, which extends
+     beyond the cell via `bottom: -100%`. */
+  padding-bottom: 4rem;
+}
+
+.ascii-display-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 50px);
+  grid-auto-flow: column;
+  gap: 2px;
+  height: 2.4rem;
+}
+
+.ascii-cell {
+  width: 50px;
+  height: 2.4rem;
+  background-color: color-mix(in srgb, var(--accent-soft) 50%, var(--bg));
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 0.3rem;
+  padding: 0.5rem;
+  font-family: monospace;
+  position: relative;
+}
+
+/* ---- hover popup on hex cells (decimal + binary breakdown) ----
+   The cell's JS appends this element to <body> (not the cell) so it
+   escapes .ascii-view's overflow clip. JS controls `data-visible`,
+   `top`, `left`; CSS just defines the look + fade. Colors are pinned
+   here because the popup lives outside .observable-embed and can't
+   inherit its light-mode token overrides. */
+.ascii-hex-info {
+  /* Mirror the embed's light palette so the tooltip matches its source
+     cells, regardless of the surrounding page's prefers-color-scheme. */
+  --accent: #6e49ab;
+  --accent-soft: #8a6dc4;
+  --complementary-1: #24db74;
+  --complementary-1-soft: #81c774;
+  color: #443856;
+  color-scheme: light;
+
+  position: fixed;
+  z-index: 9999;
+  translate: -50% 0;
+  /* center horizontally on the cell */
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease;
+
+  display: grid;
+  grid-template-columns: repeat(2, auto);
+  grid-template-rows: repeat(2, auto);
+  background-color: var(--accent);
+  font-family: monospace;
+  gap: 0.25rem;
+  padding: 0.25rem;
+}
+
+.ascii-hex-info[data-visible="true"] {
+  opacity: 1;
+}
+
+.ascii-hex-info span {
+  text-align: center;
+  padding: 0 0.25rem;
+  font-size: 0.75rem;
+  background-color: var(--accent-soft);
+}
+
+/* ---- UTF-8 encoder visualizer cell ----
+   The cell builds an HTML string and assigns it to a wrapper div's
+   innerHTML. Scoping every rule under `.utf8-encoder` keeps the bare
+   element selectors (h3, code, hr) from leaking to the surrounding
+   post — they only apply to markup the cell produces. */
+.utf8-encoder h3 {
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 0.3em;
+  margin-top: 2em;
+}
+
+.utf8-encoder hr {
+  margin: 2rem 0;
+  border: 0;
+  border-top: 1px solid var(--border);
+}
+
+/* No `code` rule here — the theme's `:not(pre) > code` already styles
+   inline code with var(--accent) text on var(--code-bg) with a border.
+   Letting it cascade keeps the encoder's <code> visually identical to
+   inline code anywhere else in the post. */
+
+.utf8-encoder .byte-vis-container {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-top: 1em;
+}
+
+.utf8-encoder .byte-vis {
+  font-family: monospace;
+  font-size: 1.2em;
+  border: 1px solid var(--border);
+  padding: 0.5em;
+  border-radius: 4px;
+  background: var(--pane-bg);
+  box-shadow: 0 1px 3px color-mix(in srgb, var(--fg) 8%, transparent);
+}
+
+/* Three roles in the byte breakdown; mapped onto the purple palette
+   so they keep visual distinction without breaking the theme:
+     - prefix: deepest accent, the structural marker
+     - payload: default fg, the "primary" bits
+     - payload-alt: soft accent, alternates with payload for readability */
+.utf8-encoder .byte-prefix {
+  color: var(--accent);
+  font-weight: bold;
+}
+
+.utf8-encoder .payload {
+  color: var(--complementary-1);
+}
+
+.utf8-encoder .payload-alt {
+  color: var(--complementary-2);
+}
+
+/* ---- Codepoint summary table ----
+   Rendered by the `viewof codepoint` cell as a single-row table
+   (Caractere / Decimal / Hexadecimal) in place of the default
+   Observable inspector output. */
+.utf8-codepoint {
+  border-collapse: collapse;
+  margin: 1rem 0;
+  font-family: var(--font-mono);
+  font-size: 0.95em;
+}
+
+.utf8-codepoint th,
+.utf8-codepoint td {
+  padding: 0.5em 1em;
+  border: 1px solid var(--border);
+  text-align: left;
+}
+
+.utf8-codepoint th {
+  background: var(--pane-bg);
+  font-weight: 600;
+  color: var(--accent);
+}
+
+.utf8-codepoint-char {
+  font-size: 1.4em;
+  text-align: center;
+}
+
+/* ---- Inputs.text widget (character input at the top of the second embed) ----
+   The Observable Inputs kit applies only a minimal reset to <input>
+   (color/font inherit, box-sizing border-box) — the rest is browser
+   default, which is why the field looks unstyled. Pull it into the
+   theme: code-bg pill, themed border, monospace face (the input holds a
+   single character), accent-tinted focus ring, muted placeholder. */
+
+/* The kit's default `--label-width` is 120px, which wraps "Insira um
+   Caractere" onto two lines. Widening it gives the label a single-line
+   slot; the kit's `width: calc(var(--input-width) + var(--label-width))`
+   picks up the new value automatically, so the form sizes itself
+   correctly without any other overrides. */
+.observable-embed form {
+  --label-width: 9rem;
+}
+
+.observable-embed input[type="text"] {
+  background: var(--code-bg);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  color: var(--fg);
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  padding: 0.4rem 0.6rem;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  text-align: center;
+}
+
+.observable-embed input[type="text"]:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 25%, transparent);
+}
+
+.observable-embed input[type="text"]::placeholder {
+  color: var(--muted);
+}
+
+/* `.observable-embed` (in terminal.css) pins the blog's theme tokens to
+   LIGHT-mode values so cells like the ASCII keyboard — whose button
+   palette is authored against a light background — stay legible
+   regardless of the surrounding page's color scheme. The encoder
+   visualizer is theme-token-only (no hardcoded backgrounds), so we can
+   safely un-pin it inside .utf8-encoder for dark mode. Re-declaring the
+   tokens here cascades down to <p>/<h3>/<code>/.byte-* automatically —
+   prose text gets the page's bright --fg, pane/code backgrounds dim
+   down, and the byte-prefix/payload-alt highlights swap to dark-mode
+   purples that read against the dark surface. */
+@media (prefers-color-scheme: dark) {
+
+  .utf8-encoder,
+  .utf8-codepoint,
+  .observable-embed form {
+    --fg: #c0abda;
+    --muted: #7d6e94;
+    --border: #1a1228;
+    --complementary-1: #24db74;
+    --complementary-1-soft: #81c774;
+    --complementary-2: #db7424;
+    --complementary-2-soft: #ffa54d;
+    --accent: #b097d1;
+    --accent-soft: #c8b3e0;
+    --code-bg: #1f1438;
+    --pane-bg: #0c0517;
+    color: var(--fg);
+  }
+}

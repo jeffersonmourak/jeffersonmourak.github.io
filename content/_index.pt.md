@@ -3,9 +3,9 @@ title: "Jefferson Oliveira"
 contentLanguage: "pt"
 ---
 
-<div class="profile-container">
-  <img class="profile-picture" alt="Jefferson Oliveira profile picture" src="https://avatars.githubusercontent.com/u/5585596?v=3">
-</div>
+<div class="profile-intro">
+
+<div class="profile-intro-text">
 
 # Olá! Eu sou o Jefferson
 
@@ -15,11 +15,12 @@ Mas nem só de código vive o homem, sou um entusiasta de jogos de tabuleiro, As
 
 Se você quiser saber mais sobre mim, ou só bater um papo, me chama nos links acima e vamos bater um papo.
 
-## Links
+<small>Chech this out in [english](/)</small>
 
-- [Instagram](https://instagram.com/jeffersonmourak)
-- [LinkedIn](https://www.linkedin.com/in/jeffersonmourak/)
-- [GitHub](https://github.com/jeffersonmourak)
-- [E-mail](mailto:jeffersonmourak@gmail.com)
-- [Voting Poker](https://voting.poker)
-- [Blog](/blog/)
+</div>
+
+<div class="profile-intro-image">
+  <img class="profile-picture" alt="Jefferson Oliveira profile picture" src="https://avatars.githubusercontent.com/u/5585596?v=3">
+</div>
+
+</div>

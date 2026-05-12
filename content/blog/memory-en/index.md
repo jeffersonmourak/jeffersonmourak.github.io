@@ -24,7 +24,7 @@ description: "Have you ever wondered how your computer 'remembers' everything? T
 versions:
   - name: English
     url: /blog/memory-en
-  - name: Português (Brasileiro)
+  - name: Português (BR)
     url: /blog/memory
 ---
 > Hey Y'all! This is a translation of my blog post originally written in Portuguese.
@@ -35,7 +35,6 @@ versions:
 > - [Logic gates](https://jeffersonmourak.com/blog/logic-gates/).
 > - [Pleasure to meet you, Binary.](https://jeffersonmourak.com/blog/the-binary/).
 
-<div id="elevenlabs-audionative-widget" data-height="90" data-width="100%" data-frameborder="no" data-scrolling="no" data-publicuserid="2be4d6242c862832d6b47ec70f7d7daf2c9f1306c933439f7083622af43fe99f" data-playerurl="https://elevenlabs.io/player/index.html" >Loading the <a href="https://elevenlabs.io/text-to-speech" target="_blank" rel="noopener">Elevenlabs Text to Speech</a> AudioNative Player...</div><script src="https://elevenlabs.io/player/audioNativeHelper.js" type="text/javascript"></script>
 
 In the previous articles, we saw how logic gates can be used to make comparisons and also calculate arithmetic operations, but we haven't yet seen how the computer can store information over time.
 

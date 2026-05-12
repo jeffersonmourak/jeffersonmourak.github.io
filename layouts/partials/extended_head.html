@@ -1,1 +1,21 @@
+<meta name="color-scheme" content="light dark" />
+<script>
+  // Pre-paint theme seed — sets `data-theme` on <html> before stylesheets
+  // resolve so we don't flash the opposite palette. Reads localStorage first,
+  // falls back to the OS preference, defaults to light if anything throws.
+  try {
+    var stored = localStorage.getItem('theme');
+    var preferred = stored || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    document.documentElement.dataset.theme = preferred;
+  } catch (_) {
+    document.documentElement.dataset.theme = 'light';
+  }
+</script>
 <link href="{{ "css/terminal.css" | absURL }}" rel="stylesheet" />
+{{- /* Page-bundle stylesheet: if the current page has a `style.css`
+       sibling (Hugo treats files next to index.md as Page resources),
+       link it after the site stylesheet so per-page rules win on
+       cascade order. Only loads on pages that actually ship one. */ -}}
+{{ with .Resources.GetMatch "style.css" }}
+<link rel="stylesheet" href="{{ .RelPermalink }}" />
+{{ end }}

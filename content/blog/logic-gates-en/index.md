@@ -15,7 +15,7 @@ contentLanguage: "en"
 versions:
   - name: English
     url: /blog/logic-gates-en
-  - name: Português (Brasileiro)
+  - name: Português (BR)
     url: /blog/logic-gates
 ---
 > Hey Y'all! This is a translation of my blog post originally written in Portuguese.
@@ -26,7 +26,6 @@ versions:
 > Hi folks, so I had to make some changes here in the post to add some interactive widgets,
 > and I took the opportunity to give a bit more context to the content.
 
-<div id="elevenlabs-audionative-widget" data-height="90" data-width="100%" data-frameborder="no" data-scrolling="no" data-publicuserid="2be4d6242c862832d6b47ec70f7d7daf2c9f1306c933439f7083622af43fe99f" data-playerurl="https://elevenlabs.io/player/index.html" >Loading the <a href="https://elevenlabs.io/text-to-speech" target="_blank" rel="noopener">Elevenlabs Text to Speech</a> AudioNative Player...</div><script src="https://elevenlabs.io/player/audioNativeHelper.js" type="text/javascript"></script>
 
 Hello, this is the first article in a series about the fundamentals of computing. The idea is to demonstrate in a simple and practical way how this device transforms zeros and ones into practically anything, the functioning of CPUs and other interesting subjects. So, to start, the first concept we have to learn is that of logic gates: they are the foundation of all computing, with them we can do certain operations that receive as input one or more values and will have another value as a result.
 

@@ -2,9 +2,9 @@
 title: "Jefferson Oliveira"
 ---
 
-<div class="profile-container">
-  <img class="profile-picture" alt="Jefferson Oliveira profile picture" src="https://avatars.githubusercontent.com/u/5585596?v=3">
-</div>
+<div class="profile-intro">
+
+<div class="profile-intro-text">
 
 # Hey there! I'm Jefferson
 
@@ -14,11 +14,12 @@ But man cannot live by code alone, I'm a board game enthusiast, and a fan of Ast
 
 If you want to know more about me, or just have a chat, hit me up on the links above and let's talk.
 
-## Links
+<small>Veja também em [português](/pt)</small>
 
-- [Instagram](https://instagram.com/jeffersonmourak)
-- [LinkedIn](https://www.linkedin.com/in/jeffersonmourak/)
-- [GitHub](https://github.com/jeffersonmourak)
-- [E-mail](mailto:jeffersonmourak@gmail.com)
-- [Voting Poker](https://voting.poker)
-- [Blog](/blog/)
+</div>
+
+<div class="profile-intro-image">
+  <img class="profile-picture" alt="Jefferson Oliveira profile picture" src="https://avatars.githubusercontent.com/u/5585596?v=3">
+</div>
+
+</div>

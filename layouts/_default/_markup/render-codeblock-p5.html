@@ -1,0 +1,60 @@
+{{- /*
+  Render a `p5` fenced code block as a self-contained p5.js sketch.
+
+  Usage:
+
+      ```p5
+      sketch.setup = () => sketch.createCanvas(400, 400);
+      sketch.draw = () => {
+        sketch.background(200);
+        sketch.ellipse(sketch.mouseX, sketch.mouseY, 50);
+      };
+      ```
+
+  The block body becomes the function body of `(sketch) => { … }` passed
+  to `new p5(...)`. A mount <div> sits next to the inline <script>; .Ordinal
+  namespaces the id so multiple blocks on one page don't collide.
+
+  Requires p5 to be available as `window.p5` — load it once per post via
+  `<script src="https://cdn.jsdelivr.net/npm/p5@1.11.3/lib/p5.min.js"></script>`
+  somewhere in the markdown. The mount logic guards on `window.p5` and
+  falls back to the `load` event so it works whether the p5 <script>
+  appears before or after this block.
+*/ -}}
+
+{{- $source := strings.TrimRight "\n" .Inner -}}
+{{- $id := printf "p5-%d" .Ordinal -}}
+
+<div class="p5-block" id="{{ $id }}"></div>
+<script>
+(function () {
+  function sketchFn(sketch) {
+{{ $source | replaceRE `</script>` `<\/script>` | safeJS }}
+  }
+  function mount() {
+    var node = document.getElementById("{{ $id }}");
+    if (!node || node.dataset.p5Mounted) return;
+    node.dataset.p5Mounted = "true";
+    new window.p5(sketchFn, node);
+    // p5 appends its <canvas> to the mount node from inside setup(),
+    // which runs asynchronously after construction. Once it's there,
+    // lock the CSS aspect-ratio to the canvas's drawing-buffer ratio
+    // so a `flex: 1` parent can't stretch it horizontally while CSS
+    // `height: auto` keeps the height pinned to the intrinsic value.
+    function lockAspect() {
+      var cv = node.querySelector("canvas");
+      if (cv && cv.width) {
+        cv.style.aspectRatio = cv.width + " / " + cv.height;
+      } else {
+        requestAnimationFrame(lockAspect);
+      }
+    }
+    lockAspect();
+  }
+  if (window.p5) {
+    mount();
+  } else {
+    window.addEventListener("load", mount);
+  }
+})();
+</script>

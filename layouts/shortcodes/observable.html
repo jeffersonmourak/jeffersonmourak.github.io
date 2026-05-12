@@ -1,0 +1,123 @@
+{{- /*
+  observable shortcode — embed an Observable Notebook natively (no iframe).
+
+  Usage:
+    {{< observable notebook="unicode" cells="ascii" >}}
+    {{< observable notebook="unicode" cells="viewof character,codepoint,encodingVisualizer" >}}
+
+  Architecture (host + mounts):
+    For each unique notebook used on the page, we emit ONE hidden
+    `.observable-host` containing the full notebook DOM (every cell div)
+    plus the bundled module script. The kit's runtime loads, calls
+    `define()` for every cell, and attaches to the cell elements there.
+
+    Each shortcode call emits a visible `.observable-mount` placeholder.
+    A small loader (one per page) runs on DOMContentLoaded — it walks
+    every mount and `appendChild`s the requested cell DIVs out of the
+    host and into the mount. Because the runtime stores live DOM
+    references, moving the elements keeps them reactive — they update
+    in their new parent.
+
+    This means multiple embeds of the same notebook on the same page
+    each get their requested cells, with no DOM-id collisions.
+
+  Requires:
+    - notebooks-src/<slug>.html    (kit source, committed)
+    - static/notebooks/<slug>.html + assets/  (kit build output)
+    Both produced by `bun run notebooks`.
+*/ -}}
+
+{{ $slug := .Get "notebook" }}
+{{ if not $slug }}{{ errorf "observable: notebook param required" }}{{ end }}
+
+{{ $srcPath := printf "notebooks-src/%s.html" $slug }}
+{{ $builtPath := printf "static/notebooks/%s.html" $slug }}
+{{ if not (fileExists $srcPath) }}{{ errorf "observable: missing %s — run `bun run notebooks`" $srcPath }}{{ end }}
+{{ if not (fileExists $builtPath) }}{{ errorf "observable: missing %s — run `bun run notebooks`" $builtPath }}{{ end }}
+
+{{ $src := readFile $srcPath }}
+{{ $built := readFile $builtPath }}
+
+{{/* Map output name → numeric cell id from the kit source. Each JS cell
+     looks like:  <script id="32" type="application/vnd.observable.javascript">
+                    ascii = { ... }
+                  </script>
+     The first assignment target (optionally prefixed by `viewof ` or
+     `mutable `) is the cell's output name. The leading-noise group
+     `(?:\s|//[^\n]*)*` skips whitespace and `//` line comments before
+     the identifier, since several cells open with explanatory comments
+     (e.g. `viewof character`). */}}
+{{ $idByName := dict }}
+{{ $jsCellRe := `(?s)<script\s+id="(\d+)"\s+type="application/vnd\.observable\.javascript">(?:\s|//[^\n]*)*((?:viewof\s+|mutable\s+)?[A-Za-z_$][\w$]*)\s*=` }}
+{{ range findRESubmatch $jsCellRe $src }}
+  {{ $idByName = merge $idByName (dict (index . 2) (index . 1)) }}
+{{ end }}
+
+{{/* Resolve requested cell names → cell ids. */}}
+{{ $requested := slice }}
+{{ with .Get "cells" }}
+  {{ range split . "," }}
+    {{ $name := trim . " \t\n+" }}
+    {{ with index $idByName $name }}
+      {{ $requested = $requested | append . }}
+    {{ else }}
+      {{ warnf "observable: cell %q not found in notebook %q" $name $slug }}
+    {{ end }}
+  {{ end }}
+{{ end }}
+
+{{/* Pull <main>...</main> body + the bundled runtime <script> tag out of
+     the kit's build output. */}}
+{{ $mainMatches := findRESubmatch `(?s)<main>(.*?)</main>` $built }}
+{{ if not $mainMatches }}{{ errorf "observable: <main> not found in %s" $builtPath }}{{ end }}
+{{ $mainHtml := index (index $mainMatches 0) 1 }}
+
+{{ $scriptMatches := findRESubmatch `(<script\s+type="module"[^>]+src="[^"]+"[^>]*></script>)` $built }}
+{{ if not $scriptMatches }}{{ errorf "observable: runtime <script> not found in %s" $builtPath }}{{ end }}
+{{ $scriptTag := index (index $scriptMatches 0) 1 }}
+
+{{/* Once per (page, notebook): emit the hidden host with all cells +
+     runtime script. The runtime defines every cell into this host's
+     DOM; the loader later relocates the displayed ones into mounts. */}}
+{{ $hostKey := printf "observable-host-%s" $slug }}
+{{ if not (.Page.Scratch.Get $hostKey) }}
+  {{ .Page.Scratch.Set $hostKey true }}
+<div class="observable-host" data-notebook="{{ $slug }}" aria-hidden="true">
+  {{ $mainHtml | safeHTML }}
+  {{ $scriptTag | safeHTML }}
+</div>
+{{ end }}
+
+{{/* Mount placeholder — the loader fills it with the requested cells. */}}
+<div class="observable-embed observable-mount"
+     data-notebook="{{ $slug }}"
+     {{- with $requested }} data-cells="{{ delimit . " " }}"{{ end }}></div>
+
+{{/* Once per page: emit the loader. It moves cells from each host into
+     each mount on DOMContentLoaded. Inline, no external file — keeps the
+     page self-contained and avoids an extra request. */}}
+{{ if not (.Page.Scratch.Get "observable-loader-emitted") }}
+  {{ .Page.Scratch.Set "observable-loader-emitted" true }}
+<script>
+  (function () {
+    function mountAll() {
+      document.querySelectorAll(".observable-mount").forEach(function (mount) {
+        var notebook = mount.dataset.notebook;
+        var ids = (mount.dataset.cells || "").split(/\s+/).filter(Boolean);
+        if (!notebook || ids.length === 0) return;
+        var host = document.querySelector(".observable-host[data-notebook='" + notebook + "']");
+        if (!host) return;
+        ids.forEach(function (id) {
+          var cell = host.querySelector("#cell-" + id);
+          if (cell) mount.appendChild(cell);
+        });
+      });
+    }
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", mountAll);
+    } else {
+      mountAll();
+    }
+  })();
+</script>
+{{ end }}
