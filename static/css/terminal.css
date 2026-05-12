@@ -813,6 +813,48 @@ a.read-more::after { content: " →"; }
   padding: 0;
 }
 
+.profile-intro {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 2rem;
+  margin: 1.5rem 0;
+}
+.profile-intro-text {
+  flex: 1 1 0;
+  min-width: 0;
+}
+.profile-intro-text > :first-child {
+  margin-top: 0;
+}
+.profile-intro-image {
+  flex: 0 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+.profile-intro-image .profile-picture {
+  width: 250px;
+  height: 250px;
+  border-radius: 50%;
+  border: none;
+  padding: 0;
+  margin: 1.2rem 0;
+}
+
+@media (max-width: 768px) {
+  .profile-intro {
+    flex-direction: column-reverse;
+    gap: 1rem;
+    align-items: center;
+    text-align: center;
+  }
+  .profile-intro-image .profile-picture {
+    width: 200px;
+    height: 200px;
+  }
+}
+
 .shortcode-widget {
   position: relative;
   overflow: hidden;
