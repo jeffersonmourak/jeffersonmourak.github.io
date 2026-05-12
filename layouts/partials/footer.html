@@ -26,15 +26,21 @@
 
     <div class="footer-byline">
       <p class="footer-colophon">
-        Typeset in
+        {{ $.Site.Params.footerTypesetIn }}
         <a href="https://www.collletttivo.it/typefaces/ronzino" target="_blank" rel="noreferrer noopener">Ronzino</a>
         &amp;
         <a href="https://www.collletttivo.it/typefaces/necto-mono" target="_blank" rel="noreferrer noopener">Necto&nbsp;Mono</a>
-        — thanks to <a href="https://www.collletttivo.it" target="_blank" rel="noreferrer noopener">Collletttivo</a> for the fonts.
+        {{ $.Site.Params.footerTypesetThanks }}
+        <a href="https://www.collletttivo.it" target="_blank" rel="noreferrer noopener">Collletttivo</a>
+        {{ $.Site.Params.footerTypesetEnd }}
       </p>
       <p class="footer-theme-credit">
-        Theme extended from <a href="https://github.com/panr/hugo-theme-terminal" target="_blank" rel="noreferrer noopener">Terminal</a> by <a href="https://github.com/panr" target="_blank" rel="noreferrer noopener">panr</a>.
+        {{ $.Site.Params.footerThemePrefix }}
+        <a href="https://github.com/panr/hugo-theme-terminal" target="_blank" rel="noreferrer noopener">Terminal</a>
+        {{ $.Site.Params.footerThemeBy }}
+        <a href="https://github.com/panr" target="_blank" rel="noreferrer noopener">panr</a>.
       </p>
+      <p class="footer-made-in">{{ $.Site.Params.madeIn }}</p>
     </div>
   </div>
 </footer>

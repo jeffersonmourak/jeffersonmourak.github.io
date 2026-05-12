@@ -959,6 +959,16 @@ a.read-more::after { content: " →"; }
   color: var(--muted);
   max-width: none;
 }
+/* Tiny "made in" line — set a notch quieter than the byline above with a
+   small top margin so it reads as a separate, understated stamp. */
+.footer-made-in {
+  margin: 0.5rem 0 0;
+  font-size: 0.7rem;
+  font-style: italic;
+  color: var(--muted);
+  opacity: 0.7;
+  letter-spacing: 0.04em;
+}
 
 /* ============================================================
    Profile / shortcode / circ-block widgets

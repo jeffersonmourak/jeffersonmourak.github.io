@@ -75,6 +75,12 @@ missingContentMessage = "Page not found..."
 missingBackButtonLabel = "Back to home page"
 minuteReadingTime = "min read"
 words = "words"
+footerTypesetIn = "Typeset in"
+footerTypesetThanks = "— thanks to"
+footerTypesetEnd = "for the fonts."
+footerThemePrefix = "Theme extended from"
+footerThemeBy = "by"
+madeIn = "Made with love in Brazil"
 
 [languages.en.params.logo]
 logoText = "Jefferson Oliveira"
@@ -132,6 +138,12 @@ missingContentMessage = "Página não encontrada..."
 missingBackButtonLabel = "Voltar para a página inicial"
 minuteReadingTime = "min de leitura"
 words = "palavras"
+footerTypesetIn = "Tipografia em"
+footerTypesetThanks = "— obrigado à"
+footerTypesetEnd = "pelas fontes."
+footerThemePrefix = "Tema estendido de"
+footerThemeBy = "por"
+madeIn = "Feito com rapadura e amor no Nordeste Brasileiro"
 newTab = true
 
 [languages.pt.params.logo]
