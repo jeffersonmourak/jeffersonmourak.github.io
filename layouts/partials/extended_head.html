@@ -1,1 +1,8 @@
 <link href="{{ "css/terminal.css" | absURL }}" rel="stylesheet" />
+{{- /* Page-bundle stylesheet: if the current page has a `style.css`
+       sibling (Hugo treats files next to index.md as Page resources),
+       link it after the site stylesheet so per-page rules win on
+       cascade order. Only loads on pages that actually ship one. */ -}}
+{{ with .Resources.GetMatch "style.css" }}
+<link rel="stylesheet" href="{{ .RelPermalink }}" />
+{{ end }}

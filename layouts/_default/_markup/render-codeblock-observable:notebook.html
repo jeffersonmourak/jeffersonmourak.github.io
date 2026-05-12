@@ -1,0 +1,84 @@
+{{- /*
+  Render an `observable:notebook` fenced code block as an inline
+  Observable Notebook. The `:notebook` namespace leaves room for future
+  inline variants (e.g. `observable:js` for a single expression).
+
+  Usage:
+
+      ```observable:notebook
+      <title>Hello, world!</title>
+      <script id="1" type="text/markdown">
+        # Hello, world!
+      </script>
+      <script id="2" type="module" pinned>
+        1 + 2
+      </script>
+      ```
+
+  Cell `type` values:
+    - `text/markdown`   — markdown prose, rendered at build time.
+    - `text/html`       — raw HTML.
+    - `module`          — standard ECMAScript (acorn parser). Good for
+                          plain expressions.
+    - `ojs`             — preprocessor shorthand for
+                          `application/vnd.observable.javascript`. Use
+                          this for cells pasted from observablehq.com that
+                          rely on `mutable X = …`, `viewof X = …`, or
+                          notebook imports — those need the OJS parser.
+    - `application/vnd.observable.javascript` — same, spelled out.
+
+  The block content IS the body of a notebook-kit notebook (cells declared
+  as `<script id="N" type="…">…</script>`). It's preprocessed by
+  scripts/preprocess-inline-observables.ts: the source is hashed, cell ids
+  are namespaced with a numeric prefix (so two inline blocks on the same
+  page don't collide on #cell-1), `type="ojs"` is expanded to the full
+  MIME, and the result is written to notebooks-src/_inline-<hash>.html,
+  then vite-built by build-notebooks.ts into static/notebooks/_inline-<hash>.html.
+
+  This hook recomputes the same hash and inlines the built page's <main>
+  cell DIVs + the bundled module <script> into the post. No host/mount
+  split — each inline block stands alone with its own globally-unique cell
+  ids, so the kit's runtime renders directly into the visible embed.
+*/ -}}
+
+{{- $source := strings.TrimRight "\n" .Inner -}}
+{{- $hash := $source | replaceRE "\r\n" "\n" | crypto.SHA256 -}}
+{{- $slug := printf "_inline-%s" $hash -}}
+{{- $builtPath := printf "static/notebooks/%s.html" $slug -}}
+
+{{- /* Bundle missing? In dev (`hugo server`), this is the normal state
+       right after a `.md` save: Hugo rebuilds instantly while
+       preprocess-inline-observables.ts is still debouncing + spawning
+       vite. Render a placeholder so the rebuild succeeds — Hugo's
+       static-file watcher will trigger another rebuild once vite writes
+       the bundle. In production builds we still errorf hard so CI
+       deploys fail loud on a missing artifact. */ -}}
+{{- if not (fileExists $builtPath) -}}
+  {{- if hugo.IsProduction -}}
+    {{- errorf "observable: missing built bundle for inline block (hash %s) — run `make notebooks` or `bun scripts/preprocess-inline-observables.ts && bun scripts/build-notebooks.ts`. Expected %s." $hash $builtPath -}}
+  {{- else -}}
+    {{- warnf "observable: bundle for inline block %s not ready yet — waiting for vite (preprocess-inline-observables → build-notebooks)." $hash -}}
+<div class="observable-embed observable-inline observable-inline--pending" data-inline="{{ $hash }}">
+  Building notebook… <small>this may take a several seconds</small>
+</div>
+  {{- end -}}
+{{- else -}}
+{{- $built := readFile $builtPath -}}
+
+{{- /* Extract <main>…</main> (cell DIVs) and the bundled <script>. The
+       kit also emits <style> blocks we don't want bleeding into the post
+       — those are skipped, leaving the cells to inherit the embed's
+       light-mode palette from terminal.css. */ -}}
+{{- $mainMatches := findRESubmatch `(?s)<main>(.*?)</main>` $built -}}
+{{- if not $mainMatches -}}{{ errorf "observable: <main> not found in %s" $builtPath }}{{- end -}}
+{{- $mainHtml := index (index $mainMatches 0) 1 -}}
+
+{{- $scriptMatches := findRESubmatch `(<script\s+type="module"[^>]+src="[^"]+"[^>]*></script>)` $built -}}
+{{- if not $scriptMatches -}}{{ errorf "observable: runtime <script> not found in %s" $builtPath }}{{- end -}}
+{{- $scriptTag := index (index $scriptMatches 0) 1 -}}
+
+<div class="observable-embed observable-inline" data-inline="{{ $hash }}">
+{{ $mainHtml | safeHTML }}
+{{ $scriptTag | safeHTML }}
+</div>
+{{- end -}}

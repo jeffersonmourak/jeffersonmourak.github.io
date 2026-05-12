@@ -58,9 +58,15 @@ jobs:
         run: bun install || true
       - name: Preprocess circ blocks
         run: bun scripts/preprocess-circ.ts
+      - name: Preprocess inline observable blocks
+        # Scans content/*.md for ```observable:notebook fenced blocks and
+        # stages a notebooks-src/_inline-*.html per block. The next step
+        # builds those alongside the named notebooks.
+        run: bun scripts/preprocess-inline-observables.ts
       - name: Build Observable notebooks
-        # Vite-bundles each notebook in notebooks-src/ into static/notebooks/.
-        # That directory is gitignored — every build regenerates it.
+        # Vite-bundles every notebook in notebooks-src/ (named + inline)
+        # into static/notebooks/. That directory is gitignored — every
+        # build regenerates it.
         run: bun scripts/build-notebooks.ts
       - name: Build with Hugo
         env:

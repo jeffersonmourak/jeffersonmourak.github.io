@@ -1,0 +1,312 @@
+/* ============================================================
+   Page-scoped styles for /blog/font-rendering/.
+   Auto-loaded by layouts/partials/extended_head.html when this file
+   sits next to index.md (Hugo page-bundle resource). Rules here run
+   only on this post.
+   ============================================================ */
+
+/* p5 sketch palette, sourced from the blog's theme tokens so the demos
+   pick up the same accent family as the prose around them and re-theme
+   automatically with the page. Structural roles (canvas bg, foreground,
+   border, text) cascade from terminal.css's --bg/--fg/--accent/etc.
+   Distinct semantic accents (Bézier curve, lerp line, moving marker)
+   come from page-local --complementary-* tokens — defined for dark
+   mode in the @media block below, with light-mode defaults provided
+   via the `var(…, fallback)` form. Both the p5 codeblocks AND the
+   Observable Plot cells read these via
+   `getComputedStyle(document.documentElement).getPropertyValue(…)`. */
+:root {
+  --p5-bg: var(--pane-bg);                              /* canvas bg              */
+  --p5-fg: var(--accent-soft);                          /* glyph / on-curve point */
+  --p5-pixel-empty: var(--bg);                          /* "off" cell in grid     */
+  --p5-grid-stroke: var(--border);                      /* per-pixel grid border  */
+  --p5-curve: var(--complementary-1, #5F931A);          /* Bézier curve + Q0/Q1   */
+  --p5-guide: var(--accent);                            /* outer control polygon  */
+  --p5-lerp: var(--complementary-2, #B89F0C);           /* inner lerp line        */
+  --p5-marker: var(--complementary-3, rgb(220, 0, 70)); /* moving point B         */
+  --p5-outline: var(--fg);                              /* vector outline / ring  */
+  --p5-text: var(--fg);                                 /* "t = X.XX" overlay     */
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* Brighter semantic accents for the dark canvas — same pattern
+       unicode/style.css uses for its byte-prefix/payload colors. */
+    --complementary-1: #81C774;        /* light green     */
+    --complementary-2: #F9F433;        /* bright yellow   */
+    --complementary-3: rgb(255, 100, 150); /* light pink  */
+  }
+}
+
+/* Side-by-side group of <figure>s — used for the scanline diagrams
+   showing 2, 3, and 4 intersections. */
+.figure-row {
+  display: flex;
+  gap: 16px;
+  width: 100%;
+}
+
+/* Two-column widget layout — visualization on the left expands to fill
+   the remaining width, controls stack on the right in a fixed-width
+   pane. Each p5 codeblock's setup() builds the canvas as the first
+   child of `.p5-block` and then a `.p5-controls` sibling that wraps
+   each input in a `.p5-control` row (label above, input below). For
+   blocks that have no controls (the Bézier demos), the canvas just
+   spans full width — handled by `.p5-controls:empty`. */
+.p5-block {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+.p5-block canvas {
+  flex: 1;
+  min-width: 0;
+  max-width: 100%;
+  height: auto;
+}
+
+/* Pan support — sketches set the canvas's `data-pan` attribute in
+   setup() so the cursor reflects the interaction. The bezier demos
+   leave it unset (they drag control points, not the whole view). */
+.p5-block canvas[data-pan] {
+  cursor: grab;
+}
+
+.p5-block canvas[data-pan]:active {
+  cursor: grabbing;
+}
+
+.p5-controls {
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  gap: 1rem;
+  width: 14rem;
+  padding: 0.75rem;
+  background-color: var(--p5-bg);
+  color: var(--p5-fg);
+  border-radius: 4px;
+}
+
+.p5-controls:empty {
+  display: none;
+}
+
+.p5-control {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.p5-control-label {
+  font-size: 0.85rem;
+  font-family: var(--font-mono);
+  color: var(--p5-fg);
+}
+
+.p5-slider {
+  width: 100%;
+}
+
+/* Observable inline notebooks (the Plot graph cells) follow the same
+   two-column shape as the p5 widgets: the Plot output expands on the
+   left, the slider cell sits on the right wearing `.p5-controls`-style
+   chrome. The Observable runtime wraps each cell in `.observablehq--cell`,
+   so we target those — cells whose output contains a `<form>` (the
+   Inputs.range slider) are the controls; cells containing the Plot
+   `<figure>` are the visualisation. */
+.observable-embed.observable-inline {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+.observable-embed.observable-inline > .observablehq--cell {
+  flex: 1;
+  min-width: 0;
+}
+
+.observable-embed.observable-inline > .observablehq--cell:has(form) {
+  flex: 0 0 14rem;
+  padding: 0.75rem;
+  background-color: var(--p5-bg);
+  color: var(--p5-fg);
+  border-radius: 4px;
+
+  /* `.observable-embed` pins `color-scheme: light` for the embed as a
+     whole, which forces the browser to render native form controls
+     (the <input type="number"> readout and the <input type="range">
+     track inside Inputs.range) with their light defaults — that's the
+     cream pill effect on a dark panel. Flip the scheme on the panel
+     so those controls inherit dark chrome from the UA stylesheet, then
+     redirect the Inputs kit's `--theme-*` tokens to our palette for
+     anything the kit styles directly (labels, focus rings, etc.). */
+  color-scheme: dark;
+  --theme-background: var(--p5-bg);
+  --theme-background-a: var(--p5-bg);
+  --theme-background-alt: color-mix(in srgb, var(--p5-fg) 14%, var(--p5-bg));
+  --theme-background-b: var(--p5-bg);
+  --theme-foreground: var(--p5-fg);
+  --theme-foreground-alt: var(--p5-fg);
+  --theme-foreground-muted: color-mix(in srgb, var(--p5-fg) 70%, transparent);
+  --theme-foreground-faint: color-mix(in srgb, var(--p5-fg) 50%, transparent);
+  --theme-foreground-fainter: color-mix(in srgb, var(--p5-fg) 30%, transparent);
+  --theme-foreground-faintest: color-mix(in srgb, var(--p5-fg) 14%, transparent);
+  --theme-foreground-focus: var(--p5-fg);
+}
+
+/* Inputs.range form: stack label above input, match the panel font. */
+.observable-embed.observable-inline form {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.observable-embed.observable-inline form > label {
+  font-size: 0.85rem;
+  font-family: var(--font-mono);
+  color: var(--p5-fg);
+  width: auto;
+}
+
+/* Force the native form chrome into the dark panel palette. `color-scheme`
+   alone isn't always enough — the browser's UA stylesheet still paints
+   the number-input bg from the embed's outer `color-scheme: light`. */
+.observable-embed.observable-inline form input[type="number"],
+.observable-embed.observable-inline form input[type="range"] {
+  background-color: color-mix(in srgb, var(--p5-fg) 14%, var(--p5-bg));
+  color: var(--p5-fg);
+  border: 1px solid color-mix(in srgb, var(--p5-fg) 30%, transparent);
+  border-radius: 3px;
+  padding: 0.15rem 0.35rem;
+  accent-color: var(--p5-fg);
+}
+
+.observable-embed.observable-inline form input[type="range"] {
+  padding: 0;
+  appearance: none;
+  height: 1.25rem;
+  width: 100%;
+  cursor: pointer;
+}
+
+.observable-embed.observable-inline form input[type="range"]::-webkit-slider-runnable-track {
+  background: color-mix(in srgb, var(--p5-fg) 22%, var(--p5-bg));
+  height: 0.35rem;
+  border-radius: 999px;
+}
+
+.observable-embed.observable-inline form input[type="range"]::-moz-range-track {
+  background: color-mix(in srgb, var(--p5-fg) 22%, var(--p5-bg));
+  height: 0.35rem;
+  border-radius: 999px;
+}
+
+.observable-embed.observable-inline form input[type="range"]::-webkit-slider-thumb {
+  appearance: none;
+  width: 0.9rem;
+  height: 0.9rem;
+  border-radius: 50%;
+  background: var(--p5-fg);
+  margin-top: -0.275rem;
+}
+
+.observable-embed.observable-inline form input[type="range"]::-moz-range-thumb {
+  border: none;
+  width: 0.9rem;
+  height: 0.9rem;
+  border-radius: 50%;
+  background: var(--p5-fg);
+}
+
+/* Radio group — chrome is owned by the parent `.p5-controls`, so the
+   group itself is transparent. Options sit in a wrap-friendly row, the
+   native circle is visually hidden (kept in the accessibility tree),
+   and each <label> becomes a pill button that fills with the foreground
+   colour when its input is `:checked`. The `+ label` / `:has(:checked)`
+   pair handles both p5 radio shapes — sibling pairs (`<input><label>`)
+   and the nested form (`<label><input>...</label>`). */
+.p5-radio {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  background-color: transparent;
+  color: inherit;
+  padding: 0;
+  margin: 0;
+}
+
+.p5-radio input[type="radio"] {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.p5-radio label {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.75rem;
+  padding: 0.2rem 0.5rem;
+  border: 1px solid color-mix(in srgb, var(--p5-fg) 45%, transparent);
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  line-height: 1;
+  user-select: none;
+  transition: background-color 0.12s ease, border-color 0.12s ease, color 0.12s ease;
+}
+
+.p5-radio label:hover {
+  background-color: color-mix(in srgb, var(--p5-fg) 18%, transparent);
+  border-color: var(--p5-fg);
+}
+
+/* Focus ring stays on the (visually hidden) input for keyboard users —
+   surface it through the sibling label. */
+.p5-radio input[type="radio"]:focus-visible + label,
+.p5-radio label:has(> input[type="radio"]:focus-visible) {
+  outline: 2px solid var(--p5-fg);
+  outline-offset: 2px;
+}
+
+/* Checked state — the visible answer to "which option am I on?". */
+.p5-radio input[type="radio"]:checked + label,
+.p5-radio label:has(> input[type="radio"]:checked) {
+  background-color: var(--p5-fg);
+  color: var(--p5-bg);
+  border-color: var(--p5-fg);
+}
+
+/* Responsive: at the theme's small-screen breakpoint, switch every
+   widget that uses the side-by-side layout (p5 blocks + Observable
+   Plot blocks with sliders) from row → column-reverse. Column-reverse
+   lifts the controls above the canvas without reordering the DOM:
+   p5's setup() always builds the canvas first and `.p5-controls`
+   second, and Observable's inline cells emit Plot before the slider —
+   `reverse` puts controls on top in both cases. Pane width opens up
+   to fill the column. */
+@media (max-width: 684px) {
+  .p5-block,
+  .observable-embed.observable-inline {
+    flex-direction: column-reverse;
+  }
+
+  .p5-controls {
+    width: 100%;
+  }
+
+  .observable-embed.observable-inline > .observablehq--cell:has(form) {
+    flex: 0 0 auto;
+    width: 100%;
+  }
+}

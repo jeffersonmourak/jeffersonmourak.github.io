@@ -1003,14 +1003,30 @@ a.read-more::after { content: " →"; }
   --theme-foreground-faintest: color-mix(in srgb, #443856 14%, transparent);
   --theme-foreground-focus: #6e49ab;
   --theme-error: #d33;
+
+  /* Also pin the blog's own tokens to LIGHT values inside the embed so
+     per-page CSS (e.g. content/<post>/style.css) can use var(--accent),
+     var(--pane-bg), etc. and get stable colors regardless of the
+     surrounding page's prefers-color-scheme. */
+  --bg: #f8f4ff;
+  --fg: #443856;
+  --muted: #8a7e9a;
+  --border: #e6dff5;
+  --accent: #6e49ab;
+  --accent-soft: #8a6dc4;
+  --code-bg: #ece2f7;
+  --pane-bg: #f4eefb;
+  --pane-label-bg: #ebe4f5;
+
   color: #443856;
   color-scheme: light;
 }
-.observable-mount {
+.observable-mount,
+.observable-inline--pending {
   margin: 1.5rem 0;
   padding: 1rem 1.25rem;
-  background: var(--pane-bg);                                                                                                            
-  border: 1px solid var(--border);  
+  background: var(--pane-bg);
+  border: 1px solid var(--border);
   border-radius: 6px;
 }
 .observable-mount:empty::before {
@@ -1018,6 +1034,15 @@ a.read-more::after { content: " →"; }
   color: var(--muted);
   font-family: var(--font-mono);
   font-size: 0.85rem;
+}
+/* Pending state used by the inline render hook while vite is still
+   bundling the new hash after a markdown save. Replaced on the next
+   Hugo rebuild once the bundle lands. */
+.observable-inline--pending {
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  color: var(--muted);
+  font-style: italic;
 }
 .observable-mount > .observablehq--cell { margin: 0.5rem 0; }
 .observable-mount .observablehq--cell > div > :first-child { margin-top: 0; }

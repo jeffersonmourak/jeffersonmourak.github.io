@@ -33,7 +33,7 @@
  *       interpolating, so htl renders the markup instead of escaping it.
  */
 import { spawnSync } from "node:child_process";
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 
 type Entry = { slug: string; url: string };
@@ -70,11 +70,25 @@ for (const { slug, url } of config) {
   }
 }
 
+// Build every .html in notebooks-src/ — named notebooks from the config
+// AND inline blocks dropped here by scripts/preprocess-inline-observables.ts.
+// One pass is faster than per-file because vite shares chunks across the
+// whole build.
 console.log("build: vite (notebooks build)");
-const files = config.map((e) => `notebooks-src/${e.slug}.html`);
+const files = readdirSync(srcDir)
+  .filter((name) => name.endsWith(".html"))
+  .map((name) => `notebooks-src/${name}`);
+if (files.length === 0) {
+  console.log("nothing to build (notebooks-src/ is empty).");
+  process.exit(0);
+}
+// --empty wipes static/notebooks/ before re-building so stale inline-block
+// artifacts from previous runs (older hashes, removed blocks) don't pile up.
+// The directory is gitignored, so this is safe; vite rebuilds everything in
+// ~600ms.
 const r = spawnSync(
   bin,
-  ["build", "--root", "notebooks-src", "--base", "/notebooks/", "--out", "../static/notebooks", "--", ...files],
+  ["build", "--root", "notebooks-src", "--base", "/notebooks/", "--out", "../static/notebooks", "--empty", "--", ...files],
   { stdio: "inherit" },
 );
 if (r.status !== 0) process.exit(r.status ?? 1);
