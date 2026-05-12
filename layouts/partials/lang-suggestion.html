@@ -1,0 +1,148 @@
+{{- /*
+  Bidirectional nudge that offers visitors a one-click jump into the
+  other localised version of the page they're on. Emitted on both the
+  EN and PT builds; every decision is client-side so the banner stays
+  a no-op for visitors who don't match: it inspects the browser's
+  primary language preference, skips anyone who's already dismissed it
+  (localStorage flag), and only acts on the two routes the user asked
+  about (root + `/blog/` list, mirrored on `/pt/` + `/pt/blog/`).
+
+  Why the *primary* language and not `.some()` across the full list:
+  most Brazilian users still ship "en" deep in their navigator.languages
+  fallback, so a `.some()` check would pop the EN banner on every PT
+  visitor too. The site language is the user's explicit current choice
+  (`<html lang>`), so we only suggest a swap when their #1 preference
+  disagrees with where they are.
+
+  Inline styles + script keep this self-contained — no extra CSS file
+  to load on every page just for an opt-in banner.
+*/ -}}
+<div id="lang-suggestion" hidden role="status" aria-live="polite">
+  <span class="lang-suggestion__msg" data-msg></span>
+  <a class="lang-suggestion__cta" data-cta href="#"></a>
+  <button class="lang-suggestion__close" data-dismiss type="button" aria-label="Dismiss">×</button>
+</div>
+<style>
+  /* Scoped to :not([hidden]) so the UA stylesheet's `[hidden]{display:none}`
+     keeps the element collapsed until the script flips it on — without
+     this, our `display: flex` overrides `hidden` by specificity and the
+     banner skeleton stays visible even with nothing inside it. */
+  #lang-suggestion:not([hidden]) {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem 0.9rem;
+    margin: 0 0 1rem;
+    border: 1px solid var(--border, color-mix(in srgb, var(--fg) 25%, transparent));
+    border-radius: 4px;
+    background: color-mix(in srgb, var(--accent) 8%, var(--bg));
+    color: var(--fg);
+    font-size: 0.9rem;
+  }
+  #lang-suggestion .lang-suggestion__msg { flex: 1; }
+  #lang-suggestion .lang-suggestion__cta {
+    font-weight: bold;
+    color: var(--accent);
+    text-decoration: underline;
+  }
+  #lang-suggestion .lang-suggestion__close {
+    background: transparent;
+    border: none;
+    color: var(--fg);
+    font-size: 1.1rem;
+    line-height: 1;
+    cursor: pointer;
+    opacity: 0.6;
+  }
+  #lang-suggestion .lang-suggestion__close:hover { opacity: 1; }
+</style>
+<script>
+  (function () {
+    try {
+      if (localStorage.getItem("lang-suggestion-dismissed") === "1") return;
+    } catch (_) {}
+
+    var primary = (
+      (navigator.languages && navigator.languages[0]) ||
+      navigator.language ||
+      ""
+    ).toLowerCase();
+    var primaryIsPt = primary.indexOf("pt") === 0;
+    var primaryIsEn = primary.indexOf("en") === 0;
+    if (!primaryIsPt && !primaryIsEn) return;
+
+    var path = location.pathname.replace(/\/+$/, "") || "/";
+    var qs = new URLSearchParams(location.search);
+    // The "see all languages" checkbox is an explicit opt-in to the
+    // mixed list — suggesting a single-language filter would just undo
+    // that choice, so stay quiet on `?all=true`.
+    if (qs.get("all") === "true") return;
+
+    // What language is the visitor actually looking at right now?
+    // It's the route's default unless an explicit `?lang=` overrides
+    // it. From there, a suggestion makes sense only when this disagrees
+    // with their primary navigator preference.
+    var langOverride = (qs.get("lang") || "").toLowerCase();
+    var visibleLang;
+    if (path === "/") visibleLang = "en";
+    else if (path === "/pt") visibleLang = "pt";
+    else if (path === "/blog") visibleLang = langOverride.indexOf("pt") === 0 ? "pt" : "en";
+    else if (path === "/pt/blog") visibleLang = langOverride.indexOf("en") === 0 ? "en" : "pt";
+    else return;
+
+    var visibleIsPt = visibleLang === "pt";
+    var visibleIsEn = visibleLang === "en";
+    var target, msg, cta;
+
+    if (primaryIsPt && visibleIsEn) {
+      // Portuguese-first visitor currently seeing English content.
+      if (path === "/") {
+        target = "/pt/";
+        msg = "Esta página também está disponível em Português.";
+        cta = "Ver em Português";
+      } else if (path === "/blog") {
+        target = "/blog/?lang=pt";
+        msg = "Filtrar para posts em Português?";
+        cta = "Aplicar filtro";
+      } else if (path === "/pt/blog") {
+        // `?lang=en` is the only way to land here with visible=en;
+        // dropping the override returns to the PT default list.
+        target = "/pt/blog/";
+        msg = "Remover o filtro de inglês e voltar para os posts em Português?";
+        cta = "Mostrar Português";
+      }
+    } else if (primaryIsEn && visibleIsPt) {
+      // English-first visitor currently seeing Portuguese content.
+      if (path === "/pt") {
+        target = "/";
+        msg = "This page is also available in English.";
+        cta = "Switch to English";
+      } else if (path === "/blog") {
+        // `?lang=pt` is the only way to land here with visible=pt;
+        // dropping the override returns to the EN default list.
+        target = "/blog/";
+        msg = "Remove the Portuguese filter and switch back to English posts?";
+        cta = "Switch to English";
+      } else if (path === "/pt/blog") {
+        target = "/blog/";
+        msg = "View the English-language posts?";
+        cta = "Switch to English";
+      }
+    } else {
+      return;
+    }
+    if (!target) return;
+
+    var el = document.getElementById("lang-suggestion");
+    if (!el) return;
+    el.querySelector("[data-msg]").textContent = msg;
+    var ctaEl = el.querySelector("[data-cta]");
+    ctaEl.textContent = cta;
+    ctaEl.setAttribute("href", target);
+    el.hidden = false;
+    el.querySelector("[data-dismiss]").addEventListener("click", function () {
+      el.remove();
+      try { localStorage.setItem("lang-suggestion-dismissed", "1"); } catch (_) {}
+    });
+  })();
+</script>

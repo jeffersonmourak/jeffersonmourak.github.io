@@ -15,8 +15,6 @@ Mas nem só de código vive o homem, sou um entusiasta de jogos de tabuleiro, As
 
 Se você quiser saber mais sobre mim, ou só bater um papo, me chama em qualquer um dos links e a gente conversa.
 
-<small>Check this out in <a href="/">English</a> 🌎</small>
-
 </div>
 
 <div class="profile-intro-image">
