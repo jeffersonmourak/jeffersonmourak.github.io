@@ -62,7 +62,7 @@ const glyphs = [
     [0,1,0,0,0,0],
     [0,1,0,0,0,0],
   ]}},
-  { name: "e", data: { width: 6, height: 6, pixels: [
+  { name: "g", data: { width: 6, height: 6, pixels: [
     [0,0,0,0,0,0],
     [0,0,1,1,1,0],
     [0,1,0,0,0,0],
@@ -304,7 +304,7 @@ const glyphs = [
     [0,1,0,0,0,0],
     [0,1,0,0,0,0],
   ]}},
-  { name: "e", data: { width: 6, height: 6, pixels: [
+  { name: "g", data: { width: 6, height: 6, pixels: [
     [0,0,0,0,0,0],
     [0,0,1,1,1,0],
     [0,1,0,0,0,0],
