@@ -41,6 +41,16 @@
   --pane-bg: #f4eefb;
   --pane-label-bg: #ebe4f5;
 
+  /* Syntax-highlight palette — port of circ-compiler/site's Shiki TextMate
+     themes (src/utils/shiki-themes.mjs). Two complementary hues carry
+     language vocabulary: green for keywords / declarations / built-in types,
+     orange for literal data (strings, numbers, constants). Identifiers and
+     chrome reuse --fg / --muted / --accent / --accent-soft from above. Light
+     values are darkened to clear WCAG AA on --code-bg. */
+  --syntax-keyword: #0a6634;
+  --syntax-literal: #8e4a0e;
+  --syntax-invalid: #a83737;
+
   --font-prose: 'Ronzino', ui-sans-serif, system-ui, -apple-system,
     "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --font-mono: 'Necto Mono', ui-monospace, SFMono-Regular, "JetBrains Mono",
@@ -75,6 +85,12 @@
   --code-bg: #1f1438;
   --pane-bg: #0c0517;
   --pane-label-bg: #13091f;
+
+  /* Dark palette uses the user-provided hexes from the Shiki port directly
+     (#1ee17d ~9:1 on --code-bg, #e17d1e ~5:1). */
+  --syntax-keyword: #1ee17d;
+  --syntax-literal: #e17d1e;
+  --syntax-invalid: #ff6b8a;
 
   color-scheme: dark;
 }

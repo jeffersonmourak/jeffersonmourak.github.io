@@ -1,73 +1,138 @@
-/* code.language-css,
-code.language-scss,
-.token.boolean,
-.token.string,
-.token.entity,
-.token.url,
-.language-css .token.string,
-.language-scss .token.string,
-.style .token.string,
-.token.attr-value,
-.token.keyword,
-.token.control,
-.token.directive,
-.token.statement,
-.token.regex,
-.token.atrule,
-.token.number,
-.token.inserted,
-.token.important {
-  color: var(--accent) !important;
+/* ============================================================
+   Syntax highlighting — port of the Shiki TextMate themes from
+   circ-compiler/site (src/utils/shiki-themes.mjs).
+
+   Loads alphabetically after prism.css, so same-specificity
+   .token.* rules below win on source order. Light/dark palette
+   selection comes from --syntax-* vars in static/css/terminal.css,
+   which respond to the [data-theme] attribute on <html>.
+
+   Color strategy: purple shades (--fg, --muted, --accent,
+   --accent-soft) carry IDENTIFIERS and chrome; two complementary
+   hues carry vocabulary — green (--syntax-keyword) for keywords /
+   declarations / built-in types, orange (--syntax-literal) for
+   literal data (strings, numbers, constants, escapes).
+   ============================================================ */
+
+/* code-block container — keep the prism.css padding but theme the
+   colors to our palette. */
+code[class*="language-"],
+pre[class*="language-"] {
+  color: var(--fg);
+  background: none;
+  text-shadow: none;
+}
+:not(pre) > code[class*="language-"],
+pre[class*="language-"] {
+  background: var(--code-bg);
 }
 
-.token.tag-id,
-.token.atrule-id,
-.token.operator,
-.token.unit,
-.token.placeholder,
-.token.variable,
-.token.attr-name,
-.token.namespace,
-.token.deleted,
-.token.property,
-.token.class-name,
-.token.constant,
-.token.symbol {
-  color: color-mix(in srgb, var(--accent) 70%, transparent) !important;
-}
-
-.token.property,
-.token.function,
-.token.function-name,
-.token.deleted,
-code.language-javascript,
-code.language-html,
-.command-line-prompt > span::before {
-  color: var(--accent) !important;
-}
-
-.token.selector,
-.token.tag,
-.token.punctuation {
-  color: color-mix(in srgb, var(--accent) 50%, var(--foreground)) !important;
-}
-
+/* === comment / prolog ============================================ */
 .token.comment,
+.token.block-comment,
 .token.prolog,
 .token.doctype,
 .token.cdata {
-  color: color-mix(in srgb, var(--foreground) 30%, transparent) !important;
-} */
-
-.token.namespace {
-  opacity: 0.7 !important;
+  color: var(--muted);
+  font-style: italic;
 }
 
+/* === literals (orange) =========================================== */
+.token.string,
+.token.char,
+.token.attr-value,
+.token.regex,
+.token.url-link {
+  color: var(--syntax-literal);
+}
+
+.token.number,
+.token.boolean,
+.token.constant,
+.token.symbol {
+  color: var(--syntax-literal);
+}
+
+.token.entity {
+  color: var(--syntax-literal);
+  font-weight: bold;
+}
+
+/* === keywords / declarations (green, bold) ======================
+   Bold-or-not mirrors Shiki: `keyword.*` / `storage.*` get bold,
+   `support.type` / `entity.name.type` are green but plain. */
+.token.keyword,
+.token.atrule,
+.token.selector,
+.token.important,
+.token.rule {
+  color: var(--syntax-keyword);
+  font-weight: bold;
+}
+
+/* === built-in types / tags (green, plain) ======================== */
+.token.builtin,
+.token.class-name,
+.token.tag,
+.token.namespace {
+  color: var(--syntax-keyword);
+}
+
+/* === functions / attributes (accent-soft) ======================== */
+.token.function,
+.token.function-name,
+.token.function-variable {
+  color: var(--accent-soft);
+}
+
+.token.property,
+.token.attr-name,
+.token.parameter {
+  color: var(--accent-soft);
+}
+
+/* === variables / punctuation / operators ========================= */
+.token.variable {
+  color: var(--fg);
+}
+
+.token.operator,
+.token.url {
+  color: var(--accent);
+}
+
+.token.punctuation,
+.token.delimiter {
+  color: var(--muted);
+}
+
+/* === diff / markdown markers ===================================== */
+.token.inserted {
+  color: var(--syntax-keyword);
+}
+
+.token.deleted {
+  color: var(--syntax-invalid);
+}
+
+.token.bold {
+  font-weight: bold;
+}
+
+.token.italic {
+  font-style: italic;
+}
+
+.token.namespace {
+  opacity: 0.7;
+}
+
+/* === pre[data-line] / line-highlight (kept from upstream) ======== */
 pre[data-line] {
   position: relative;
 }
 
-pre[class*=language-] {
+pre[class*="language-"] {
   margin: 0;
   overflow: auto;
 }
@@ -78,7 +143,6 @@ pre[class*=language-] {
   right: 0;
   padding: 0;
   margin: 0;
-  /* background: color-mix(in srgb, var(--foreground) 7%, transparent); */
   pointer-events: none;
   line-height: inherit;
   white-space: pre;
@@ -88,19 +152,15 @@ pre[class*=language-] {
 .line-highlight[data-end]::after {
   content: attr(data-start);
   position: absolute;
-
-  /* top: .4em; */
   left: 0.6em;
   min-width: 1em;
   padding: 0 0.5em;
-  /* background-color: color-mix(in srgb, var(--foreground) 40%, transparent); */
   color: var(--foreground);
   font: bold 65%/1.5 sans-serif;
   text-align: center;
   vertical-align: 0.3em;
   border-radius: 999px;
   text-shadow: none;
-  /* box-shadow: 0 1px var(--foreground); */
 }
 
 .line-highlight[data-end]::after {
