@@ -23,10 +23,9 @@ description: "Have you ever wondered how computers transform letters, numbers, a
 versions:
   - name: English
     url: /blog/unicode-en
-  - name: Português (Brasileiro)
+  - name: Português (BR)
     url: /blog/unicode
 ---
-<div id="elevenlabs-audionative-widget" data-height="90" data-width="100%" data-frameborder="no" data-scrolling="no" data-publicuserid="2be4d6242c862832d6b47ec70f7d7daf2c9f1306c933439f7083622af43fe99f" data-playerurl="https://elevenlabs.io/player/index.html" data-projectid="h3hAFoSE8EurzeNTiAzV" >Loading the <a href="https://elevenlabs.io/text-to-speech" target="_blank" rel="noopener">Elevenlabs Text to Speech</a> AudioNative Player...</div><script src="https://elevenlabs.io/player/audioNativeHelper.js" type="text/javascript"></script>
 
 > Hey Y'all! This is a translation of my blog post originally written in Portuguese.
 > If you want to read that version, [click here](/blog/unicode/).
@@ -411,7 +410,7 @@ Additionally, another reason that made it become the world standard today is tha
 
 It's been several years since UTF-8 became the standard in all internet communication, and the fact that today the average Japanese person doesn't need to worry about mojibake anymore is because of this brilliant method of encoding text.
 
-### References
+## References
 
 - [Characters, Symbols and the Unicode Miracle - Computerphile (YouTube)](https://www.youtube.com/watch?v=MijmeoH9LT4)
 - [UTF-8, a transformation format of ISO 10646 - ietf.org](https://datatracker.ietf.org/doc/html/rfc3629)

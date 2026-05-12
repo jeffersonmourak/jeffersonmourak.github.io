@@ -21,12 +21,3 @@ If you want to know more about me, or just have a chat, hit me up on the links a
 </div>
 
 </div>
-
-## Links
-
-- [Instagram](https://instagram.com/jeffersonmourak)
-- [LinkedIn](https://www.linkedin.com/in/jeffersonmourak/)
-- [GitHub](https://github.com/jeffersonmourak)
-- [E-mail](mailto:jeffersonmourak@gmail.com)
-- [Voting Poker](https://voting.poker)
-- [Blog](/blog/)

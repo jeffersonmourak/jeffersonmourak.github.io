@@ -24,7 +24,7 @@ description: "Já se perguntou como seu computador \"lembra\" de tudo? Este arti
 versions:
   - name: English
     url: /blog/memory-en
-  - name: Português (Brasileiro)
+  - name: Português (BR)
     url: /blog/memory
 ---
 > Olá todo mundo, este é o terceiro artigo na série sobre computadores, e também o último com esse cabeçalho aqui, pois daqui para a frente é recomendado que você já tenha lido os dois artigos anteriores:
@@ -32,7 +32,6 @@ versions:
 > - [Portas lógicas](https://jeffersonmourak.com/blog/logic-gates/).
 > - [Prazer, Binário.](https://jeffersonmourak.com/blog/the-binary/).
 
-<div id="elevenlabs-audionative-widget" data-height="90" data-width="100%" data-frameborder="no" data-scrolling="no" data-publicuserid="2be4d6242c862832d6b47ec70f7d7daf2c9f1306c933439f7083622af43fe99f" data-playerurl="https://elevenlabs.io/player/index.html" >Loading the <a href="https://elevenlabs.io/text-to-speech" target="_blank" rel="noopener">Elevenlabs Text to Speech</a> AudioNative Player...</div><script src="https://elevenlabs.io/player/audioNativeHelper.js" type="text/javascript"></script>
 
 Nos artigos anteriores, nós vimos como portas lógicas podem ser usadas para fazer comparações e também calcular operações aritméticas, porém ainda não vimos como o computador pode guardar uma informação ao longo do tempo.
 

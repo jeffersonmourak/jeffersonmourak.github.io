@@ -31,11 +31,10 @@ description: "Já imaginou como computadores transformam letras, números e emoj
 versions:
   - name: English
     url: /blog/unicode-en
-  - name: Português (Brasileiro)
+  - name: Português (BR)
     url: /blog/unicode
 
 ---
-<div id="elevenlabs-audionative-widget" data-height="90" data-width="100%" data-frameborder="no" data-scrolling="no" data-publicuserid="2be4d6242c862832d6b47ec70f7d7daf2c9f1306c933439f7083622af43fe99f" data-playerurl="https://elevenlabs.io/player/index.html" data-projectid="vXqUPGWRArVCy0iXsuvH" >Loading the <a href="https://elevenlabs.io/text-to-speech" target="_blank" rel="noopener">Elevenlabs Text to Speech</a> AudioNative Player...</div><script src="https://elevenlabs.io/player/audioNativeHelper.js" type="text/javascript"></script>
 
 Já imaginou como computadores transformam letras, números e emojis em zeros e uns que eles possam entender? Assim como nós, humanos, atribuímos significados às letras do alfabeto, o computador faz o mesmo. Vamos explorar aqui dois dos padrões mais populares de codificação de texto.
 
@@ -419,7 +418,7 @@ Além disso, outra razão que o fez se tornar o padrão mundial hoje em dia é q
 
 Já fazem alguns anos que o UTF-8 virou o padrão em toda comunicação pela internet, e o fato de hoje a pessoa japonesa média não precisar se preocupar com mojibake mais é por causa desse método genial de codificar texto.
 
-### Referencias
+## Referencias
 
 - [Characters, Symbols and the Unicode Miracle - Computerphile (YouTube)](https://www.youtube.com/watch?v=MijmeoH9LT4)
 - [UTF-8, a transformation format of ISO 10646 - ietf.org](https://datatracker.ietf.org/doc/html/rfc3629)

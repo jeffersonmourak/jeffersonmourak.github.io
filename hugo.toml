@@ -60,7 +60,7 @@ languageName = "English"
 languageCode = 'en'
 languageDirection = 'ltr'
 title = "Jefferson Oliveira"
-copyright = "© Jefferson Oliveira<br/>All content provided by this website are my own opinons and beliefs and are distrubuted under the <br/>"
+copyright = "All content provided by this website are my own opinons and beliefs and are distrubuted under the <br/>"
 [languages.en.params]
 subtitle = "Hey there! I'm Jefferson Oliveira, a software engineer from Brazil."
 owner = "Jefferson Oliveira"
@@ -113,11 +113,11 @@ url = "https://voting.poker"
 weight = 6
 
 [languages.pt]
-languageName = "Portugês (Brasileiro)"
+languageName = "Português (BR)"
 languageCode = 'pt'
 languageDirection = 'ltr'
 title = "Jefferson Oliveira"
-copyright = "© Jefferson Oliveira<br/>Todo conteúdo distribuido por este website refletem minhas próprias opiniões e estão sob a licença <br/>"
+copyright = "Todo conteúdo distribuido por este website refletem minhas próprias opiniões e estão sob a licença <br/>"
 [languages.pt.params]
 subtitle = "Olá! Eu sou Jefferson Oliveira, um engenheiro de software curioso e apaixonado por tecnologia."
 owner = "Jefferson Oliveira"

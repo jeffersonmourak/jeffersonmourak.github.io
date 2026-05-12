@@ -15,7 +15,7 @@ description: "Did you know that the fundamental language of computers boils down
 versions:
   - name: English
     url: /blog/the-binary-en
-  - name: Português (Brasileiro)
+  - name: Português (BR)
     url: /blog/the-binary
 ---
 > Hey Y'all! This is a translation of my blog post originally written in Portuguese.
@@ -26,7 +26,6 @@ versions:
 > first one about [logic gates](https://jeffersonmourak.com/blog/logic-gates/).
 > And for those who have already read the first article, take a quick look there because I did a revision of the article, I highly recommend taking a look 😊
 
-<div id="elevenlabs-audionative-widget" data-height="90" data-width="100%" data-frameborder="no" data-scrolling="no" data-publicuserid="2be4d6242c862832d6b47ec70f7d7daf2c9f1306c933439f7083622af43fe99f" data-playerurl="https://elevenlabs.io/player/index.html" >Loading the <a href="https://elevenlabs.io/text-to-speech" target="_blank" rel="noopener">Elevenlabs Text to Speech</a> AudioNative Player...</div><script src="https://elevenlabs.io/player/audioNativeHelper.js" type="text/javascript"></script>
 
 Let's dive a bit deeper and explore some concepts of mathematics and also human history.
 

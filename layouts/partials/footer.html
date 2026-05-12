@@ -1,5 +1,15 @@
-<footer class="footer">
+<footer class="footer site-footer">
   <div class="footer__inner">
+    {{ with $.Site.Menus.main }}
+      <nav class="site-footer-links" aria-label="Site links">
+        {{ range . }}
+          {{ if not .HasChildren }}
+            <a href="{{ .URL }}"{{ if .Params.NewTab }} target="_blank" rel="noreferrer noopener"{{ end }}>{{ .Name }}</a>
+          {{ end }}
+        {{ end }}
+      </nav>
+    {{ end }}
+
     {{ if $.Site.Copyright }}
       <div class="copyright copyright--user">
         <span>{{ $.Site.Copyright | safeHTML }}</span>
@@ -8,8 +18,20 @@
       <div class="copyright">
         <span>© {{ now.Year }} Powered by <a href="https://gohugo.io">Hugo</a></span>
     {{ end }}
-      <span><a href="https://github.com/panr/hugo-theme-terminal" target="_blank">Theme</a> made by <a href="https://github.com/panr" target="_blank">panr</a></span>
       </div>
+
+    <div class="footer-byline">
+      <p class="footer-colophon">
+        Typeset in
+        <a href="https://www.collletttivo.it/typefaces/ronzino" target="_blank" rel="noreferrer noopener">Ronzino</a>
+        &amp;
+        <a href="https://www.collletttivo.it/typefaces/necto-mono" target="_blank" rel="noreferrer noopener">Necto&nbsp;Mono</a>
+        — thanks to <a href="https://www.collletttivo.it" target="_blank" rel="noreferrer noopener">Collletttivo</a> for the fonts.
+      </p>
+      <p class="footer-theme-credit">
+        Theme extended from <a href="https://github.com/panr/hugo-theme-terminal" target="_blank" rel="noreferrer noopener">Terminal</a> by <a href="https://github.com/panr" target="_blank" rel="noreferrer noopener">panr</a>.
+      </p>
+    </div>
   </div>
 </footer>
 

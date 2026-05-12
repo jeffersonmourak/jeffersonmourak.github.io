@@ -15,7 +15,7 @@ description: "Você sabia que a linguagem fundamental dos computadores se resume
 versions:
   - name: English
     url: /blog/the-binary-en
-  - name: Português (Brasileiro)
+  - name: Português (BR)
     url: /blog/the-binary
 
 ---
@@ -24,7 +24,6 @@ versions:
 > primeiro sobre [portas lógicas](https://jeffersonmourak.com/blog/logic-gates/).
 > E para quem já leu o primeiro artigo, dá um pulinho lá porque eu fiz uma revisão no artigo, recomendo bastante dar uma olhada 😊
 
-<div id="elevenlabs-audionative-widget" data-height="90" data-width="100%" data-frameborder="no" data-scrolling="no" data-publicuserid="2be4d6242c862832d6b47ec70f7d7daf2c9f1306c933439f7083622af43fe99f" data-playerurl="https://elevenlabs.io/player/index.html" >Loading the <a href="https://elevenlabs.io/text-to-speech" target="_blank" rel="noopener">Elevenlabs Text to Speech</a> AudioNative Player...</div><script src="https://elevenlabs.io/player/audioNativeHelper.js" type="text/javascript"></script>
 
 Vamos nos aprofundar um pouco mais e explorar alguns conceitos de matemática e também da história humana.
 

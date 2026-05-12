@@ -22,12 +22,3 @@ Se você quiser saber mais sobre mim, ou só bater um papo, me chama nos links a
 </div>
 
 </div>
-
-## Links
-
-- [Instagram](https://instagram.com/jeffersonmourak)
-- [LinkedIn](https://www.linkedin.com/in/jeffersonmourak/)
-- [GitHub](https://github.com/jeffersonmourak)
-- [E-mail](mailto:jeffersonmourak@gmail.com)
-- [Voting Poker](https://voting.poker)
-- [Blog](/blog/)

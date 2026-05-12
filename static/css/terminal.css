@@ -489,7 +489,9 @@ figure figcaption {
 .menu--language-selector .menu__trigger {
   border: 1px solid var(--border);
   border-radius: 4px;
+  white-space: nowrap;
 }
+.menu--language-selector .menu__dropdown > li a { white-space: nowrap; }
 
 /* ---------- index / posts list ---------- */
 .index-content { margin-top: 1rem; }
@@ -771,18 +773,40 @@ a.read-more::after { content: " →"; }
 }
 .footer__inner {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 1.25rem;
   margin: 0 auto;
   width: 100%;
   max-width: 100%;
 }
 .footer a { color: var(--fg); }
 .footer a:hover { color: var(--accent); }
+
+/* Site links row — circ-compiler.dev inspired: a wrapping row of plain
+   text links above the copyright cluster. */
+.site-footer-links {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem 1.5rem;
+  font-size: 0.95rem;
+}
+.site-footer-links a {
+  color: var(--fg);
+  text-decoration: none;
+}
+.site-footer-links a:hover {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
 .footer .copyright {
   display: flex;
   flex-flow: row wrap;
-  flex: 1;
   align-items: center;
   justify-content: center;
   font-family: var(--font-mono);
@@ -790,9 +814,26 @@ a.read-more::after { content: " →"; }
   color: var(--muted);
   gap: 0.5rem;
 }
-.footer .copyright--user { margin: auto; text-align: center; }
+.footer .copyright--user { margin: 0 auto; text-align: center; }
 .footer .copyright > *:first-child:not(:only-child) { margin-right: 0; }
 .footer .copyright span { white-space: initial; }
+
+/* Small-text byline cluster: typeface colophon + theme credit sit tightly
+   together below the copyright, mirroring circ-compiler.dev's footer. */
+.footer-byline {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  text-align: center;
+}
+.footer-colophon,
+.footer-theme-credit {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--muted);
+  max-width: none;
+}
 
 /* ============================================================
    Profile / shortcode / circ-block widgets
