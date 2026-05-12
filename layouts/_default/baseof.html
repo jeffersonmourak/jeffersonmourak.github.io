@@ -86,17 +86,17 @@
   <meta name="googlebot" content="index,follow" />
 
 
+  {{/* Telemetry is gated to non-development builds so `hugo server` (which
+       defaults to the development environment) never ships posthog-js to
+       the browser. Production `hugo` builds default to "production" and
+       still emit the fingerprinted script as before. */}}
+  {{ if ne hugo.Environment "development" }}
   {{ with resources.Get "ts/telemetry.ts" }}
-  {{$opts := dict
-  "minify" (not (eq hugo.Environment "development"))
-  "sourceMap" (cond (eq hugo.Environment "development") "inline" "")
+  {{ $opts := dict
+  "minify" true
   "targetPath" "telemetry.js"
   }}
-
   {{ with . | babel | js.Build $opts }}
-  {{ if eq hugo.Environment "development" }}
-  <script type="text/javascript" src="{{ .RelPermalink }}"></script>
-  {{ else }}
   {{ with . | fingerprint }}
   <script src="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" crossorigin="anonymous"></script>
   {{ end }}

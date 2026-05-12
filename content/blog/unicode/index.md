@@ -141,7 +141,7 @@ ascii = {
 
 _... enquanto isso no resto do mundo ..._
 
-<img width="100%" src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExZzNvcXQ4aTBpNGs5YWI3czdjeXBuaTU0dmw3eG44aWNxbTFxbzBieSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3oz8xQBcUXftkrlmmc/giphy.gif">
+![Cena da série animada South Park](https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExZzNvcXQ4aTBpNGs5YWI3czdjeXBuaTU0dmw3eG44aWNxbTFxbzBieSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3oz8xQBcUXftkrlmmc/giphy.gif "full-width")
 
 Como já era de imaginar, com o avanço da tecnologia e da capacidade dos computadores, cada país utilizou essa capacidade extra para codificar seus próprios caracteres. O Japão, por exemplo, nem o ASCII usou. Outros codificadores, como o Shift JIS, utilizavam múltiplos bytes, e com tudo isso gerou-se uma gigantesca incompatibilidade.
 
@@ -150,7 +150,8 @@ Como já era de imaginar, com o avanço da tecnologia e da capacidade dos comput
 
 Porém, mesmo com toda essa incompatibilidade durante os anos 1980 e 1990, quais eram as chances de uma empresa de Londres ter que mandar documentos constantemente para o Japão? Naquela época, a solução era simples: imprima e envie por fax!
 
-<img width="100%" src="https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExY2IzdGtqeHVmemRsZ2cwYTliY2trM2Zla3M2bXZndHF1eHE5b2NkciZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/xT5LMKZ9tnioMLEjBe/giphy.gif">
+
+![Cena da série animada Os Simpsons](https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExY2IzdGtqeHVmemRsZ2cwYTliY2trM2Zla3M2bXZndHF1eHE5b2NkciZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/xT5LMKZ9tnioMLEjBe/giphy.gif "full-width")
 
 Então chegou a internet, e o que era ruim ficou ainda pior... Agora temos que lidar com documentos sendo enviados pela internet constantemente, e com o tempo foi formado o:
 

@@ -28,11 +28,10 @@ versions:
 ---
 
 > Hey Y'all! This is a translation of my blog post originally written in Portuguese.
-> If you want to read that version, [click here](/blog/unicode/).
 
 Have you ever wondered how computers transform letters, numbers, and emojis into zeros and ones that they can understand? Just like us humans assign meanings to letters of the alphabet, the computer does the same. Let's explore here two of the most popular text encoding standards.
 
-### ASCII
+## ASCII
 
 Developed in the 1960s, ASCII (American Standard Code for Information Interchange) has a very simple premise: using only 7 bits, you can represent 127 numbers, reserving the first 32 numbers in the sequence for important writing commands. The rest is filled with letters, numbers, and some punctuation marks.
 
@@ -133,7 +132,7 @@ ascii = {
 
 _... meanwhile in the rest of the world ..._
 
-<img width="100%" src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExZzNvcXQ4aTBpNGs5YWI3czdjeXBuaTU0dmw3eG44aWNxbTFxbzBieSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3oz8xQBcUXftkrlmmc/giphy.gif">
+![Scene from South Park series](https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExZzNvcXQ4aTBpNGs5YWI3czdjeXBuaTU0dmw3eG44aWNxbTFxbzBieSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3oz8xQBcUXftkrlmmc/giphy.gif "full-width")
 
 As you might imagine, with the advancement of technology and computer capacity, each country used this extra capacity to encode their own characters. Japan, for example, didn't even use ASCII. Other encoders, like Shift JIS, used multiple bytes, and with all this, a gigantic incompatibility was generated.
 
@@ -142,7 +141,7 @@ As you might imagine, with the advancement of technology and computer capacity, 
 
 However, even with all this incompatibility during the 1980s and 1990s, what were the chances of a London company having to constantly send documents to Japan? At that time, the solution was simple: print and send by fax!
 
-<img width="100%" src="https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExY2IzdGtqeHVmemRsZ2cwYTliY2trM2Zla3M2bXZndHF1eHE5b2NkciZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/xT5LMKZ9tnioMLEjBe/giphy.gif">
+![Scene from The Simpsons Series](https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExY2IzdGtqeHVmemRsZ2cwYTliY2trM2Zla3M2bXZndHF1eHE5b2NkciZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/xT5LMKZ9tnioMLEjBe/giphy.gif "full-width")
 
 Then the internet came, and what was bad got even worse... Now we have to deal with documents being constantly sent over the internet, and over time the following was formed:
 

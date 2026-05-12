@@ -19,13 +19,11 @@ versions:
     url: /blog/logic-gates
 ---
 > Hey Y'all! This is a translation of my blog post originally written in Portuguese.
-> If you want to read that version, [click here](/blog/logic-gates/).
 
 > Revised [11/12/2024]
 >
 > Hi folks, so I had to make some changes here in the post to add some interactive widgets,
 > and I took the opportunity to give a bit more context to the content.
-
 
 Hello, this is the first article in a series about the fundamentals of computing. The idea is to demonstrate in a simple and practical way how this device transforms zeros and ones into practically anything, the functioning of CPUs and other interesting subjects. So, to start, the first concept we have to learn is that of logic gates: they are the foundation of all computing, with them we can do certain operations that receive as input one or more values and will have another value as a result.
 
@@ -73,7 +71,6 @@ not _not_(in=a.out)
 led out(in=_not_.out)
 
 ```
-
 
 And if we write it in a truth table we'll have this here:
 
@@ -147,11 +144,11 @@ Analyzing the diagram above, we see that when both switches are off, both signal
 | 0 | 0 | 1 |
 | 1 | 1 | 1 |
 
-<img src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExa2F3aTZ5Z2FhajUxem51aG5oYzBwYW1jdHI3NGswMzZzd3duMTh3biZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/n9h61thJkq6Xe/giphy.gif" width="auto" height="440px" objectfit="cover" alt="I tawt I taw a puddy tat!">
+![I tawt I taw a puddy tat!](https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExa2F3aTZ5Z2FhajUxem51aG5oYzBwYW1jdHI3NGswMzZzd3duMTh3biZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/n9h61thJkq6Xe/giphy.gif)
 
 But wait a minute, I have the impression that I've seen this table before? Yes! This is the OR logic gate we were looking for. Quite a journey, isn't it? Now that we know how to fix the lamp wiring, we can take a break here. This is just the first article in a series about computers. Later on, we'll address other logic gates and other computing concepts.
 
-References
+## References
 
 * [Boolean algebra (Wikipedia)](https://pt.wikipedia.org/wiki/%C3%81lgebra_booliana)
 * [Boolean Algebra (Wikipedia)](https://en.wikipedia.org/wiki/Boolean_algebra)

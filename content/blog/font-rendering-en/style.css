@@ -65,7 +65,14 @@
   flex: 1;
   min-width: 0;
   max-width: 100%;
-  height: auto;
+  /* p5's createCanvas writes inline `width:600px; height:400px` styles on
+     the element, so external `height: auto` loses on specificity and the
+     canvas stays pinned at its intrinsic 400px while flex stretches the
+     width — the sketch ends up squashed horizontally. !important lets us
+     beat that inline height; the per-canvas `aspect-ratio` then set
+     inline by `render-codeblock-p5.html`'s `lockAspect` carries each
+     sketch's own w:h, so this rule stays size-agnostic. */
+  height: auto !important;
 }
 
 /* Pan support — sketches set the canvas's `data-pan` attribute in
@@ -309,4 +316,49 @@
     flex: 0 0 auto;
     width: 100%;
   }
+}
+
+/* Equation preview displayed above an Observable control panel —
+   keeps the active formula readable while the user drags the slider.
+   The cell is just a <p class="equation-preview">…</p> emitted by an
+   `html` tagged template; the rule below upgrades typography and pulls
+   it close to the slider so the two read as one unit. */
+.equation-preview {
+  font-family: var(--font-mono);
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: var(--fg);
+  margin: 0 0 0.25rem 0;
+  text-align: center;
+}
+
+/* Play/Pause toggle on the bézier sketches: just an icon (► / ⏹), no
+   chrome. Sits next to the t-display + slider in the dark panel — kept
+   discrete so it reads as a control affordance, not a primary CTA. */
+.p5-slider-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.p5-slider-row > .p5-slider {
+  flex: 1;
+  min-width: 0;
+}
+
+.p5-play-toggle {
+  font-size: 1.25rem;
+  line-height: 1;
+  padding: 0.15rem 0.35rem;
+  background: transparent;
+  color: var(--p5-fg);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: opacity 0.15s ease;
+}
+
+.p5-play-toggle:hover {
+  opacity: 1;
 }

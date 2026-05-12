@@ -28,7 +28,6 @@ versions:
 ---
 
 > Hey Y'all! This is a translation of my blog post originally written in Portuguese.
-> If you want to read that version, [click here](/blog/font-rendering/).
 
 On Saturday, July 26, 2025, I presented a lecture on font rendering at Google I/O Extended Natal. Due to the rush of daily life, I couldn't show many interactive practical examples. This article serves exactly that purpose: let's explore a bit about how the text you're reading is formed on your screen.
 
@@ -54,6 +53,14 @@ const glyphs = [
     [0,1,0,0,0,0],
     [0,0,1,1,1,0],
   ]}},
+  { name: "e", data: { width: 6, height: 6, pixels: [
+    [0,0,0,0,0,0],
+    [0,0,1,1,1,0],
+    [0,1,0,0,1,0],
+    [0,1,1,1,1,0],
+    [0,1,0,0,0,0],
+    [0,0,1,1,1,0],
+  ]}},
   { name: "f", data: { width: 6, height: 6, pixels: [
     [0,0,0,0,0,0],
     [0,1,1,1,0,0],
@@ -69,6 +76,14 @@ const glyphs = [
     [0,1,0,1,1,0],
     [0,1,0,0,1,0],
     [0,0,1,1,1,0],
+  ]}},
+  { name: "o", data: { width: 6, height: 6, pixels: [
+    [0,0,0,0,0,0],
+    [0,0,1,1,0,0],
+    [0,1,0,0,1,0],
+    [0,1,0,0,1,0],
+    [0,1,0,0,1,0],
+    [0,0,1,1,0,0],
   ]}},
 ];
 
@@ -122,11 +137,17 @@ sketch.setup = function () {
   sketch.createCanvas(600, 400);
   sketch.canvas.dataset.pan = "true";
 
-  const css = getComputedStyle(document.documentElement);
-  COLORS.bg = css.getPropertyValue("--p5-bg").trim();
-  COLORS.empty = sketch.color(css.getPropertyValue("--p5-pixel-empty").trim());
-  COLORS.fg = sketch.color(css.getPropertyValue("--p5-fg").trim());
-  COLORS.gridStroke = css.getPropertyValue("--p5-grid-stroke").trim();
+  // Defined as an instance method so the p5 render hook's MutationObserver
+  // can re-invoke it whenever <html data-theme> flips — keeps the canvas
+  // palette in sync with the surrounding page without a reload.
+  sketch.refreshTheme = function () {
+    const css = getComputedStyle(document.documentElement);
+    COLORS.bg = css.getPropertyValue("--p5-bg").trim();
+    COLORS.empty = sketch.color(css.getPropertyValue("--p5-pixel-empty").trim());
+    COLORS.fg = sketch.color(css.getPropertyValue("--p5-fg").trim());
+    COLORS.gridStroke = css.getPropertyValue("--p5-grid-stroke").trim();
+  };
+  sketch.refreshTheme();
 
   const controls = sketch.createDiv();
   controls.addClass("p5-controls");
@@ -296,6 +317,14 @@ const glyphs = [
     [0,1,0,0,0,0],
     [0,0,1,1,1,0],
   ]}},
+  { name: "e", data: { width: 6, height: 6, pixels: [
+    [0,0,0,0,0,0],
+    [0,0,1,1,1,0],
+    [0,1,0,0,1,0],
+    [0,1,1,1,1,0],
+    [0,1,0,0,0,0],
+    [0,0,1,1,1,0],
+  ]}},
   { name: "f", data: { width: 6, height: 6, pixels: [
     [0,0,0,0,0,0],
     [0,1,1,1,0,0],
@@ -311,6 +340,14 @@ const glyphs = [
     [0,1,0,1,1,0],
     [0,1,0,0,1,0],
     [0,0,1,1,1,0],
+  ]}},
+  { name: "o", data: { width: 6, height: 6, pixels: [
+    [0,0,0,0,0,0],
+    [0,0,1,1,0,0],
+    [0,1,0,0,1,0],
+    [0,1,0,0,1,0],
+    [0,1,0,0,1,0],
+    [0,0,1,1,0,0],
   ]}},
 ];
 
@@ -425,11 +462,17 @@ sketch.setup = function () {
   sketch.createCanvas(600, 400);
   sketch.canvas.dataset.pan = "true";
 
-  const css = getComputedStyle(document.documentElement);
-  COLORS.bg = css.getPropertyValue("--p5-bg").trim();
-  COLORS.empty = sketch.color(css.getPropertyValue("--p5-pixel-empty").trim());
-  COLORS.fg = sketch.color(css.getPropertyValue("--p5-fg").trim());
-  COLORS.gridStroke = css.getPropertyValue("--p5-grid-stroke").trim();
+  // Defined as an instance method so the p5 render hook's MutationObserver
+  // can re-invoke it whenever <html data-theme> flips — keeps the canvas
+  // palette in sync with the surrounding page without a reload.
+  sketch.refreshTheme = function () {
+    const css = getComputedStyle(document.documentElement);
+    COLORS.bg = css.getPropertyValue("--p5-bg").trim();
+    COLORS.empty = sketch.color(css.getPropertyValue("--p5-pixel-empty").trim());
+    COLORS.fg = sketch.color(css.getPropertyValue("--p5-fg").trim());
+    COLORS.gridStroke = css.getPropertyValue("--p5-grid-stroke").trim();
+  };
+  sketch.refreshTheme();
 
   const controls = sketch.createDiv();
   controls.addClass("p5-controls");
@@ -461,7 +504,7 @@ sketch.setup = function () {
   };
 
   pixelSlider = labeledSlider("Pixel size", 1, 30, 15);
-  hardSlider = labeledSlider("Hard scale", 1, 10, 5);
+  hardSlider = labeledSlider("Upscale factor", 1, 10, 5);
   glyphRadio = labeledRadio("Letter", glyphs.map((g) => g.name), "a");
 };
 
@@ -509,11 +552,11 @@ sketch.draw = function () {
 };
 ```
 
-### How to use one font for multiple sizes?
+## How to use one font for multiple sizes?
 
 In mathematics, there are equations that draw a graph on the screen. The most common examples are:
 
-#### Quadratic function
+### Quadratic function
 
 ```observable:notebook
 <script id="1" type="ojs">
@@ -541,7 +584,7 @@ viewof quadraticFunctionBase = Plot.plot({
 </script>
 ```
 
-#### Multiplicative inverse function
+### Multiplicative inverse function
 
 ```observable:notebook
 <script id="2" type="ojs">
@@ -581,6 +624,8 @@ viewof iverseFunction = Plot.plot({
 </script>
 ```
 
+### Manipulating the curve
+
 To move our equations, we can add any value after the result of the exponentiation, and thus we move our equation on the _Y_ axis.
 
 ```observable:notebook
@@ -608,11 +653,15 @@ viewof yOffsetQuadratic = Plot.plot({
 })
 </script>
 <script id="4" type="ojs">
-viewof quadraticYOffset = Inputs.range([0, 100], {
-  value: 20,
-  step: 5,
-  label: "Y offset",
-})
+viewof quadraticYOffset = {
+  const slider = Inputs.range([0, 100], { value: 20, step: 5, label: "Y offset" });
+  const eq = html`<p class="equation-preview">y = x² + ${slider.value}</p>`;
+  slider.addEventListener("input", () => {
+    eq.textContent = `y = x² + ${slider.value}`;
+  });
+  const wrap = html`<div>${eq}${slider}</div>`;
+  return Object.defineProperty(wrap, "value", { get: () => slider.value });
+}
 </script>
 ```
 
@@ -643,21 +692,31 @@ viewof horizonralOffsetQuadratic = Plot.plot({
 })
 </script>
 <script id="6" type="ojs">
-viewof quadraticXOffset = Inputs.range([-10, 10], {
-  value: -2,
-  step: 1,
-  label: "X offset",
-})
+viewof quadraticXOffset = {
+  const slider = Inputs.range([-10, 10], { value: -2, step: 1, label: "X offset" });
+  const eq = html`<p class="equation-preview"></p>`;
+  const render = () => {
+    const v = slider.value;
+    const term = v === 0 ? "x" : v > 0 ? `x + ${v}` : `x - ${-v}`;
+    eq.textContent = `y = (${term})²`;
+  };
+  render();
+  slider.addEventListener("input", render);
+  const wrap = html`<div>${eq}${slider}</div>`;
+  return Object.defineProperty(wrap, "value", { get: () => slider.value });
+}
 </script>
 ```
 
 So, we already have a way to represent our curves using mathematical equations.
 
-But before we draw, let's learn about one more thing: Bézier curves. It's a polynomial curve expressed as the linear interpolation between some representative points, called control points.
+But before we draw, let's learn about one more thing. 
 
-In the example below, we have 3 points: _P0_, _P1_ and _P2_, where _P0_ and _P2_ are the representative points and _P1_ is the control point.
+## Bézier curves
 
-You can move the examples below and see the result.
+It's a polynomial curve expressed as the linear interpolation between some representative points, called control points.
+
+In the example below, we have 3 points: _P0_, _P1_ and _P2_, where _P0_ and _P2_ are the representative points and _P1_ is the control point, you can move the examples below and see the result.
 
 ```p5
 // The original Observable cell named its p5 instance `p`; alias here
@@ -676,23 +735,69 @@ const animationSpeed = 0.0075;
 let draggedPoint = null;
 const pointRadius = 10;
 
+// Play/pause + scrub: when the user pauses, the t-slider is revealed so
+// they can drag `t` directly between 0 and 1 in 0.01 steps.
+let isPlaying = true;
+let playPauseBtn;
+let tSlider;
+let tSliderWrap;
+let tDisplay;
+
 const COLORS = {};
 
 p.setup = function () {
   p.createCanvas(600, 400);
 
-  const css = getComputedStyle(document.documentElement);
-  COLORS.bg = css.getPropertyValue("--p5-bg").trim();
-  COLORS.fg = css.getPropertyValue("--p5-fg").trim();
-  COLORS.curve = css.getPropertyValue("--p5-curve").trim();
-  COLORS.guide = css.getPropertyValue("--p5-guide").trim();
-  COLORS.lerp = css.getPropertyValue("--p5-lerp").trim();
-  COLORS.marker = css.getPropertyValue("--p5-marker").trim();
-  COLORS.text = css.getPropertyValue("--p5-text").trim();
+  // Defined as an instance method so the p5 render hook's MutationObserver
+  // can re-invoke it whenever <html data-theme> flips — keeps the canvas
+  // palette in sync with the surrounding page without a reload.
+  p.refreshTheme = function () {
+    const css = getComputedStyle(document.documentElement);
+    COLORS.bg = css.getPropertyValue("--p5-bg").trim();
+    COLORS.fg = css.getPropertyValue("--p5-fg").trim();
+    COLORS.curve = css.getPropertyValue("--p5-curve").trim();
+    COLORS.guide = css.getPropertyValue("--p5-guide").trim();
+    COLORS.lerp = css.getPropertyValue("--p5-lerp").trim();
+    COLORS.marker = css.getPropertyValue("--p5-marker").trim();
+    COLORS.text = css.getPropertyValue("--p5-text").trim();
+  };
+  p.refreshTheme();
 
   p0 = p.createVector(p.width * 0.15, p.height * 0.8);
   p1 = p.createVector(p.width * 0.5, p.height * 0.2);
   p2 = p.createVector(p.width * 0.85, p.height * 0.8);
+
+  const controls = p.createDiv();
+  controls.addClass("p5-controls");
+
+  tSliderWrap = p.createDiv();
+  tSliderWrap.parent(controls);
+  tSliderWrap.addClass("p5-control");
+  tDisplay = p.createElement("span", "t = 0.00");
+  tDisplay.parent(tSliderWrap);
+  tDisplay.addClass("equation-preview");
+
+  const sliderRow = p.createDiv();
+  sliderRow.parent(tSliderWrap);
+  sliderRow.addClass("p5-slider-row");
+
+  playPauseBtn = p.createButton("⏹");
+  playPauseBtn.parent(sliderRow);
+  playPauseBtn.addClass("p5-play-toggle");
+  playPauseBtn.mousePressed(() => {
+    isPlaying = !isPlaying;
+    playPauseBtn.html(isPlaying ? "⏹" : "►");
+    if (isPlaying) {
+      tSlider.attribute("disabled", "");
+    } else {
+      tSlider.removeAttribute("disabled");
+    }
+  });
+
+  tSlider = p.createSlider(0, 1, 0, 0.01);
+  tSlider.parent(sliderRow);
+  tSlider.addClass("p5-slider");
+  tSlider.attribute("disabled", "");
 };
 
 p.draw = function () {
@@ -709,11 +814,29 @@ p.draw = function () {
   drawControlPoints();
   drawInterpolatedPoints(q0, q1);
   drawBezierPoint(b);
-  drawTValue();
+  updateCursor();
 
-  t += animationSpeed;
-  if (t > 1) t = 0;
+  if (isPlaying) {
+    t += animationSpeed;
+    if (t > 1) t = 0;
+    tSlider.value(t);
+  } else {
+    t = Number(tSlider.value());
+  }
+  tDisplay.html("t = " + t.toFixed(2));
 };
+
+function updateCursor() {
+  if (draggedPoint) {
+    p.canvas.style.cursor = "grabbing";
+    return;
+  }
+  const overPoint =
+    p.dist(p.mouseX, p.mouseY, p0.x, p0.y) < pointRadius ||
+    p.dist(p.mouseX, p.mouseY, p1.x, p1.y) < pointRadius ||
+    p.dist(p.mouseX, p.mouseY, p2.x, p2.y) < pointRadius;
+  p.canvas.style.cursor = overPoint ? "grab" : "default";
+}
 
 function drawCurvePath() {
   p.noFill();
@@ -773,14 +896,6 @@ function drawBezierPoint(b) {
   p.ellipse(b.x, b.y, pointRadius * 1.8);
 }
 
-function drawTValue() {
-  p.fill(COLORS.text);
-  p.noStroke();
-  p.textSize(16);
-  p.textFont("monospace");
-  p.text("t = " + t.toFixed(2), 20, 30);
-}
-
 p.mousePressed = function () {
   if (p.dist(p.mouseX, p.mouseY, p0.x, p0.y) < pointRadius) {
     draggedPoint = p0;
@@ -803,7 +918,7 @@ p.mouseReleased = function () {
 };
 ```
 
-## Drawing a letter with vectors
+### Drawing a letter with vectors
 
 ```p5
 // Vector contours: each glyph is one or more closed contours (outer
@@ -896,8 +1011,184 @@ const oVector = [
   },
 ];
 
+// Flat-top sans-serif "A": outer wedge silhouette + inner trapezoidal
+// hole above the crossbar. Both contours wind CCW; the visualization
+// only draws polylines so winding direction doesn't affect rendering.
+const aVector = [
+  {
+    type: "outer",
+    points: [
+      { x: 72,    y: 1030,  onCurve: true  }, // Matches O footprint perfectly
+      { x: 142,   y: 655,   onCurve: false }, // Exact midpoint for perfectly straight outer stem
+      { x: 212,   y: 280,   onCurve: true  }, // Top outer left (Matches O top bound)
+      { x: 300,   y: 280,   onCurve: false }, // Perfect top center midpoint
+      { x: 388,   y: 280,   onCurve: true  }, // Top outer right
+      { x: 458,   y: 655,   onCurve: false },
+      { x: 528,   y: 1030,  onCurve: true  }, // Matches O footprint perfectly
+      { x: 465.5, y: 1030,  onCurve: false }, // Exact midpoint for flat right foot
+      { x: 403,   y: 1030,  onCurve: true  }, // Exact 125-unit stem thickness
+      { x: 388,   y: 895,   onCurve: false },
+      { x: 373,   y: 760,   onCurve: true  }, // Right crossbar bottom corner
+      { x: 300,   y: 760,   onCurve: false }, // Exact midpoint for crossbar bottom
+      { x: 227,   y: 760,   onCurve: true  }, // Left crossbar bottom corner
+      { x: 212,   y: 895,   onCurve: false },
+      { x: 197,   y: 1030,  onCurve: true  }, // Exact 125-unit stem thickness
+      { x: 134.5, y: 1030,  onCurve: false }, // Exact midpoint for flat left foot
+    ],
+  },
+  {
+    type: "inner",
+    points: [
+      { x: 239,   y: 652,   onCurve: true  }, // Left crossbar top corner (crossbar is 108 units thick)
+      { x: 300,   y: 652,   onCurve: false },
+      { x: 361,   y: 652,   onCurve: true  }, // Right crossbar top corner
+      { x: 347,   y: 526,   onCurve: false }, // Exact midpoint for perfectly straight inner stem
+      { x: 333,   y: 400,   onCurve: true  }, // Top inner right corner
+      { x: 300,   y: 400,   onCurve: false }, // Perfect inner top center
+      { x: 267,   y: 400,   onCurve: true  }, // Top inner left corner
+      { x: 253,   y: 526,   onCurve: false }, // Exact midpoint for perfectly straight inner stem
+    ],
+  },
+];
+
+// "C": single contour. Traces the outer arc CCW from the upper-arm
+// tip around the back to the lower-arm tip, jumps across the mouth
+// bottom to the inner ring, traces the inner ring CW back up to the
+// upper inner tip, then jumps across the mouth top to close.
+const cVector = [
+  {
+    type: "outer",
+    points: [
+      { x: 430,   y: 360,   onCurve: true  },
+      { x: 365,   y: 280,   onCurve: false },
+      { x: 300,   y: 280,   onCurve: true  },
+      { x: 195,   y: 280,   onCurve: false },
+      { x: 133.5, y: 340,   onCurve: true  },
+      { x: 72,    y: 400,   onCurve: false },
+      { x: 72,    y: 506,   onCurve: true  }, // Outer bottom anchor (distance of 149 from center)
+      { x: 72,    y: 655,   onCurve: false },
+      { x: 72,    y: 804,   onCurve: true  }, // Outer top anchor (distance of 149 from center)
+      { x: 72,    y: 910,   onCurve: false },
+      { x: 133.5, y: 970,   onCurve: true  },
+      { x: 195,   y: 1030,  onCurve: false },
+      { x: 300,   y: 1030,  onCurve: true  },
+      { x: 365,   y: 1030,  onCurve: false },
+      { x: 430,   y: 950,   onCurve: true  },
+      { x: 405,   y: 900,   onCurve: false }, // Perfect midpoint for straight terminal cut
+      { x: 380,   y: 850,   onCurve: true  },
+      { x: 340,   y: 920,   onCurve: false },
+      { x: 300,   y: 920,   onCurve: true  },
+      { x: 249,   y: 920,   onCurve: false },
+      { x: 223,   y: 892.5, onCurve: true  },
+      { x: 197,   y: 865,   onCurve: false },
+      { x: 197,   y: 814,   onCurve: true  }, // Inner top anchor (distance of 159 from center)
+      { x: 197,   y: 655,   onCurve: false },
+      { x: 197,   y: 496,   onCurve: true  }, // FIXED from 506. (distance of 159 from center)
+      { x: 197,   y: 445,   onCurve: false },
+      { x: 223,   y: 417.5, onCurve: true  },
+      { x: 249,   y: 390,   onCurve: false },
+      { x: 300,   y: 390,   onCurve: true  },
+      { x: 340,   y: 390,   onCurve: false },
+      { x: 380,   y: 460,   onCurve: true  },
+      { x: 405,   y: 410,   onCurve: false }, // Perfect midpoint for straight terminal cut
+    ],
+  },
+];
+
+// "F": "E" without the bottom arm — the stem continues straight down
+// from the middle arm to the baseline. Same stem/arm metrics as "E"
+// so the two read as a family.
+const fVector = [
+  {
+    type: "outer",
+    points: [
+      { x: 88,  y: 1020, onCurve: true  },
+      { x: 88,  y: 655,  onCurve: false },
+      { x: 88,  y: 290,  onCurve: true  },
+      { x: 307, y: 290,  onCurve: false },
+      { x: 526, y: 290,  onCurve: true  },
+      { x: 526, y: 345,  onCurve: false },
+      { x: 526, y: 400,  onCurve: true  },
+      { x: 368, y: 400,  onCurve: false },
+      { x: 211, y: 400,  onCurve: true  },
+      { x: 211, y: 495,  onCurve: false },
+      { x: 211, y: 590,  onCurve: true  },
+      { x: 351, y: 590,  onCurve: false },
+      { x: 491, y: 590,  onCurve: true  },
+      { x: 491, y: 643,  onCurve: false },
+      { x: 491, y: 696,  onCurve: true  },
+      { x: 351, y: 696,  onCurve: false },
+      { x: 211, y: 696,  onCurve: true  },
+      { x: 211, y: 858,  onCurve: false },
+      { x: 211, y: 1020, onCurve: true  },
+      { x: 149, y: 1020, onCurve: false },
+    ],
+  },
+];
+
+// "G": "C" plus a horizontal bar protruding up into the cavity from
+// the lower arm's inner-top. The contour walks the outer (like C),
+// then up the bar's right edge, across the bar's top, down its left
+// edge, into the cavity, and CW around the cavity back to the upper
+// inner tip.
+const gVector = [
+  {
+    type: "outer",
+    points: [
+      { x: 466.5,  y: 340,    onCurve: true  }, // Extended top terminal matches O's outer curve
+      { x: 405,    y: 280,    onCurve: false },
+      { x: 300,    y: 280,    onCurve: true  },
+      { x: 195,    y: 280,    onCurve: false },
+      { x: 133.5,  y: 340,    onCurve: true  },
+      { x: 72,     y: 400,    onCurve: false },
+      { x: 72,     y: 506,    onCurve: true  },
+      { x: 72,     y: 655,    onCurve: false },
+      { x: 72,     y: 804,    onCurve: true  },
+      { x: 72,     y: 910,    onCurve: false },
+      { x: 133.5,  y: 970,    onCurve: true  },
+      { x: 195,    y: 1030,   onCurve: false },
+      { x: 300,    y: 1030,   onCurve: true  },
+      { x: 405,    y: 1030,   onCurve: false }, // Now matches O's bottom right expansion
+      { x: 466.5,  y: 970,    onCurve: true  },
+      { x: 528,    y: 910,    onCurve: false },
+      { x: 528,    y: 804,    onCurve: true  },
+      { x: 528,    y: 729.5,  onCurve: false }, // Midpoint for straight vertical right stem
+      { x: 528,    y: 655,    onCurve: true  }, // Top right corner of crossbar/stem
+      { x: 414,    y: 655,    onCurve: false }, // Midpoint for crossbar top edge
+      { x: 300,    y: 655,    onCurve: true  }, // Top left inner corner of crossbar
+      { x: 300,    y: 710,    onCurve: false }, // Midpoint for crossbar left edge
+      { x: 300,    y: 765,    onCurve: true  }, // Bottom left inner corner of crossbar
+      { x: 351.5,  y: 765,    onCurve: false }, // Midpoint for crossbar bottom edge
+      { x: 403,    y: 765,    onCurve: true  }, // Inner corner meeting right inner stem
+      { x: 403,    y: 789.5,  onCurve: false }, // Midpoint for inner vertical stem
+      { x: 403,    y: 814,    onCurve: true  }, // Connects seamlessly back to O's inner curve
+      { x: 403,    y: 865,    onCurve: false },
+      { x: 377,    y: 892.5,  onCurve: true  },
+      { x: 351,    y: 920,    onCurve: false },
+      { x: 300,    y: 920,    onCurve: true  },
+      { x: 249,    y: 920,    onCurve: false },
+      { x: 223,    y: 892.5,  onCurve: true  },
+      { x: 197,    y: 865,    onCurve: false },
+      { x: 197,    y: 814,    onCurve: true  },
+      { x: 197,    y: 655,    onCurve: false },
+      { x: 197,    y: 496,    onCurve: true  },
+      { x: 197,    y: 445,    onCurve: false },
+      { x: 223,    y: 417.5,  onCurve: true  },
+      { x: 249,    y: 390,    onCurve: false },
+      { x: 300,    y: 390,    onCurve: true  },
+      { x: 351,    y: 390,    onCurve: false },
+      { x: 377,    y: 417.5,  onCurve: true  }, // Inner top right terminal point
+      { x: 421.75, y: 378.75, onCurve: false }, // Exact midpoint to close the terminal cut
+    ],
+  },
+];
+
 const vectors = [
+  { name: "A", data: aVector },
+  { name: "C", data: cVector },
   { name: "E", data: eVector },
+  { name: "F", data: fVector },
+  { name: "G", data: gVector },
   { name: "O", data: oVector },
 ];
 
@@ -935,10 +1226,16 @@ sketch.setup = function () {
   sketch.createCanvas(600, 400);
   sketch.canvas.dataset.pan = "true";
 
-  const css = getComputedStyle(document.documentElement);
-  COLORS.bg = css.getPropertyValue("--p5-bg").trim();
-  COLORS.fg = css.getPropertyValue("--p5-fg").trim();
-  COLORS.outline = css.getPropertyValue("--p5-outline").trim();
+  // Defined as an instance method so the p5 render hook's MutationObserver
+  // can re-invoke it whenever <html data-theme> flips — keeps the canvas
+  // palette in sync with the surrounding page without a reload.
+  sketch.refreshTheme = function () {
+    const css = getComputedStyle(document.documentElement);
+    COLORS.bg = css.getPropertyValue("--p5-bg").trim();
+    COLORS.fg = css.getPropertyValue("--p5-fg").trim();
+    COLORS.outline = css.getPropertyValue("--p5-outline").trim();
+  };
+  sketch.refreshTheme();
 
   const controls = sketch.createDiv();
   controls.addClass("p5-controls");
@@ -1028,23 +1325,67 @@ const animationSpeed = 0.0075;
 let draggedPoint = null;
 const pointRadius = 10;
 
+let isPlaying = true;
+let playPauseBtn;
+let tSlider;
+let tSliderWrap;
+let tDisplay;
+
 const COLORS = {};
 
 p.setup = function () {
   p.createCanvas(600, 200);
 
-  const css = getComputedStyle(document.documentElement);
-  COLORS.bg = css.getPropertyValue("--p5-bg").trim();
-  COLORS.fg = css.getPropertyValue("--p5-fg").trim();
-  COLORS.curve = css.getPropertyValue("--p5-curve").trim();
-  COLORS.guide = css.getPropertyValue("--p5-guide").trim();
-  COLORS.lerp = css.getPropertyValue("--p5-lerp").trim();
-  COLORS.marker = css.getPropertyValue("--p5-marker").trim();
-  COLORS.text = css.getPropertyValue("--p5-text").trim();
+  // Defined as an instance method so the p5 render hook's MutationObserver
+  // can re-invoke it whenever <html data-theme> flips — keeps the canvas
+  // palette in sync with the surrounding page without a reload.
+  p.refreshTheme = function () {
+    const css = getComputedStyle(document.documentElement);
+    COLORS.bg = css.getPropertyValue("--p5-bg").trim();
+    COLORS.fg = css.getPropertyValue("--p5-fg").trim();
+    COLORS.curve = css.getPropertyValue("--p5-curve").trim();
+    COLORS.guide = css.getPropertyValue("--p5-guide").trim();
+    COLORS.lerp = css.getPropertyValue("--p5-lerp").trim();
+    COLORS.marker = css.getPropertyValue("--p5-marker").trim();
+    COLORS.text = css.getPropertyValue("--p5-text").trim();
+  };
+  p.refreshTheme();
 
   p0 = p.createVector(p.width * 0.15, p.height * 0.8);
   p1 = p.createVector(p.width * 0.5, p.height * 0.8);
   p2 = p.createVector(p.width * 0.85, p.height * 0.8);
+
+  const controls = p.createDiv();
+  controls.addClass("p5-controls");
+
+  tSliderWrap = p.createDiv();
+  tSliderWrap.parent(controls);
+  tSliderWrap.addClass("p5-control");
+  tDisplay = p.createElement("span", "t = 0.00");
+  tDisplay.parent(tSliderWrap);
+  tDisplay.addClass("equation-preview");
+
+  const sliderRow = p.createDiv();
+  sliderRow.parent(tSliderWrap);
+  sliderRow.addClass("p5-slider-row");
+
+  playPauseBtn = p.createButton("⏹");
+  playPauseBtn.parent(sliderRow);
+  playPauseBtn.addClass("p5-play-toggle");
+  playPauseBtn.mousePressed(() => {
+    isPlaying = !isPlaying;
+    playPauseBtn.html(isPlaying ? "⏹" : "►");
+    if (isPlaying) {
+      tSlider.attribute("disabled", "");
+    } else {
+      tSlider.removeAttribute("disabled");
+    }
+  });
+
+  tSlider = p.createSlider(0, 1, 0, 0.01);
+  tSlider.parent(sliderRow);
+  tSlider.addClass("p5-slider");
+  tSlider.attribute("disabled", "");
 };
 
 p.draw = function () {
@@ -1061,11 +1402,29 @@ p.draw = function () {
   drawControlPoints();
   drawInterpolatedPoints(q0, q1);
   drawBezierPoint(b);
-  drawTValue();
+  updateCursor();
 
-  t += animationSpeed;
-  if (t > 1) t = 0;
+  if (isPlaying) {
+    t += animationSpeed;
+    if (t > 1) t = 0;
+    tSlider.value(t);
+  } else {
+    t = Number(tSlider.value());
+  }
+  tDisplay.html("t = " + t.toFixed(2));
 };
+
+function updateCursor() {
+  if (draggedPoint) {
+    p.canvas.style.cursor = "grabbing";
+    return;
+  }
+  const overPoint =
+    p.dist(p.mouseX, p.mouseY, p0.x, p0.y) < pointRadius ||
+    p.dist(p.mouseX, p.mouseY, p1.x, p1.y) < pointRadius ||
+    p.dist(p.mouseX, p.mouseY, p2.x, p2.y) < pointRadius;
+  p.canvas.style.cursor = overPoint ? "grab" : "default";
+}
 
 function drawCurvePath() {
   p.noFill();
@@ -1123,14 +1482,6 @@ function drawBezierPoint(b) {
   p.noStroke();
   p.fill(COLORS.marker);
   p.ellipse(b.x, b.y, pointRadius * 1.8);
-}
-
-function drawTValue() {
-  p.fill(COLORS.text);
-  p.noStroke();
-  p.textSize(16);
-  p.textFont("monospace");
-  p.text("t = " + t.toFixed(2), 20, 30);
 }
 
 p.mousePressed = function () {
@@ -1243,8 +1594,184 @@ const oVector = [
   },
 ];
 
+// Flat-top sans-serif "A": outer wedge silhouette + inner trapezoidal
+// hole above the crossbar. Both contours wind CCW; the visualization
+// only draws polylines so winding direction doesn't affect rendering.
+const aVector = [
+  {
+    type: "outer",
+    points: [
+      { x: 72,    y: 1030,  onCurve: true  }, // Matches O footprint perfectly
+      { x: 142,   y: 655,   onCurve: false }, // Exact midpoint for perfectly straight outer stem
+      { x: 212,   y: 280,   onCurve: true  }, // Top outer left (Matches O top bound)
+      { x: 300,   y: 280,   onCurve: false }, // Perfect top center midpoint
+      { x: 388,   y: 280,   onCurve: true  }, // Top outer right
+      { x: 458,   y: 655,   onCurve: false },
+      { x: 528,   y: 1030,  onCurve: true  }, // Matches O footprint perfectly
+      { x: 465.5, y: 1030,  onCurve: false }, // Exact midpoint for flat right foot
+      { x: 403,   y: 1030,  onCurve: true  }, // Exact 125-unit stem thickness
+      { x: 388,   y: 895,   onCurve: false },
+      { x: 373,   y: 760,   onCurve: true  }, // Right crossbar bottom corner
+      { x: 300,   y: 760,   onCurve: false }, // Exact midpoint for crossbar bottom
+      { x: 227,   y: 760,   onCurve: true  }, // Left crossbar bottom corner
+      { x: 212,   y: 895,   onCurve: false },
+      { x: 197,   y: 1030,  onCurve: true  }, // Exact 125-unit stem thickness
+      { x: 134.5, y: 1030,  onCurve: false }, // Exact midpoint for flat left foot
+    ],
+  },
+  {
+    type: "inner",
+    points: [
+      { x: 239,   y: 652,   onCurve: true  }, // Left crossbar top corner (crossbar is 108 units thick)
+      { x: 300,   y: 652,   onCurve: false },
+      { x: 361,   y: 652,   onCurve: true  }, // Right crossbar top corner
+      { x: 347,   y: 526,   onCurve: false }, // Exact midpoint for perfectly straight inner stem
+      { x: 333,   y: 400,   onCurve: true  }, // Top inner right corner
+      { x: 300,   y: 400,   onCurve: false }, // Perfect inner top center
+      { x: 267,   y: 400,   onCurve: true  }, // Top inner left corner
+      { x: 253,   y: 526,   onCurve: false }, // Exact midpoint for perfectly straight inner stem
+    ],
+  },
+];
+
+// "C": single contour. Traces the outer arc CCW from the upper-arm
+// tip around the back to the lower-arm tip, jumps across the mouth
+// bottom to the inner ring, traces the inner ring CW back up to the
+// upper inner tip, then jumps across the mouth top to close.
+const cVector = [
+  {
+    type: "outer",
+    points: [
+      { x: 430,   y: 360,   onCurve: true  },
+      { x: 365,   y: 280,   onCurve: false },
+      { x: 300,   y: 280,   onCurve: true  },
+      { x: 195,   y: 280,   onCurve: false },
+      { x: 133.5, y: 340,   onCurve: true  },
+      { x: 72,    y: 400,   onCurve: false },
+      { x: 72,    y: 506,   onCurve: true  }, // Outer bottom anchor (distance of 149 from center)
+      { x: 72,    y: 655,   onCurve: false },
+      { x: 72,    y: 804,   onCurve: true  }, // Outer top anchor (distance of 149 from center)
+      { x: 72,    y: 910,   onCurve: false },
+      { x: 133.5, y: 970,   onCurve: true  },
+      { x: 195,   y: 1030,  onCurve: false },
+      { x: 300,   y: 1030,  onCurve: true  },
+      { x: 365,   y: 1030,  onCurve: false },
+      { x: 430,   y: 950,   onCurve: true  },
+      { x: 405,   y: 900,   onCurve: false }, // Perfect midpoint for straight terminal cut
+      { x: 380,   y: 850,   onCurve: true  },
+      { x: 340,   y: 920,   onCurve: false },
+      { x: 300,   y: 920,   onCurve: true  },
+      { x: 249,   y: 920,   onCurve: false },
+      { x: 223,   y: 892.5, onCurve: true  },
+      { x: 197,   y: 865,   onCurve: false },
+      { x: 197,   y: 814,   onCurve: true  }, // Inner top anchor (distance of 159 from center)
+      { x: 197,   y: 655,   onCurve: false },
+      { x: 197,   y: 496,   onCurve: true  }, // FIXED from 506. (distance of 159 from center)
+      { x: 197,   y: 445,   onCurve: false },
+      { x: 223,   y: 417.5, onCurve: true  },
+      { x: 249,   y: 390,   onCurve: false },
+      { x: 300,   y: 390,   onCurve: true  },
+      { x: 340,   y: 390,   onCurve: false },
+      { x: 380,   y: 460,   onCurve: true  },
+      { x: 405,   y: 410,   onCurve: false }, // Perfect midpoint for straight terminal cut
+    ],
+  },
+];
+
+// "F": "E" without the bottom arm — the stem continues straight down
+// from the middle arm to the baseline. Same stem/arm metrics as "E"
+// so the two read as a family.
+const fVector = [
+  {
+    type: "outer",
+    points: [
+      { x: 88,  y: 1020, onCurve: true  },
+      { x: 88,  y: 655,  onCurve: false },
+      { x: 88,  y: 290,  onCurve: true  },
+      { x: 307, y: 290,  onCurve: false },
+      { x: 526, y: 290,  onCurve: true  },
+      { x: 526, y: 345,  onCurve: false },
+      { x: 526, y: 400,  onCurve: true  },
+      { x: 368, y: 400,  onCurve: false },
+      { x: 211, y: 400,  onCurve: true  },
+      { x: 211, y: 495,  onCurve: false },
+      { x: 211, y: 590,  onCurve: true  },
+      { x: 351, y: 590,  onCurve: false },
+      { x: 491, y: 590,  onCurve: true  },
+      { x: 491, y: 643,  onCurve: false },
+      { x: 491, y: 696,  onCurve: true  },
+      { x: 351, y: 696,  onCurve: false },
+      { x: 211, y: 696,  onCurve: true  },
+      { x: 211, y: 858,  onCurve: false },
+      { x: 211, y: 1020, onCurve: true  },
+      { x: 149, y: 1020, onCurve: false },
+    ],
+  },
+];
+
+// "G": "C" plus a horizontal bar protruding up into the cavity from
+// the lower arm's inner-top. The contour walks the outer (like C),
+// then up the bar's right edge, across the bar's top, down its left
+// edge, into the cavity, and CW around the cavity back to the upper
+// inner tip.
+const gVector = [
+  {
+    type: "outer",
+    points: [
+      { x: 466.5,  y: 340,    onCurve: true  }, // Extended top terminal matches O's outer curve
+      { x: 405,    y: 280,    onCurve: false },
+      { x: 300,    y: 280,    onCurve: true  },
+      { x: 195,    y: 280,    onCurve: false },
+      { x: 133.5,  y: 340,    onCurve: true  },
+      { x: 72,     y: 400,    onCurve: false },
+      { x: 72,     y: 506,    onCurve: true  },
+      { x: 72,     y: 655,    onCurve: false },
+      { x: 72,     y: 804,    onCurve: true  },
+      { x: 72,     y: 910,    onCurve: false },
+      { x: 133.5,  y: 970,    onCurve: true  },
+      { x: 195,    y: 1030,   onCurve: false },
+      { x: 300,    y: 1030,   onCurve: true  },
+      { x: 405,    y: 1030,   onCurve: false }, // Now matches O's bottom right expansion
+      { x: 466.5,  y: 970,    onCurve: true  },
+      { x: 528,    y: 910,    onCurve: false },
+      { x: 528,    y: 804,    onCurve: true  },
+      { x: 528,    y: 729.5,  onCurve: false }, // Midpoint for straight vertical right stem
+      { x: 528,    y: 655,    onCurve: true  }, // Top right corner of crossbar/stem
+      { x: 414,    y: 655,    onCurve: false }, // Midpoint for crossbar top edge
+      { x: 300,    y: 655,    onCurve: true  }, // Top left inner corner of crossbar
+      { x: 300,    y: 710,    onCurve: false }, // Midpoint for crossbar left edge
+      { x: 300,    y: 765,    onCurve: true  }, // Bottom left inner corner of crossbar
+      { x: 351.5,  y: 765,    onCurve: false }, // Midpoint for crossbar bottom edge
+      { x: 403,    y: 765,    onCurve: true  }, // Inner corner meeting right inner stem
+      { x: 403,    y: 789.5,  onCurve: false }, // Midpoint for inner vertical stem
+      { x: 403,    y: 814,    onCurve: true  }, // Connects seamlessly back to O's inner curve
+      { x: 403,    y: 865,    onCurve: false },
+      { x: 377,    y: 892.5,  onCurve: true  },
+      { x: 351,    y: 920,    onCurve: false },
+      { x: 300,    y: 920,    onCurve: true  },
+      { x: 249,    y: 920,    onCurve: false },
+      { x: 223,    y: 892.5,  onCurve: true  },
+      { x: 197,    y: 865,    onCurve: false },
+      { x: 197,    y: 814,    onCurve: true  },
+      { x: 197,    y: 655,    onCurve: false },
+      { x: 197,    y: 496,    onCurve: true  },
+      { x: 197,    y: 445,    onCurve: false },
+      { x: 223,    y: 417.5,  onCurve: true  },
+      { x: 249,    y: 390,    onCurve: false },
+      { x: 300,    y: 390,    onCurve: true  },
+      { x: 351,    y: 390,    onCurve: false },
+      { x: 377,    y: 417.5,  onCurve: true  }, // Inner top right terminal point
+      { x: 421.75, y: 378.75, onCurve: false }, // Exact midpoint to close the terminal cut
+    ],
+  },
+];
+
 const vectors = [
+  { name: "A", data: aVector },
+  { name: "C", data: cVector },
   { name: "E", data: eVector },
+  { name: "F", data: fVector },
+  { name: "G", data: gVector },
   { name: "O", data: oVector },
 ];
 
@@ -1433,9 +1960,15 @@ sketch.setup = function () {
   sketch.createCanvas(600, 400);
   sketch.canvas.dataset.pan = "true";
 
-  const css = getComputedStyle(document.documentElement);
-  COLORS.bg = css.getPropertyValue("--p5-bg").trim();
-  COLORS.fg = css.getPropertyValue("--p5-fg").trim();
+  // Defined as an instance method so the p5 render hook's MutationObserver
+  // can re-invoke it whenever <html data-theme> flips — keeps the canvas
+  // palette in sync with the surrounding page without a reload.
+  sketch.refreshTheme = function () {
+    const css = getComputedStyle(document.documentElement);
+    COLORS.bg = css.getPropertyValue("--p5-bg").trim();
+    COLORS.fg = css.getPropertyValue("--p5-fg").trim();
+  };
+  sketch.refreshTheme();
 
   const controls = sketch.createDiv();
   controls.addClass("p5-controls");
@@ -1589,8 +2122,184 @@ const oVector = [
   },
 ];
 
+// Flat-top sans-serif "A": outer wedge silhouette + inner trapezoidal
+// hole above the crossbar. Both contours wind CCW; the visualization
+// only draws polylines so winding direction doesn't affect rendering.
+const aVector = [
+  {
+    type: "outer",
+    points: [
+      { x: 72,    y: 1030,  onCurve: true  }, // Matches O footprint perfectly
+      { x: 142,   y: 655,   onCurve: false }, // Exact midpoint for perfectly straight outer stem
+      { x: 212,   y: 280,   onCurve: true  }, // Top outer left (Matches O top bound)
+      { x: 300,   y: 280,   onCurve: false }, // Perfect top center midpoint
+      { x: 388,   y: 280,   onCurve: true  }, // Top outer right
+      { x: 458,   y: 655,   onCurve: false },
+      { x: 528,   y: 1030,  onCurve: true  }, // Matches O footprint perfectly
+      { x: 465.5, y: 1030,  onCurve: false }, // Exact midpoint for flat right foot
+      { x: 403,   y: 1030,  onCurve: true  }, // Exact 125-unit stem thickness
+      { x: 388,   y: 895,   onCurve: false },
+      { x: 373,   y: 760,   onCurve: true  }, // Right crossbar bottom corner
+      { x: 300,   y: 760,   onCurve: false }, // Exact midpoint for crossbar bottom
+      { x: 227,   y: 760,   onCurve: true  }, // Left crossbar bottom corner
+      { x: 212,   y: 895,   onCurve: false },
+      { x: 197,   y: 1030,  onCurve: true  }, // Exact 125-unit stem thickness
+      { x: 134.5, y: 1030,  onCurve: false }, // Exact midpoint for flat left foot
+    ],
+  },
+  {
+    type: "inner",
+    points: [
+      { x: 239,   y: 652,   onCurve: true  }, // Left crossbar top corner (crossbar is 108 units thick)
+      { x: 300,   y: 652,   onCurve: false },
+      { x: 361,   y: 652,   onCurve: true  }, // Right crossbar top corner
+      { x: 347,   y: 526,   onCurve: false }, // Exact midpoint for perfectly straight inner stem
+      { x: 333,   y: 400,   onCurve: true  }, // Top inner right corner
+      { x: 300,   y: 400,   onCurve: false }, // Perfect inner top center
+      { x: 267,   y: 400,   onCurve: true  }, // Top inner left corner
+      { x: 253,   y: 526,   onCurve: false }, // Exact midpoint for perfectly straight inner stem
+    ],
+  },
+];
+
+// "C": single contour. Traces the outer arc CCW from the upper-arm
+// tip around the back to the lower-arm tip, jumps across the mouth
+// bottom to the inner ring, traces the inner ring CW back up to the
+// upper inner tip, then jumps across the mouth top to close.
+const cVector = [
+  {
+    type: "outer",
+    points: [
+      { x: 430,   y: 360,   onCurve: true  },
+      { x: 365,   y: 280,   onCurve: false },
+      { x: 300,   y: 280,   onCurve: true  },
+      { x: 195,   y: 280,   onCurve: false },
+      { x: 133.5, y: 340,   onCurve: true  },
+      { x: 72,    y: 400,   onCurve: false },
+      { x: 72,    y: 506,   onCurve: true  }, // Outer bottom anchor (distance of 149 from center)
+      { x: 72,    y: 655,   onCurve: false },
+      { x: 72,    y: 804,   onCurve: true  }, // Outer top anchor (distance of 149 from center)
+      { x: 72,    y: 910,   onCurve: false },
+      { x: 133.5, y: 970,   onCurve: true  },
+      { x: 195,   y: 1030,  onCurve: false },
+      { x: 300,   y: 1030,  onCurve: true  },
+      { x: 365,   y: 1030,  onCurve: false },
+      { x: 430,   y: 950,   onCurve: true  },
+      { x: 405,   y: 900,   onCurve: false }, // Perfect midpoint for straight terminal cut
+      { x: 380,   y: 850,   onCurve: true  },
+      { x: 340,   y: 920,   onCurve: false },
+      { x: 300,   y: 920,   onCurve: true  },
+      { x: 249,   y: 920,   onCurve: false },
+      { x: 223,   y: 892.5, onCurve: true  },
+      { x: 197,   y: 865,   onCurve: false },
+      { x: 197,   y: 814,   onCurve: true  }, // Inner top anchor (distance of 159 from center)
+      { x: 197,   y: 655,   onCurve: false },
+      { x: 197,   y: 496,   onCurve: true  }, // FIXED from 506. (distance of 159 from center)
+      { x: 197,   y: 445,   onCurve: false },
+      { x: 223,   y: 417.5, onCurve: true  },
+      { x: 249,   y: 390,   onCurve: false },
+      { x: 300,   y: 390,   onCurve: true  },
+      { x: 340,   y: 390,   onCurve: false },
+      { x: 380,   y: 460,   onCurve: true  },
+      { x: 405,   y: 410,   onCurve: false }, // Perfect midpoint for straight terminal cut
+    ],
+  },
+];
+
+// "F": "E" without the bottom arm — the stem continues straight down
+// from the middle arm to the baseline. Same stem/arm metrics as "E"
+// so the two read as a family.
+const fVector = [
+  {
+    type: "outer",
+    points: [
+      { x: 88,  y: 1020, onCurve: true  },
+      { x: 88,  y: 655,  onCurve: false },
+      { x: 88,  y: 290,  onCurve: true  },
+      { x: 307, y: 290,  onCurve: false },
+      { x: 526, y: 290,  onCurve: true  },
+      { x: 526, y: 345,  onCurve: false },
+      { x: 526, y: 400,  onCurve: true  },
+      { x: 368, y: 400,  onCurve: false },
+      { x: 211, y: 400,  onCurve: true  },
+      { x: 211, y: 495,  onCurve: false },
+      { x: 211, y: 590,  onCurve: true  },
+      { x: 351, y: 590,  onCurve: false },
+      { x: 491, y: 590,  onCurve: true  },
+      { x: 491, y: 643,  onCurve: false },
+      { x: 491, y: 696,  onCurve: true  },
+      { x: 351, y: 696,  onCurve: false },
+      { x: 211, y: 696,  onCurve: true  },
+      { x: 211, y: 858,  onCurve: false },
+      { x: 211, y: 1020, onCurve: true  },
+      { x: 149, y: 1020, onCurve: false },
+    ],
+  },
+];
+
+// "G": "C" plus a horizontal bar protruding up into the cavity from
+// the lower arm's inner-top. The contour walks the outer (like C),
+// then up the bar's right edge, across the bar's top, down its left
+// edge, into the cavity, and CW around the cavity back to the upper
+// inner tip.
+const gVector = [
+  {
+    type: "outer",
+    points: [
+      { x: 466.5,  y: 340,    onCurve: true  }, // Extended top terminal matches O's outer curve
+      { x: 405,    y: 280,    onCurve: false },
+      { x: 300,    y: 280,    onCurve: true  },
+      { x: 195,    y: 280,    onCurve: false },
+      { x: 133.5,  y: 340,    onCurve: true  },
+      { x: 72,     y: 400,    onCurve: false },
+      { x: 72,     y: 506,    onCurve: true  },
+      { x: 72,     y: 655,    onCurve: false },
+      { x: 72,     y: 804,    onCurve: true  },
+      { x: 72,     y: 910,    onCurve: false },
+      { x: 133.5,  y: 970,    onCurve: true  },
+      { x: 195,    y: 1030,   onCurve: false },
+      { x: 300,    y: 1030,   onCurve: true  },
+      { x: 405,    y: 1030,   onCurve: false }, // Now matches O's bottom right expansion
+      { x: 466.5,  y: 970,    onCurve: true  },
+      { x: 528,    y: 910,    onCurve: false },
+      { x: 528,    y: 804,    onCurve: true  },
+      { x: 528,    y: 729.5,  onCurve: false }, // Midpoint for straight vertical right stem
+      { x: 528,    y: 655,    onCurve: true  }, // Top right corner of crossbar/stem
+      { x: 414,    y: 655,    onCurve: false }, // Midpoint for crossbar top edge
+      { x: 300,    y: 655,    onCurve: true  }, // Top left inner corner of crossbar
+      { x: 300,    y: 710,    onCurve: false }, // Midpoint for crossbar left edge
+      { x: 300,    y: 765,    onCurve: true  }, // Bottom left inner corner of crossbar
+      { x: 351.5,  y: 765,    onCurve: false }, // Midpoint for crossbar bottom edge
+      { x: 403,    y: 765,    onCurve: true  }, // Inner corner meeting right inner stem
+      { x: 403,    y: 789.5,  onCurve: false }, // Midpoint for inner vertical stem
+      { x: 403,    y: 814,    onCurve: true  }, // Connects seamlessly back to O's inner curve
+      { x: 403,    y: 865,    onCurve: false },
+      { x: 377,    y: 892.5,  onCurve: true  },
+      { x: 351,    y: 920,    onCurve: false },
+      { x: 300,    y: 920,    onCurve: true  },
+      { x: 249,    y: 920,    onCurve: false },
+      { x: 223,    y: 892.5,  onCurve: true  },
+      { x: 197,    y: 865,    onCurve: false },
+      { x: 197,    y: 814,    onCurve: true  },
+      { x: 197,    y: 655,    onCurve: false },
+      { x: 197,    y: 496,    onCurve: true  },
+      { x: 197,    y: 445,    onCurve: false },
+      { x: 223,    y: 417.5,  onCurve: true  },
+      { x: 249,    y: 390,    onCurve: false },
+      { x: 300,    y: 390,    onCurve: true  },
+      { x: 351,    y: 390,    onCurve: false },
+      { x: 377,    y: 417.5,  onCurve: true  }, // Inner top right terminal point
+      { x: 421.75, y: 378.75, onCurve: false }, // Exact midpoint to close the terminal cut
+    ],
+  },
+];
+
 const vectors = [
+  { name: "A", data: aVector },
+  { name: "C", data: cVector },
   { name: "E", data: eVector },
+  { name: "F", data: fVector },
+  { name: "G", data: gVector },
   { name: "O", data: oVector },
 ];
 
@@ -1825,9 +2534,15 @@ sketch.setup = function () {
   sketch.createCanvas(600, 400);
   sketch.canvas.dataset.pan = "true";
 
-  const css = getComputedStyle(document.documentElement);
-  COLORS.bg = css.getPropertyValue("--p5-bg").trim();
-  COLORS.fg = css.getPropertyValue("--p5-fg").trim();
+  // Defined as an instance method so the p5 render hook's MutationObserver
+  // can re-invoke it whenever <html data-theme> flips — keeps the canvas
+  // palette in sync with the surrounding page without a reload.
+  sketch.refreshTheme = function () {
+    const css = getComputedStyle(document.documentElement);
+    COLORS.bg = css.getPropertyValue("--p5-bg").trim();
+    COLORS.fg = css.getPropertyValue("--p5-fg").trim();
+  };
+  sketch.refreshTheme();
 
   const controls = sketch.createDiv();
   controls.addClass("p5-controls");
@@ -1878,7 +2593,7 @@ Well, and with this, we conclude this stage of the font rendering process. In a 
 
 Thank you very much, and see you next time! 😊
 
-<img src="https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExdXM1amV6MWJ0eWs4cjY3OHJhNXNwZ2o1ZWkzYnVrNjMxZTlwNmlpcyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/1jkVi22T6iUrQJUNqk/giphy.gif" width="auto" height="440px" objectfit="cover" alt="Bye bye!">
+![Jimmy Fallon sliding and waiving bye](https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExdXM1amV6MWJ0eWs4cjY3OHJhNXNwZ2o1ZWkzYnVrNjMxZTlwNmlpcyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/1jkVi22T6iUrQJUNqk/giphy.gif)
 
 ## References
 

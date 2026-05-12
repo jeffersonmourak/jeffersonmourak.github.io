@@ -37,3 +37,6 @@ dev-local: public notebooks
 
 build: public preprocess notebooks
 	hugo
+
+lint-md:
+	bunx markdownlint-cli2 --fix

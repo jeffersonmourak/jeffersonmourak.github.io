@@ -65,7 +65,15 @@
   flex: 1;
   min-width: 0;
   max-width: 100%;
-  height: auto;
+  /* O createCanvas do p5 escreve estilos inline `width:600px;
+     height:400px` no elemento, então um `height: auto` externo perde por
+     especificidade e o canvas fica preso aos 400px intrínsecos enquanto
+     o flex estica a largura — o sketch acaba achatado horizontalmente.
+     !important nos deixa vencer essa altura inline; o `aspect-ratio` por
+     canvas que `render-codeblock-p5.html`'s `lockAspect` define inline
+     carrega o w:h de cada sketch, então esta regra continua agnóstica de
+     tamanho. */
+  height: auto !important;
 }
 
 /* Pan support — sketches set the canvas's `data-pan` attribute in
@@ -309,4 +317,50 @@
     flex: 0 0 auto;
     width: 100%;
   }
+}
+
+/* Preview da equação exibido acima de um painel de controle do Observable
+   — mantém a fórmula ativa legível enquanto o usuário arrasta o slider.
+   A célula é apenas um `<p class="equation-preview">…</p>` emitido por um
+   template `html`; a regra abaixo melhora a tipografia e aproxima do
+   slider para que os dois sejam lidos como uma unidade. */
+.equation-preview {
+  font-family: var(--font-mono);
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: var(--fg);
+  margin: 0 0 0.25rem 0;
+  text-align: center;
+}
+
+/* Toggle Play/Pause dos sketches de bézier: apenas um ícone (► / ⏹),
+   sem chrome. Fica ao lado do display de t + slider no painel escuro —
+   mantido discreto para parecer um controle de afordância, não um CTA
+   primário. */
+.p5-slider-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.p5-slider-row > .p5-slider {
+  flex: 1;
+  min-width: 0;
+}
+
+.p5-play-toggle {
+  font-size: 1.25rem;
+  line-height: 1;
+  padding: 0.15rem 0.35rem;
+  background: transparent;
+  color: var(--p5-fg);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: opacity 0.15s ease;
+}
+
+.p5-play-toggle:hover {
+  opacity: 1;
 }

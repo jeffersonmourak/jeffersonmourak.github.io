@@ -401,7 +401,7 @@ figure img, figure video { margin-bottom: 0; }
 figure figcaption {
   background: transparent;
   color: var(--muted);
-  text-align: center;
+  text-align: left;
   font-size: 0.9rem;
   font-weight: normal;
   margin-top: 0.5rem;

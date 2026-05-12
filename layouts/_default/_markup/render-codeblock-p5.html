@@ -35,7 +35,18 @@
     var node = document.getElementById("{{ $id }}");
     if (!node || node.dataset.p5Mounted) return;
     node.dataset.p5Mounted = "true";
-    new window.p5(sketchFn, node);
+    var instance = new window.p5(sketchFn, node);
+    // Re-pull colors from CSS custom properties when <html data-theme>
+    // flips, so p5 sketches re-skin alongside the rest of the page
+    // without losing animation/drag/slider state. Sketches opt in by
+    // assigning a `refreshTheme` function on their instance — the
+    // observer is a no-op for ones that don't.
+    new MutationObserver(function () {
+      if (typeof instance.refreshTheme === "function") instance.refreshTheme();
+    }).observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["data-theme"],
+    });
     // p5 appends its <canvas> to the mount node from inside setup(),
     // which runs asynchronously after construction. Once it's there,
     // lock the CSS aspect-ratio to the canvas's drawing-buffer ratio

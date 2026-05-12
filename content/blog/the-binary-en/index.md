@@ -19,13 +19,11 @@ versions:
     url: /blog/the-binary
 ---
 > Hey Y'all! This is a translation of my blog post originally written in Portuguese.
-> If you want to read that version, [click here](/blog/the-binary/).
 
 > Hello people of this internet, for those who are arriving here now, this is the second article of
 > a series I'm doing to talk about the fundamentals of computing, I recommend reading the
 > first one about [logic gates](https://jeffersonmourak.com/blog/logic-gates/).
 > And for those who have already read the first article, take a quick look there because I did a revision of the article, I highly recommend taking a look 😊
-
 
 Let's dive a bit deeper and explore some concepts of mathematics and also human history.
 
@@ -222,9 +220,9 @@ led c_out(in=_or_.out)
 With this combination of logic gates, a computer can already perform the incredible additions of: `0 + 0`, `1 + 0`, `0 + 1`, `1 + 1`, but beyond that, it can also say how much remainder there was from the addition. And when several ADDERs are combined, we can perform addition of more complex numbers like 42, but that we'll see in the next article.
 
 That's all for today, folks.
-<img src="https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExaXg4ZHNiMjVkMG1nY3M3NjRhaDI5cmFoNWtmaHVxNDBweGV5ZjdwOCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/xUPOqo6E1XvWXwlCyQ/giphy.gif" width="100%" height="100%" alt="That's all folks!">
+![That's all folks!](https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExaXg4ZHNiMjVkMG1nY3M3NjRhaDI5cmFoNWtmaHVxNDBweGV5ZjdwOCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/xUPOqo6E1XvWXwlCyQ/giphy.gif)
 
-References
+## References
 
 - [A brief history of numerical systems (Youtube)](https://pt.wikipedia.org/wiki/%C3%81lgebra_booliana)
 - [Numeral system (Wikipédia)](https://en.wikipedia.org/wiki/Numeral_system)

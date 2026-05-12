@@ -28,7 +28,8 @@
 		"@biomejs/biome": "^1.9.4",
 		"@observablehq/notebook-kit": "^1.7.2",
 		"@types/lodash": "^4.17.24",
-		"@types/uuid": "^10.0.0"
+		"@types/uuid": "^10.0.0",
+		"markdownlint-cli2": "^0.22.1"
 	},
 	"dependencies": {
 		"circ-renderer": "workspace:*",

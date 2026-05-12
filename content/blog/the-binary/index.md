@@ -24,7 +24,6 @@ versions:
 > primeiro sobre [portas lógicas](https://jeffersonmourak.com/blog/logic-gates/).
 > E para quem já leu o primeiro artigo, dá um pulinho lá porque eu fiz uma revisão no artigo, recomendo bastante dar uma olhada 😊
 
-
 Vamos nos aprofundar um pouco mais e explorar alguns conceitos de matemática e também da história humana.
 
 A matemática veio da necessidade de contar e medir da raça humana – quantos animais a Maria cuida, quantos dias até o próximo solstício... Com o tempo e a expansão humana, povos antigos criaram vários sistemas de numeração para o seu dia a dia. Jogos como _Grand Theft Auto V_, _Call of Duty: Black Ops III_, _Dragon Quest XI_ são exemplos de uso do sistema numeral que os romanos usavam, e o _I Ching_, um antigo texto chinês, tem raízes em representações binárias.
@@ -220,9 +219,10 @@ led c_out(in=_or_.out)
 Com essa combinação de portas lógicas, um computador já consegue fazer as incríveis somas de: `0 + 0`, `1 + 0`, `0 + 1`, `1 + 1`, mas, além disso, ele consegue também dizer quanto que houve de resto da soma. E quando combinados vários ADDERs, a gente consegue fazer uma soma de números mais complexos como o 42, mas essa nós vamos ver no próximo artigo.
 
 Por hoje é só isso, pessoal.
-<img src="https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExaXg4ZHNiMjVkMG1nY3M3NjRhaDI5cmFoNWtmaHVxNDBweGV5ZjdwOCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/xUPOqo6E1XvWXwlCyQ/giphy.gif" width="100%" height="100%" alt="That's all folks!">
 
-Referências
+![Isso é tudo pessoal!](https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExaXg4ZHNiMjVkMG1nY3M3NjRhaDI5cmFoNWtmaHVxNDBweGV5ZjdwOCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/xUPOqo6E1XvWXwlCyQ/giphy.gif)
+
+## Referências
 
 - [A brief history of numerical systems (Youtube)](https://pt.wikipedia.org/wiki/%C3%81lgebra_booliana)
 - [Numeral system (Wikipédia)](https://en.wikipedia.org/wiki/Numeral_system)

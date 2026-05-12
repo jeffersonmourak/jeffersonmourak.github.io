@@ -22,7 +22,6 @@ versions:
 > Oi pessoal, então tive que fazer umas mudanças aqui no post pra adicionar alguns widgets
 > interativos, e aproveitei para dar um pouco mais de contexto ao conteúdo.
 
-
 Olá, este é o primeiro artigo de uma série sobre os fundamentos da computação. A ideia é demonstrar de forma simples e prática como este dispositivo transforma zeros e uns em praticamente qualquer coisa, o funcionamento das CPUs e outros assuntos interessantes. Então, para começar, o primeiro conceito que temos que aprender é o de portas lógicas: elas são a base de toda a computação, com elas podemos fazer certas operações que recebem como entrada um ou mais valores e terão outro valor como resultado.
 
 Mas o que são esses valores? O número 42? O nome da minha mãe? Esses “valores” são energia, mais especificamente a presença e ausência dela. Como foi falado na introdução, computadores funcionam utilizando dígitos binários, ou seja, essas máquinas só entendem 0 e 1 ou “Tem energia” e “Não tem energia”. No entanto, não iremos chamar esses zeros e uns de energia, para o computador eles são sinais.
@@ -69,7 +68,6 @@ not _not_(in=a.out)
 led out(in=_not_.out)
 
 ```
-
 
 E se escrevermos ela numa tabela verdade teremos isso aqui:
 
@@ -143,11 +141,11 @@ Analisando o diagrama acima, vemos que, quando os dois interruptores estiverem d
 | 0 | 0 | 1 |
 | 1 | 1 | 1 |
 
-<img src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExa2F3aTZ5Z2FhajUxem51aG5oYzBwYW1jdHI3NGswMzZzd3duMTh3biZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/n9h61thJkq6Xe/giphy.gif" width="auto" height="440px" objectfit="cover" alt="Eu acho que vi um gatinho?">
+![Eu acho que vi um gatinho!](https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExa2F3aTZ5Z2FhajUxem51aG5oYzBwYW1jdHI3NGswMzZzd3duMTh3biZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/n9h61thJkq6Xe/giphy.gif)
 
 Mas espera um pouco, eu tenho a impressão de que eu já vi essa tabela antes? Sim! Essa é a porta lógica OR que estávamos procurando. Uma viagem e tanto, não é? Agora que já sabemos como consertar a fiação da lâmpada, podemos dar uma paradinha aqui. Este é apenas o primeiro artigo de uma série sobre computadores. Mais para frente, vamos abordar outras portas lógicas e outros conceitos da computação.
 
-Referências
+## Referências
 
 * [Álgebra booliana (Wikipédia)](https://pt.wikipedia.org/wiki/%C3%81lgebra_booliana)
 * [Boolean Algebra (Wikipédia)](https://en.wikipedia.org/wiki/Boolean_algebra)

@@ -1,0 +1,18 @@
+{{- /*
+  Stand-alone images render as <figure> so the alt text doubles as a
+  caption. The markdown title slot (![alt](src "class")) is forwarded as
+  a class on the <figure>, letting posts opt into layout helpers like
+  `full-width`. Inline images (inside a paragraph) stay bare to avoid
+  emitting invalid <figure>-inside-<p> markup.
+*/ -}}
+{{- if .IsBlock -}}
+<figure{{ with .Title }} class="{{ . }}"{{ end }}>
+  <img src="{{ .Destination | safeURL }}" alt="{{ .Text }}" loading="lazy">
+  {{- with .Text }}
+  <figcaption>{{ . }}</figcaption>
+  {{- end }}
+</figure>
+{{- else -}}
+<img src="{{ .Destination | safeURL }}" alt="{{ .Text }}"
+  {{- with .Title }} class="{{ . }}"{{ end }} loading="lazy">
+{{- end -}}
