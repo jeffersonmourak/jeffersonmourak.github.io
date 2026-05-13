@@ -1,0 +1,58 @@
+{{- /*
+  llms-full.txt — full post content for LLM consumption.
+  Header mirrors /llms.txt; each post follows as a heading block plus the
+  raw markdown body. Shortcode calls are stripped and image references are
+  collapsed to [image: alt] since an LLM can't fetch the assets.
+  Only attached to the EN language outputs in hugo.toml so it lands at
+  /llms-full.txt and not /pt/llms-full.txt.
+*/ -}}
+{{- $en := "" -}}
+{{- $pt := "" -}}
+{{- range .Sites -}}
+  {{- if eq .Language.Lang "en" }}{{ $en = .Params.llmsIntro }}{{ end -}}
+  {{- if eq .Language.Lang "pt" }}{{ $pt = .Params.llmsIntro }}{{ end -}}
+{{- end -}}
+# {{ .Site.Title }}
+
+> [lang:en] {{ $en }}
+
+> [lang:pt] {{ $pt }}
+
+## Links
+
+- Site: {{ .Site.BaseURL }}
+- GitHub: https://github.com/jeffersonmourak
+- LinkedIn: https://www.linkedin.com/in/jeffersonmourak/
+- Email: jeffersonmourak@gmail.com
+- Voting Poker: https://voting.poker
+- Circ: https://circ-lang.org/
+
+## Posts
+
+{{- $langTags := slice "en" "pt" "pt-br" -}}
+{{- $posts := slice -}}
+{{- range .Sites -}}
+  {{- $posts = $posts | append (where .RegularPages "Section" "blog") -}}
+{{- end -}}
+{{- $posts = sort $posts "Date" "desc" -}}
+{{- range $posts -}}
+{{- $lang := "" -}}
+{{- range .GetTerms "tags" -}}
+  {{- if in $langTags (lower .Title) -}}{{ $lang = lower .Title }}{{- end -}}
+{{- end -}}
+{{- if eq $lang "pt-br" }}{{ $lang = "pt" }}{{ end -}}
+{{- $tags := slice -}}
+{{- range .GetTerms "tags" -}}
+  {{- if not (in $langTags (lower .Title)) -}}{{ $tags = $tags | append .Title }}{{- end -}}
+{{- end -}}
+{{- $body := .RawContent -}}
+{{- $body = replaceRE `\{\{[<%][^}]*[>%]\}\}` "" $body -}}
+{{- $body = replaceRE `!\[([^\]]*)\]\([^)]*\)` "[image: $1]" $body }}
+
+### {{ .Title }} [lang:{{ $lang }}] [{{ .Date.Format "2006-01-02" }}] [tags: {{ delimit $tags ", " }}]
+URL: {{ .Permalink }}
+
+{{ $body }}
+
+---
+{{- end }}

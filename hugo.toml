@@ -24,6 +24,18 @@ section = ['html', 'rss', 'sitemap']
 taxonomy = ['html']
 term = ['html']
 
+[outputFormats.llms]
+mediaType = "text/plain"
+baseName = "llms"
+isPlainText = true
+notAlternative = true
+
+[outputFormats.llmsfull]
+mediaType = "text/plain"
+baseName = "llms-full"
+isPlainText = true
+notAlternative = true
+
 [security.exec]
 allow = [
   '^(dart-)?sass(-embedded)?$',
@@ -63,10 +75,13 @@ languageCode = 'en'
 languageDirection = 'ltr'
 title = "Jefferson Oliveira"
 copyright = "All content provided by this website are my own opinons and beliefs and are distrubuted under the <br/>"
+[languages.en.outputs]
+home = ['html', 'llms', 'llmsfull']
 [languages.en.params]
 subtitle = "Hey there! I'm Jefferson Oliveira, a software engineer from Brazil."
 owner = "Jefferson Oliveira"
 keywords = "Jefferson Oliveira, software engineer, developer, brazil"
+llmsIntro = "Jefferson Oliveira — software engineer from Brazil with 10+ years of experience. Background spans time-management systems and real-time data infrastructure serving millions of concurrent players in shipped games. Writes about low-level and systems topics: compilers, programming language design, WebAssembly, DSLs, font rendering, Unicode, binary representations, logic gates, and digital circuit simulation. Creator of Circ (a language for building and simulating digital circuits) and Voting Poker (a free Planning Poker tool for story estimation). Also into board games, astronomy, and physics."
 copyright = "Jefferson Oliveira | CC BY 4.0"
 menuMore = "Show more"
 readMore = "Read more"
@@ -130,6 +145,7 @@ copyright = "Todo conteúdo distribuido por este website refletem minhas própri
 subtitle = "Olá! Eu sou Jefferson Oliveira, um engenheiro de software curioso e apaixonado por tecnologia."
 owner = "Jefferson Oliveira"
 keywords = "Jefferson Oliveira, engenheiro de software, desenvolvedor, brasil"
+llmsIntro = "Jefferson Oliveira — engenheiro de software brasileiro com mais de 10 anos de experiência. Atuou em sistemas de gestão de tempo e infraestrutura de dados em tempo real para jogos com milhões de jogadores simultâneos. Escreve sobre tópicos de baixo nível e sistemas: compiladores, design de linguagens de programação, WebAssembly, DSLs, renderização de fontes, Unicode, representação binária, portas lógicas e simulação de circuitos digitais. Criador do Circ (uma linguagem para construir e simular circuitos digitais) e do Voting Poker (uma ferramenta gratuita de Planning Poker para estimativa de histórias). Também curte jogos de tabuleiro, astronomia e física."
 copyright = "Jefferson Oliveira | CC BY 4.0"
 menuMore = "Ver mais"
 readMore = "Ler mais"

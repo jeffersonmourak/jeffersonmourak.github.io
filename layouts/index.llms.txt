@@ -1,0 +1,48 @@
+{{- /*
+  llms.txt — site index for LLM consumption (llmstxt.org).
+  One combined file at /llms.txt with both language intros and all posts
+  annotated with lang: so a model can filter per language itself.
+  Only attached to the EN language outputs in hugo.toml so it lands at
+  /llms.txt and not /pt/llms.txt.
+*/ -}}
+{{- $en := "" -}}
+{{- $pt := "" -}}
+{{- range .Sites -}}
+  {{- if eq .Language.Lang "en" }}{{ $en = .Params.llmsIntro }}{{ end -}}
+  {{- if eq .Language.Lang "pt" }}{{ $pt = .Params.llmsIntro }}{{ end -}}
+{{- end -}}
+# {{ .Site.Title }}
+
+> [lang:en] {{ $en }}
+
+> [lang:pt] {{ $pt }}
+
+## Links
+
+- Site: {{ .Site.BaseURL }}
+- GitHub: https://github.com/jeffersonmourak
+- LinkedIn: https://www.linkedin.com/in/jeffersonmourak/
+- Email: jeffersonmourak@gmail.com
+- Voting Poker: https://voting.poker
+- Circ: https://circ-lang.org/
+
+## Posts
+
+{{- $langTags := slice "en" "pt" "pt-br" -}}
+{{- $posts := slice -}}
+{{- range .Sites -}}
+  {{- $posts = $posts | append (where .RegularPages "Section" "blog") -}}
+{{- end -}}
+{{- $posts = sort $posts "Date" "desc" -}}
+{{- range $posts -}}
+{{- $lang := "" -}}
+{{- range .GetTerms "tags" -}}
+  {{- if in $langTags (lower .Title) -}}{{ $lang = lower .Title }}{{- end -}}
+{{- end -}}
+{{- if eq $lang "pt-br" }}{{ $lang = "pt" }}{{ end -}}
+{{- $tags := slice -}}
+{{- range .GetTerms "tags" -}}
+  {{- if not (in $langTags (lower .Title)) -}}{{ $tags = $tags | append .Title }}{{- end -}}
+{{- end }}
+- [{{ .Title }}]({{ .Permalink }}) — lang:{{ $lang }} — {{ .Date.Format "2006-01-02" }} — tags: {{ delimit $tags ", " }} — {{ .Summary | plainify | htmlUnescape | truncate 200 }}
+{{- end }}
