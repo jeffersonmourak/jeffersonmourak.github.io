@@ -42,12 +42,44 @@
     {{- end -}}
     {{ range $pages }}
     {{- $safeContent := replace .Content "]]>" "]]]]><![CDATA[>" -}}
+    {{- /* Language tags (EN/PT/PT-BR) double as i18n markers in the
+           taxonomy, but they aren't meaningful topics for an RSS reader
+           or dev.to import — drop them from <category> output entirely.
+           Match is case-insensitive so "en", "En", etc. all skip. */ -}}
+    {{- $langTags := slice "en" "pt" "pt-br" -}}
+    {{- /* Build a lowercase set of the post's tag titles. Keywords that
+           match a tag (case-insensitively) are skipped below so we don't
+           emit the same term twice as <category> — common in posts like
+           circ-en where "WebAssembly" and "DSL" appear in both lists. */ -}}
+    {{- $tagTitlesLower := slice -}}
+    {{- range .GetTerms "tags" -}}
+      {{- $tagTitlesLower = $tagTitlesLower | append (lower .Title) -}}
+    {{- end -}}
     <item>
       <title>{{ .Title }}</title>
       <link>{{ .Permalink }}</link>
       <pubDate>{{ .Date.Format "Mon, 02 Jan 2006 15:04:05 -0700" | safeHTML }}</pubDate>
       {{ with .Site.Author.email }}<author>{{.}}{{ with $.Site.Author.name }} ({{.}}){{end}}</author>{{end}}
       <guid>{{ .Permalink }}</guid>
+      {{- /* Tags are a Hugo taxonomy, so each term has a canonical
+             listing page. Emitting the URL via domain= lets RSS readers
+             link the category. dev.to ignores the attribute and uses the
+             text as a plain tag. */ -}}
+      {{- range .GetTerms "tags" }}
+        {{- if not (in $langTags (lower .Title)) }}
+      <category domain="{{ .Permalink }}">{{ .Title }}</category>
+        {{- end }}
+      {{- end }}
+      {{- /* Keywords are a plain frontmatter list (not a taxonomy), so
+             no URL. uniq drops within-list duplicates (e.g. "Binary"
+             twice in the-binary-en); the case-insensitive check above
+             drops cross-list duplicates with tags. */ -}}
+      {{- range .Params.keywords | uniq }}
+        {{- $kwLower := lower . -}}
+        {{- if and (not (in $tagTitlesLower $kwLower)) (not (in $langTags $kwLower)) }}
+      <category>{{ . }}</category>
+        {{- end }}
+      {{- end }}
       <description>{{ .Summary | html }}</description>
       <content:encoded>{{ printf "<![CDATA[%s]]>" $safeContent | safeHTML }}</content:encoded>
     </item>
