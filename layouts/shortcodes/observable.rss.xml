@@ -1,0 +1,8 @@
+{{- /*
+  RSS variant of the observable shortcode. The HTML variant inlines an
+  Observable Notebook bundle and a JS loader; here we emit a short
+  paragraph describing the embed and link back to the post.
+*/ -}}
+{{- $slug := .Get "notebook" -}}
+{{- $cells := .Get "cells" -}}
+<p><em>Interactive Observable notebook{{ with $slug }}: <code>{{ . }}</code>{{ end }}{{ with $cells }} (cells: <code>{{ . }}</code>){{ end }} &mdash; <a href="{{ .Page.Permalink }}">view it on the blog</a>.</em></p>

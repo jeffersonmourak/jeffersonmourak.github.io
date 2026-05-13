@@ -1,0 +1,8 @@
+{{- /*
+  RSS variant of the circ code-block render hook. Emits the original
+  source as a plain <pre><code> block so dev.to drafts (and any other
+  RSS consumer) see readable text instead of the interactive HTML/wasm
+  bundle the HTML variant produces.
+*/ -}}
+{{- $source := strings.TrimRight "\n" .Inner -}}
+<pre><code class="language-circ">{{ $source }}</code></pre>

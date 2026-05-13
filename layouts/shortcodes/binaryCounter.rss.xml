@@ -1,0 +1,10 @@
+{{- /*
+  RSS variant of the binaryCounter shortcode. The HTML variant embeds
+  an iframe; here we emit a short paragraph describing the widget and
+  link back to the post, so RSS consumers (dev.to in particular) get a
+  readable placeholder instead of a broken embed.
+*/ -}}
+{{- $mode := or (.Get 0) (.Get "mode") -}}
+{{- $base := or (.Get 1) (.Get "base") -}}
+{{- $spots := or (.Get 2) (.Get "spots") -}}
+<p><em>Interactive binary {{ if $mode }}{{ $mode }} {{ end }}widget{{ if $base }} (base {{ $base }}{{ if $spots }}, {{ $spots }} digits{{ end }}){{ end }} &mdash; <a href="{{ .Page.Permalink }}">view it on the blog</a>.</em></p>

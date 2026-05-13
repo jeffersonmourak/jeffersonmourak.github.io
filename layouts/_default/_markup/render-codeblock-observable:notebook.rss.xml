@@ -1,0 +1,9 @@
+{{- /*
+  RSS variant of the observable:notebook code-block render hook. The
+  HTML variant inlines a built Observable Notebook bundle; for RSS we
+  emit the original notebook source as plain HTML inside a fenced code
+  block, so dev.to drafts get human-readable text instead of the
+  pre-bundled runtime + cell DOM.
+*/ -}}
+{{- $source := strings.TrimRight "\n" .Inner -}}
+<pre><code class="language-html">{{ $source }}</code></pre>

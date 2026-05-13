@@ -1,0 +1,8 @@
+{{- /*
+  RSS variant of the p5 code-block render hook. The HTML variant emits
+  an inline <script> that mounts a p5 sketch — useless and unsafe in an
+  RSS reader. Here we just preserve the source as a JavaScript code
+  block.
+*/ -}}
+{{- $source := strings.TrimRight "\n" .Inner -}}
+<pre><code class="language-javascript">{{ $source }}</code></pre>
