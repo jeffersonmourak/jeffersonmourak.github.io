@@ -1,9 +1,7 @@
 {{- /*
   RSS variant of the observable:notebook code-block render hook. The
-  HTML variant inlines a built Observable Notebook bundle; for RSS we
-  emit the original notebook source as plain HTML inside a fenced code
-  block, so dev.to drafts get human-readable text instead of the
-  pre-bundled runtime + cell DOM.
+  HTML variant inlines a built Observable Notebook bundle + runtime;
+  for RSS we emit a one-line "view on the blog" paragraph matching the
+  binaryCounter shortcode override.
 */ -}}
-{{- $source := strings.TrimRight "\n" .Inner -}}
-<pre><code class="language-html">{{ $source }}</code></pre>
+<p><em>Interactive Observable notebook widget &mdash; <a href="{{ .Page.Permalink }}">view it on the blog</a>.</em></p>

@@ -1,8 +1,22 @@
 {{- /*
-  RSS variant of the circ code-block render hook. Emits the original
-  source as a plain <pre><code> block so dev.to drafts (and any other
-  RSS consumer) see readable text instead of the interactive HTML/wasm
-  bundle the HTML variant produces.
+  RSS variant of the circ code-block render hook. The HTML variant
+  renders a tabbed source/topology/interactive view backed by wasm —
+  none of that survives an RSS reader, so for the feed we emit:
+    1. a one-line "view on the blog" paragraph (matches binaryCounter)
+    2. the ASCII topology schematic in a <pre>, when available
+
+  The schematic comes from data/circ_previews.json — keyed by
+  sha256("<tag> <source>") with tag = "expand" or "plain", the same
+  scheme the HTML variant uses. When the preview is missing (or the
+  compile failed) we silently fall back to just the link paragraph,
+  since the message alone is still meaningful in dev.to drafts.
 */ -}}
+{{- $expand := eq (printf "%v" (.Attributes.expand | default false)) "true" -}}
+{{- $tag := cond $expand "expand" "plain" -}}
 {{- $source := strings.TrimRight "\n" .Inner -}}
-<pre><code class="language-circ">{{ $source }}</code></pre>
+{{- $key := printf "%s %s" $tag $source | crypto.SHA256 -}}
+{{- $entry := index site.Data.circ_previews $key -}}
+<p><em>Interactive circ widget &mdash; <a href="{{ .Page.Permalink }}">view it on the blog</a>.</em></p>
+{{- with $entry }}{{ if eq .status "ok" }}
+<pre><code>{{ .preview }}</code></pre>
+{{- end }}{{ end }}

@@ -1,8 +1,7 @@
 {{- /*
-  RSS variant of the p5 code-block render hook. The HTML variant emits
-  an inline <script> that mounts a p5 sketch — useless and unsafe in an
-  RSS reader. Here we just preserve the source as a JavaScript code
-  block.
+  RSS variant of the p5 code-block render hook. The HTML variant mounts
+  a live p5.js sketch via inline <script>; for RSS we emit a one-line
+  "view on the blog" paragraph matching the binaryCounter shortcode
+  override.
 */ -}}
-{{- $source := strings.TrimRight "\n" .Inner -}}
-<pre><code class="language-javascript">{{ $source }}</code></pre>
+<p><em>Interactive p5 widget &mdash; <a href="{{ .Page.Permalink }}">view it on the blog</a>.</em></p>
