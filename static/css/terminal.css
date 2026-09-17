@@ -40,6 +40,8 @@
   --code-bg: #ece2f7;
   --pane-bg: #f4eefb;
   --pane-label-bg: #ebe4f5;
+  /* The circuit canvas's dot grid: --fg at 14% (18% dark), as on circ-lang.org. */
+  --pg-dot: rgba(68, 56, 86, 0.14);
 
   /* Syntax-highlight palette — port of circ-compiler/site's Shiki TextMate
      themes (src/utils/shiki-themes.mjs). Two complementary hues carry
@@ -85,6 +87,7 @@
   --code-bg: #1f1438;
   --pane-bg: #0c0517;
   --pane-label-bg: #13091f;
+  --pg-dot: rgba(192, 171, 218, 0.18);
 
   /* Dark palette uses the user-provided hexes from the Shiki port directly
      (#1ee17d ~9:1 on --code-bg, #e17d1e ~5:1). */
@@ -1106,6 +1109,22 @@ a.read-more::after { content: " →"; }
 }
 .circ-tab-label:hover { color: var(--fg); }
 
+/* Right-aligned hint in the tab bar, mirroring the "click input pins to
+   toggle" line in circ-lang.org's live-canvas header. */
+.circ-tab-hint {
+  margin-left: auto;
+  padding: 0.4rem 0.85rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-style: italic;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+  white-space: nowrap;
+}
+@media (max-width: 480px) {
+  .circ-tab-hint { display: none; }
+}
+
 .circ-tab-input--code:checked ~ .circ-tabs .circ-tab-label--code,
 .circ-tab-input--topology:checked ~ .circ-tabs .circ-tab-label--topology,
 .circ-tab-input--interactive:checked ~ .circ-tabs .circ-tab-label--interactive {
@@ -1133,12 +1152,18 @@ a.read-more::after { content: " →"; }
   border-radius: 0;
 }
 
+/* ASCII schematic — the same pane treatment as circ-lang.org's
+   `circ-compile --preview` panel: a strict system mono so box-drawing
+   glyphs stay on the character grid, and line-height 1 so vertical runs
+   join up. The pane clips, so the horizontal scroll lives here. */
 .circ-block .circ-preview {
   font-family: var(--font-mono-strict);
-  line-height: 1.2;
-  background: color-mix(in srgb, var(--accent) 6%, transparent) !important;
-  border-left: 3px solid var(--accent);
+  font-size: 0.88rem;
+  line-height: 1;
+  padding: 1rem 1.25rem;
+  background: var(--pane-bg) !important;
   white-space: pre;
+  overflow-x: auto;
 }
 
 .circ-block .circ-error {
@@ -1148,24 +1173,63 @@ a.read-more::after { content: " →"; }
   white-space: pre-wrap;
 }
 
+/* The live canvas stage, as in circ-lang.org's playground: a fixed-height
+   region the canvas fills (the runtime sets the height from the circuit's
+   natural size) with the circuit fitted inside, so the reader can zoom and
+   pan. The dot grid is drawn by the canvas itself in world space — see
+   assets/ts/circ-runtime/world-grid.ts — so it moves with the circuit; the
+   pane colour underneath is what shows through the transparent canvas. */
+.circ-tab-panel--interactive { position: relative; }
+
 .circ-canvas-mount {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 200px;
-  padding: 1rem;
-  background: var(--pane-bg);
-  overflow-x: auto;
+  min-height: 210px;
+  background-color: var(--pane-bg);
+  overflow: hidden;
 }
 
 .circ-canvas-mount canvas {
   display: block;
-  max-width: 100%;
-  /* Override the renderer's inline `style="height: …px"` so the canvas
-     keeps its intrinsic aspect ratio when max-width clamps the width on
-     narrow viewports. Without !important the inline height wins. */
-  height: auto !important;
+  width: 100%;
+  /* Under `viewport: 'parent'` the renderer sizes the element inline; the
+     stylesheet keeps it pinned to the mount's box regardless. */
+  height: 100% !important;
+  max-width: none;
+  margin: 0;
 }
+
+/* The zoom line, bottom right of the stage, as the playground's:
+   `− + · 100% · fit`. Buttons are ghosts in the muted mono until hovered;
+   they are disabled until the canvas is up. */
+.circ-zoom {
+  position: absolute;
+  right: 12px;
+  bottom: 10px;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--muted);
+  white-space: nowrap;
+}
+.circ-zoom button {
+  font: inherit;
+  line-height: 1;
+  color: var(--muted);
+  background: transparent;
+  border: 0;
+  padding: 2px 3px;
+  cursor: pointer;
+}
+.circ-zoom .circ-zoom-step { font-size: 14px; }
+.circ-zoom button:hover { color: var(--fg); }
+.circ-zoom button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.circ-zoom button[aria-disabled='true'] { opacity: 0.5; cursor: default; }
+.circ-zoom button[aria-disabled='true']:hover { color: var(--muted); }
 
 .circ-canvas-mount:empty::before {
   content: "Loading circuit…";

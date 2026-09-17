@@ -7,6 +7,15 @@ source. Tabs are pure-CSS via hidden radios — no client JS.
 
 Optional attribute: `{expand=true}` → renders builtin macros (xor, nand, …)
 as their expanded primitive sub-circuits in the topology view.
+
+Component names may carry markdown emphasis — `_nand_` for *nand*,
+`__carry__` for **carry**, `___x___` for both. The interactive canvas
+handles that in assets/ts/circ-runtime/markdown-names.ts; the schematic
+below gets the same treatment here, with each stripped marker replaced by
+a space so the box-drawing grid keeps its width. Only underscores can occur
+in the preview (the compiler rejects `*` in a name), and only whole tokens
+are matched, so an inner underscore (`_not_a_` → *not_a*) is left alone.
+The source tab shows the code as written.
 */ -}}
 {{- $expand := eq (printf "%v" (.Attributes.expand | default false)) "true" -}}
 {{- $tag := cond $expand "expand" "plain" -}}
@@ -23,6 +32,7 @@ as their expanded primitive sub-circuits in the topology view.
     {{ if $entryOk }}<label class="circ-tab-label circ-tab-label--interactive" for="{{ $id }}-interactive" role="tab">Interactive</label>{{ end }}
     <label class="circ-tab-label circ-tab-label--topology" for="{{ $id }}-topology" role="tab">Topology</label>
     <label class="circ-tab-label circ-tab-label--code" for="{{ $id }}-code" role="tab">Code</label>
+    {{ if $entryOk }}<span class="circ-tab-hint">click input pins to toggle</span>{{ end }}
   </div>
   <div class="circ-tab-panel circ-tab-panel--code" role="tabpanel">
     <pre class="circ-source"><code class="language-circ">{{- $source -}}</code></pre>
@@ -30,7 +40,11 @@ as their expanded primitive sub-circuits in the topology view.
   <div class="circ-tab-panel circ-tab-panel--topology" role="tabpanel">
     {{- with $entry -}}
       {{- if eq .status "ok" -}}
-        <pre class="circ-preview" aria-label="ASCII schematic">{{- .preview -}}</pre>
+        {{- $pre := .preview | htmlEscape -}}
+        {{- $pre = replaceRE `(?m)(^|[^A-Za-z0-9_])___([A-Za-z0-9][A-Za-z0-9_]*)___([^A-Za-z0-9_]|$)` `$1   <em><strong>$2</strong></em>   $3` $pre -}}
+        {{- $pre = replaceRE `(?m)(^|[^A-Za-z0-9_])__([A-Za-z0-9][A-Za-z0-9_]*)__([^A-Za-z0-9_]|$)` `$1  <strong>$2</strong>  $3` $pre -}}
+        {{- $pre = replaceRE `(?m)(^|[^A-Za-z0-9_])_([A-Za-z0-9][A-Za-z0-9_]*)_([^A-Za-z0-9_]|$)` `$1 <em>$2</em> $3` $pre -}}
+        <pre class="circ-preview" aria-label="ASCII schematic">{{- $pre | safeHTML -}}</pre>
       {{- else -}}
         <pre class="circ-error" role="alert">{{- .message -}}</pre>
       {{- end -}}
@@ -41,6 +55,14 @@ as their expanded primitive sub-circuits in the topology view.
   {{ if $entryOk }}
   <div class="circ-tab-panel circ-tab-panel--interactive" role="tabpanel">
     <div class="circ-canvas-mount" data-circ-wasm="/circ/{{ $key }}.wasm" aria-label="Interactive circuit"></div>
+    <div class="circ-zoom" role="toolbar" aria-label="Zoom">
+      <button type="button" class="circ-zoom-out circ-zoom-step" aria-label="Zoom out" aria-disabled="true">&minus;</button>
+      <button type="button" class="circ-zoom-in circ-zoom-step" aria-label="Zoom in" aria-disabled="true">+</button>
+      <span class="circ-zoom-sep" aria-hidden="true">&middot;</span>
+      <button type="button" class="circ-zoom-pct" aria-label="Reset zoom to 100%" aria-disabled="true">100%</button>
+      <span class="circ-zoom-sep" aria-hidden="true">&middot;</span>
+      <button type="button" class="circ-zoom-fit" aria-label="Fit the circuit" aria-disabled="true">fit</button>
+    </div>
   </div>
   {{ end }}
 </div>

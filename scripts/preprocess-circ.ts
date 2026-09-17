@@ -156,8 +156,12 @@ function compileOne(binary: string, source: string, expand: boolean): Entry {
 
 function compileWasm(binary: string, source: string, key: string): string | null {
   const wasmPath = join(WASM_DIR, `${key}.wasm`);
-  // Same hash ⇒ same source ⇒ same artifact, so skip if already on disk.
-  if (existsSync(wasmPath)) return null;
+  // Same hash ⇒ same source ⇒ same artifact, so skip if already on disk —
+  // unless the compiler itself is newer than the artifact: a refreshed
+  // binary can change the runtime and topology bytes for identical source.
+  if (existsSync(wasmPath) && statSync(wasmPath).mtimeMs >= statSync(binary).mtimeMs) {
+    return null;
+  }
 
   const dir = mkdtempSync(join(tmpdir(), "circ-wasm-"));
   try {
