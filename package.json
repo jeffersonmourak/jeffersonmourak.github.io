@@ -22,21 +22,21 @@
 		"packages/*"
 	],
 	"devDependencies": {
-		"@babel/cli": "^7.29.7",
-		"@babel/core": "^7.29.7",
-		"@babel/preset-typescript": "^7.29.7",
-		"@biomejs/biome": "^1.9.4",
-		"@observablehq/notebook-kit": "^1.9.2",
+		"@babel/cli": "^8.0.5",
+		"@babel/core": "^8.0.5",
+		"@babel/preset-typescript": "^8.0.1",
+		"@biomejs/biome": "^2.5.14",
+		"@observablehq/notebook-kit": "^2.6.0",
 		"@types/lodash": "^4.17.25",
-		"@types/uuid": "^10.0.0",
-		"markdownlint-cli2": "^0.22.1"
+		"@types/uuid": "^11.0.0",
+		"markdownlint-cli2": "^0.23.2"
 	},
 	"dependencies": {
 		"circ-renderer": "workspace:*",
 		"lodash": "^4.18.1",
-		"posthog-js": "^1.431.1",
+		"posthog-js": "^1.433.9",
 		"sillyname": "^0.1.0",
 		"tslib": "^2.8.1",
-		"uuid": "^11.1.1"
+		"uuid": "^14.0.2"
 	}
 }

@@ -1,12 +1,10 @@
 {
   "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
-  "organizeImports": {
-    "enabled": true
-  },
+  "assist": { "actions": { "source": { "organizeImports": "on" } } },
   "linter": {
     "enabled": true,
     "rules": {
-      "recommended": true,
+      "preset": "recommended",
       "a11y": {
         "useKeyWithClickEvents": "warn"
       },
@@ -14,37 +12,32 @@
         "noForEach": "off"
       },
       "correctness": {
-        "noNewSymbol": "error",
         "noUnusedImports": "error",
-        "noNodejsModules": "error"
+        "noNodejsModules": "error",
+        "noInvalidBuiltinInstantiation": "error"
       },
-      "nursery": {
-        "noDuplicateElseIf": "error",
-        "noRestrictedImports": "error"
-      },
+      "nursery": {},
       "performance": {
         "noAccumulatingSpread": "warn",
         "noDelete": "off"
       },
-      "security": {
-        "all": true
-      },
+      "security": {},
       "style": {
         "noNonNullAssertion": "warn",
         "noUselessElse": "off",
         "useCollapsedElseIf": "error",
-        "useImportType": "error"
+        "useImportType": "error",
+        "noRestrictedImports": "error"
       },
       "suspicious": {
-        "all": true,
         "noArrayIndexKey": "warn",
         "noAssignInExpressions": "warn",
         "noConfusingVoidType": "warn",
         "noConsole": "off",
-        "noConsoleLog": "warn",
         "noExplicitAny": "warn",
         "noReactSpecificProps": "off",
-        "noSkippedTests": "off"
+        "noSkippedTests": "off",
+        "noDuplicateElseIf": "error"
       }
     }
   },
@@ -69,9 +62,9 @@
   },
   "overrides": [
     {
-      "include": [
-        "packages/circ-terminal/**/*.ts",
-        "packages/circ-terminal/**/*.tsx"
+      "includes": [
+        "**/packages/circ-terminal/**/*.ts",
+        "**/packages/circ-terminal/**/*.tsx"
       ],
       "linter": {
         "rules": {
@@ -84,23 +77,24 @@
   ],
   "files": {
     "ignoreUnknown": true,
-    "ignore": [
-      "node_modules",
-      "packages/**/node_modules",
-      ".turbo",
-      ".yarn",
-      ".nyc_output",
-      "out",
-      ".husky",
-      "./yarn.lock",
-      "./.yarnrc.yml",
-      "deployment",
-      "stress-tests",
-      "built",
-      "build",
-      "dist",
-      "coverage",
-      "scripts"
+    "includes": [
+      "**",
+      "!**/node_modules",
+      "!**/packages/**/node_modules",
+      "!**/.turbo",
+      "!**/.yarn",
+      "!**/.nyc_output",
+      "!**/out",
+      "!**/.husky",
+      "!yarn.lock",
+      "!.yarnrc.yml",
+      "!**/deployment",
+      "!**/stress-tests",
+      "!**/built",
+      "!**/build",
+      "!**/dist",
+      "!**/coverage",
+      "!**/scripts"
     ]
   },
   "vcs": {
